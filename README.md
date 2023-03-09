@@ -1,2 +1,2 @@
-# RigCode
+# Rigging
 Code for running rigs
