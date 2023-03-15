@@ -15,7 +15,7 @@ classdef locations
         local_data_path = 'C:\LocalData';
 
         %% Ports for tcp servers and clients
-        bonsai_server = 50001
+        bonsai_port = 50001
         timelite_port = 50002
         mousecam_port = 50003
 
