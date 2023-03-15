@@ -68,8 +68,8 @@ while(true)
     subFolders = files(dirFlags); 
     % Get only the folder names into a cell array.
     subFolderNames = {subFolders().name}; 
-    exp_num = sum(contains(subFolderNames, 'experiment'));
-    save_path = fullfile(day_dir, ['experiment_' num2str(exp_num+1)]);
+    exp_num = sum(contains(subFolderNames, 'experiment');
+    save_path = fullfile(day_dir, ['experiment_' num2str(sum(exp_num)+1)]);
     mkdir(save_path);
 
     % get paths for files
