@@ -62,13 +62,15 @@ while(true)
     mkdir(day_dir);
 
     % make exp dir
+    % (extract existing folders)
     files = dir(day_dir);
-    dirFlags = [files.isdir];
-    % Extract only those that are directories.
-    subFolders = files(dirFlags); 
-    % Get only the folder names into a cell array.
-    subFolderNames = {subFolders().name}; 
+    subFolders = files([files.isdir]); 
+    subFolderNames = {subFolders().name};
+
+    % (check the number of experiment folders)
     exp_num = sum(contains(subFolderNames, 'experiment'));
+
+    % (make a new folder for this experiment)
     save_path = fullfile(day_dir, ['experiment_' num2str(exp_num+1)]);
     mkdir(save_path);
 
