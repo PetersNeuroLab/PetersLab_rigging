@@ -3,12 +3,12 @@ function runBonsaiWorkflow(workflowPath, addOptArray, bonsaiExePath, external)
 %% check the input
 switch nargin
     case 1
-        bonsaiExePath = bonsaiPath(64);
+        bonsaiExePath = plab.bonsai_server_helpers.bonsaiPath(64);
         addOptArray = '';
         addFlag = 0;
         external = 1;
     case 2
-        bonsaiExePath = bonsaiPath(64);
+        bonsaiExePath = plab.bonsai_server_helpers.bonsaiPath(64);
         addFlag = 1;
         external = 1;
     case 3
@@ -16,7 +16,7 @@ switch nargin
         external = 1;
     case 4
         if isempty(bonsaiExePath)
-            bonsaiExePath = bonsaiPath(64);
+            bonsaiExePath = plab.bonsai_server_helpers.bonsaiPath(64);
         end
         addFlag = 1;
         

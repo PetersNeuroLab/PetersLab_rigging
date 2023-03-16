@@ -75,8 +75,8 @@ while(true)
     mkdir(save_path);
 
     % get paths for files
-    workflowpath = fullfile(root_workflows, [data_struct.protocol '.bonsai']);
-    local_worfkflowpath = fullfile(save_path, [data_struct.protocol '.bonsai']);
+    workflowpath = fullfile(root_workflows, data_struct.protocol);
+    local_worfkflowpath = fullfile(save_path, data_struct.protocol);
     filename = fullfile(save_path, 'test.csv');
 
     % copy bonsai workflow in new folder
@@ -93,12 +93,12 @@ while(true)
     end
 
     % send stop to bonsai
-    plab.bonsai_server_helpers.bonsai_oscsend(u_bonsai,'/stop',"localhost",30000,'i',45);
+    plab.bonsai_server_helpers.bonsai_oscsend(communication_handles.u_bonsai,'/stop',"localhost",30000,'s','stop');
 
     % get message from Bonsai stopping
-    getlastmessage = communcation_handles.osclistener.getMessageArgumentsAsDouble();
+    getlastmessage = communication_handles.osclistener.getMessageArgumentsAsString();    
     while(isempty(getlastmessage))
-        getlastmessage = communcation_handles.osclistener.getMessageArgumentsAsDouble();
+        getlastmessage = communication_handles.osclistener.getMessageArgumentsAsString();
     end
 
     % close Bonsai
