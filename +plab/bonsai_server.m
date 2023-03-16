@@ -11,7 +11,7 @@ bonsai_server_fig = ...
 communication_handles = struct;
 
 % Open TCP client for MC
-communication_handles.client_mc = tcpclient("163.1.249.17",plab.locations.bonsai_server);
+communication_handles.client_mc = tcpclient("163.1.249.17",plab.locations.bonsai_port);
 
 % Open UDP connection for Bonsai
 communication_handles.u_bonsai = udpport("IPV4");
