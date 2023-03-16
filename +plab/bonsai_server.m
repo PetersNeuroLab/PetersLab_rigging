@@ -54,13 +54,30 @@ while(true)
     data_struct = jsondecode(exp_data);
 
     % make mouse dir
-    this_save_path = fullfile(root_save,data_struct.mouse);
-    mkdir(this_save_path);
+    mouse_dir = fullfile(root_save,data_struct.mouse);
+    mkdir(mouse_dir);
+
+    % make day dir
+    day_dir = fullfile(mouse_dir,data_struct.date);
+    mkdir(day_dir);
+
+    % make exp dir
+    % (extract existing folders)
+    files = dir(day_dir);
+    subFolders = files([files.isdir]); 
+    subFolderNames = {subFolders().name};
+
+    % (check the number of experiment folders)
+    exp_num = sum(contains(subFolderNames, 'experiment'));
+
+    % (make a new folder for this experiment)
+    save_path = fullfile(day_dir, ['experiment_' num2str(exp_num+1)]);
+    mkdir(save_path);
 
     % get paths for files
     workflowpath = fullfile(root_workflows, [data_struct.protocol '.bonsai']);
-    local_worfkflowpath = fullfile(this_save_path, [data_struct.protocol '.bonsai']);
-    filename = fullfile(this_save_path, 'test.csv');
+    local_worfkflowpath = fullfile(save_path, [data_struct.protocol '.bonsai']);
+    filename = fullfile(save_path, 'test.csv');
 
     % copy bonsai workflow in new folder
     copyfile(workflowpath, local_worfkflowpath);
