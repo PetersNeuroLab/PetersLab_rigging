@@ -20,7 +20,7 @@ classdef locations
         mousecam_port = 50003
 
         %% Github paths
-        github_rigging = 'C:\Github\PetersLab_rigging';
+        github_rigging = 'C:\????\PetersLab_rigging';
          
     end
 
