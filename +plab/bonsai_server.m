@@ -12,6 +12,7 @@ communication_handles = struct;
 
 % Open TCP client for MC
 communication_handles.client_mc = tcpclient("163.1.249.17",plab.locations.bonsai_port);
+configureCallback(communication_handles.client_mc, "terminator", @(src, event, x) readData (src, event, bonsai_server_fig));
 
 % Open UDP connection for Bonsai
 communication_handles.u_bonsai = udpport("IPV4");
@@ -35,26 +36,30 @@ communication_handles.oscreceiver.startListening();
 % Upload receiver/listener to figure
 guidata(bonsai_server_fig,communication_handles);
 
-% Start listener to run Bonsai workflows
-root_save = 'C:\Users\peterslab\Documents';
-root_workflows = 'C:\Users\peterslab\Documents\GitHub\PetersLab_code\Bonsai stuff';
-bonsai_controller(root_save, root_workflows, communication_handles)
-
 end
 
-function bonsai_controller(root_save, root_workflows, communication_handles)
+function readData(client, ~, bonsai_server_fig)
+    disp('Data received')
+    client.UserData = read(client, client.NumBytesAvailable, 'string');
+    if strfind(client.UserData, 'stop')
+        % send stop to bonsai
+        communication_handles = guidata(bonsai_server_fig);
+        plab.bonsai_server_helpers.bonsai_oscsend(communication_handles.u_bonsai,'/stop',"localhost",30000,'s','stop');
+    else
+        run_bonsai(bonsai_server_fig);
+    end
+end
 
-% Loop to listen and run Bonsai workflow
-while(true)
-    % wait for file info from mc
-    waitfor(communication_handles.client_mc, 'NumBytesAvailable')
-    exp_data = read(communication_handles.client_mc, communication_handles.client_mc.NumBytesAvailable,"string");
+
+function run_bonsai(bonsai_server_fig)
+
+    communication_handles = guidata(bonsai_server_fig);
 
     % decode json
-    data_struct = jsondecode(exp_data);
+    data_struct = jsondecode(communication_handles.client_mc.UserData);
 
     % make mouse dir
-    mouse_dir = fullfile(root_save,data_struct.mouse);
+    mouse_dir = fullfile(plab.locations.root_save,data_struct.mouse);
     mkdir(mouse_dir);
 
     % make day dir
@@ -75,7 +80,7 @@ while(true)
     mkdir(save_path);
 
     % get paths for files
-    workflowpath = fullfile(root_workflows, data_struct.protocol);
+    workflowpath = fullfile(plab.locations.root_workflows, data_struct.protocol);
     local_worfkflowpath = fullfile(save_path, data_struct.protocol);
     filename = fullfile(save_path, 'test.csv');
 
@@ -83,32 +88,29 @@ while(true)
     copyfile(workflowpath, local_worfkflowpath);
 
     % start bonsai
-    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflowpath, {'FileName', filename}, [], 1)
+    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflowpath, {'FileName', filename}, [], 1);
+    
+    bonsai_timer_fcn = timer('TimerFcn', ...
+    {@get_bonsai_message,communication_handles}, ...
+    'Period', 1/10, 'ExecutionMode','fixedDelay', ...
+    'TasksToExecute', inf);
+    start(bonsai_timer_fcn)
 
-    % get Stop message
-    msg_stop = [];
-    while ~strcmp(msg_stop,'stop')
-        waitfor(communication_handles.client_mc, 'NumBytesAvailable')
-        msg_stop = read(communication_handles.client_mc, communication_handles.client_mc.NumBytesAvailable,"string");
-    end
+end
 
-    % send stop to bonsai
-    plab.bonsai_server_helpers.bonsai_oscsend(communication_handles.u_bonsai,'/stop',"localhost",30000,'s','stop');
-
-    % get message from Bonsai stopping
+function get_bonsai_message(obj, ~, communication_handles)
     getlastmessage = communication_handles.osclistener.getMessageArgumentsAsString();    
-    while(isempty(getlastmessage))
-        getlastmessage = communication_handles.osclistener.getMessageArgumentsAsString();
+    if ~isempty(getlastmessage)
+        % close Bonsai
+        system('taskkill /F /IM Bonsai.EXE');
+        system('taskkill /F /IM OpenConsole.EXE');
+        % delete timer
+        stop(obj)
+        delete(obj)
     end
-
-    % close Bonsai
-    system('taskkill /F /IM Bonsai.EXE');
-    system('taskkill /F /IM OpenConsole.EXE');
 end
 
-end
-
-function close_bonsai_server(obj, event)
+function close_bonsai_server(obj, ~)
 
 % Confirm close
 confirm_close = uiconfirm(obj,'Close Bonsai server?','Confirm close');
