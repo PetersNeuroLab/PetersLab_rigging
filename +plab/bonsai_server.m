@@ -40,7 +40,7 @@ end
 
 function readData(client, ~, bonsai_server_fig)
     disp('Data received')
-    client.UserData = read(client, client.NumBytesAvailable, 'string');
+    client.UserData = readline(client);
     if strfind(client.UserData, 'stop')
         % send stop to bonsai
         communication_handles = guidata(bonsai_server_fig);
@@ -104,6 +104,8 @@ function get_bonsai_message(obj, ~, communication_handles)
         % close Bonsai
         system('taskkill /F /IM Bonsai.EXE');
         system('taskkill /F /IM OpenConsole.EXE');
+        % send done to exp control
+        writeline(communication_handles.client_mc, 'done');
         % delete timer
         stop(obj)
         delete(obj)
