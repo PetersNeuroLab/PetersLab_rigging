@@ -251,26 +251,24 @@ guidata(gui_fig,gui_data);
 end
 
 function read_expcontroller_data(client,event,gui_fig)
-% Read message from experiment controller
+% TO DO: in progress
 
-% Get message from experiment controller
-expcontroller_message = readline(client);
+% Create local folder
 
-if strfind(expcontroller_message, 'stop')
+% Start data acquisition
+
+% Get experiment information from experiment controller
+client.UserData = readline(client);
+data_struct = jsondecode(communication_handles.client_mc.UserData);
+
+
+if strfind(client.UserData, 'stop')
     % If experiment controller sends stop, stop DAQ acquisition
     daq_stop(gui_fig);
 else
     % If experiment controller experiment info
-    
-    exp_info = jsondecode(expcontroller_message);
-
     % Set local filename
-    gui_data.save_filename = ...
-        fullfile(plab.locations.local_data_path, ...
-        exp_info.mouse,exp_info.date,num2str(exp_info.protocol),'timelite.mat');
-
-    % Make local save directory
-    mkdir(fileparts(gui_data.save_filename))
+    gui_data.save_filename = fullfile(save_dir,[mouse_name,'_timelite.mat']);
     
     % Start DAQ acquisition
     daq_start(gui_fig)

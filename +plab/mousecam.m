@@ -284,23 +284,29 @@ end
 %% Communication function
 
 function read_expcontroller_data(client,event,gui_fig)
-% TO DO: in progress
+% Read message from experiment controller
 
-% Create local folder
+% Get message from experiment controller
+expcontroller_message = readline(client);
 
-% Start data acquisition
-
-client.UserData = readline(client);
-if strfind(client.UserData, 'stop')
+if strfind(expcontroller_message, 'stop')
     % If experiment controller sends stop, stop DAQ acquisition
-    daq_stop(gui_fig);
+    cam_stop(gui_fig);
 else
     % If experiment controller experiment info
-    % Set local filename
-    gui_data.save_filename = fullfile(save_dir,[mouse_name,'_timelite.mat']);
     
-    % Start DAQ acquisition
-    daq_start(gui_fig)
+    exp_info = jsondecode(expcontroller_message);
+
+    % Set local filename
+    gui_data.save_filename = ...
+        fullfile(plab.locations.local_data_path, ...
+        exp_info.mouse,exp_info.date,num2str(exp_info.protocol),'mousecam.mj2');
+
+    % Make local save directory
+    mkdir(fileparts(gui_data.save_filename))
+    
+    % Start camera recording acquisition
+    cam_start(gui_fig)
 end
 
 end
