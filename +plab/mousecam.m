@@ -286,6 +286,9 @@ end
 function read_expcontroller_data(client,event,gui_fig)
 % Read message from experiment controller
 
+% Get gui data
+gui_data = guidata(gui_fig);
+
 % Get message from experiment controller
 expcontroller_message = readline(client);
 
