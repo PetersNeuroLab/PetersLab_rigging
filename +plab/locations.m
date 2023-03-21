@@ -47,6 +47,20 @@ classdef locations
                 animal,rec_day,sprintf('recording_%s',rec_time),filename);
         end
 
+        function [protocol_dir, day_dir, mouse_dir] = make_file_structure(root, animal, date, time)
+            % make mouse dir
+            mouse_dir = fullfile(root,animal);
+            mkdir(mouse_dir);
+
+            % make day dir
+            day_dir = fullfile(mouse_dir,date);
+            mkdir(day_dir);
+
+            % make exp dir
+            protocol_dir = fullfile(day_dir, ['protocol_' time]);
+            mkdir(protocol_dir);
+        end
+
 
     end
 

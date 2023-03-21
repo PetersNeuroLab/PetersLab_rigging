@@ -57,31 +57,14 @@ function run_bonsai(bonsai_server_fig)
 
     % decode json
     data_struct = jsondecode(communication_handles.client_mc.UserData);
-
-    % make mouse dir
-    mouse_dir = fullfile(plab.locations.root_save,data_struct.mouse);
-    mkdir(mouse_dir);
-
-    % make day dir
-    day_dir = fullfile(mouse_dir,data_struct.date);
-    mkdir(day_dir);
-
-    % make exp dir
-    % (extract existing folders)
-    files = dir(day_dir);
-    subFolders = files([files.isdir]); 
-    subFolderNames = {subFolders().name};
-
-    % (check the number of experiment folders)
-    exp_num = sum(contains(subFolderNames, 'experiment'));
-
-    % (make a new folder for this experiment)
-    save_path = fullfile(day_dir, ['experiment_' num2str(exp_num+1)]);
-    mkdir(save_path);
+    
+    % make dirs
+    [protocol_dir, ~, ~] = plab.locations.make_file_structure(plab.locations.root_save, ...
+        data_struct.mouse, data_struct.date, data_struct.protocol_time);
 
     % get paths for files
-    workflowpath = fullfile(plab.locations.root_workflows, data_struct.protocol);
-    local_worfkflowpath = fullfile(save_path, data_struct.protocol);
+    workflowpath = fullfile(plab.locations.root_workflows, data_struct.protocol_name);
+    local_worfkflowpath = fullfile(protocol_dir, data_struct.protocol_name);
     filename = fullfile(save_path, 'test.csv');
 
     % copy bonsai workflow in new folder
