@@ -7,13 +7,13 @@ server_mousecam = tcpserver("0.0.0.0",plab.locations.mousecam_port);
 configureCallback(server_stim, "terminator", @(src,event,x,y) plab.readDataFcn(src,event,server_timelite, server_mousecam));
 
 % send mouse and protocol info
-protocol_name = 'trial_test.bonsai';
+protocol = 'trial_test.bonsai';
 mouse_name = 'MissMouse0801';
-date_today = string(datetime("now", 'Format', 'yyyy-MM-dd'));
-protocol_time = string(datetime("now", 'Format', 'HHmm'));
+date_today = string(datetime(now, 'Format', 'yyyy_MM_dd'));
+rec_time = string(datetime(date_time, 'Format', 'HHmm'));
 
 waitfor(server_stim, 'Connected', 1)
-s = struct('mouse', mouse_name, 'date', date_today, 'protocol_name', protocol_name, 'protocol_time', protocol_time);
+s = struct('mouse', mouse_name, 'date', date_today, 'protocol', protocol);
 encode_s = jsonencode(s);
 
 writeline(server_stim,encode_s);
