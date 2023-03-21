@@ -59,11 +59,10 @@ function run_bonsai(bonsai_server_fig)
     data_struct = jsondecode(communication_handles.client_mc.UserData);
     
     % make dirs
-    [protocol_dir, ~, ~] = plab.locations.make_file_structure(plab.locations.root_save, ...
-        data_struct.mouse, data_struct.date, data_struct.protocol_time);
+
 
     % get paths for files
-    workflowpath = fullfile(plab.locations.root_workflows, data_struct.protocol_name);
+    workflowpath = fullfile(plab.locations.root_workflows, data_struct.protocol_path);
     local_worfkflowpath = fullfile(protocol_dir, data_struct.protocol_name);
     filename = fullfile(save_path, 'test.csv');
 

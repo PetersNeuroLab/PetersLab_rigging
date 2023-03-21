@@ -20,9 +20,8 @@ classdef locations
         timelite_port = 50002
         mousecam_port = 50003
 
-        % Local save
-        root_save = 'C:\Users\peterslab\Documents';
-        root_workflows = 'C:\Users\peterslab\Documents\GitHub\PetersLab_code\Bonsai stuff';
+        % Local bonsai workflow folder
+        local_workflow_path = 'C:\Users\peterslab\Documents\GitHub\PetersLab_code\Bonsai stuff';
 
         % Github paths
         github_rigging = 'C:\????\PetersLab_rigging';
