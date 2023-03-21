@@ -13,132 +13,83 @@ function timelite
 %% Make GUI
 
 gui_fig = figure('Name','Timelite','Units','Normalized', ...
-    'Position',[0,0.1,0.1,0.8],'color','w','menu','none');
+    'Position',[0,0.05,0.15,0.9],'color','w','menu','none');
 
-% Control buttons
-clear controls_h
-% (text)
-controls_h(1) = uicontrol('Parent',gui_fig,'Style','text', ...
-    'String','Setting up DAQ...','FontSize',12, ...
-    'HorizontalAlignment','left', ...
-    'Units','normalized','BackgroundColor','w','Position',[0,0.5,1,0.5]);
+% Initialize text
+uicontrol('Parent',gui_fig,'Style','text', ...
+    'String','TIMELITE','FontSize',20, ...
+    'HorizontalAlignment','center', ...
+    'Units','normalized','BackgroundColor',[0.8,0.8,0.8],'Position',[0,0.95,1,0.05]);
 
-% (buttons)
-controls_h(end+1) = uicontrol('Parent',gui_fig,'Style','togglebutton', ...
-    'String','Manual','Callback',{@daq_manual,gui_fig});
-controls_h(end+1) = uicontrol('Parent',gui_fig,'Style','togglebutton', ...
-    'String','Listen','Callback',{@daq_listen,gui_fig});
-set(controls_h(2:end),'Units','normalized','FontSize',16, ...
-    'BackgroundColor','w','Position',[0,0,1,0.5/(length(controls_h)-1)]);
+text_h = uicontrol('Parent',gui_fig,'Style','text', ...
+    'String','Setting up timelite...','FontSize',12, ...
+    'FontName','Courier','HorizontalAlignment','left', ...
+    'Units','normalized','BackgroundColor','w','Position',[0,0.1,1,0.85]);
 
-set(gcf,'Children',flipud(get(gcf,'Children')));
-align(fliplr(controls_h),'center','fixed',0);
-
-% Disable controls until DAQ is set up
-set(controls_h,'Enable','off');
+% Initialize stop button
+stop_button_h = uicontrol('Parent',gui_fig,'Style','pushbutton', ...
+    'String','STOP','Callback',{@daq_manual_stop,gui_fig}, ...
+    'FontSize',16,'BackgroundColor',[0.8,0,0],'ForegroundColor','w', ...
+    'Units','normalized','Position',[0,0,1,0.1],'Enable','off');
 
 % Draw initial controls (so user knows startup is in progress)
 drawnow;
 
-%% Set up DAQ
-
+% Set up DAQ
 try
     % Set up DAQ according to local config file
     daq_device = plab.local_rig.timelite_config;
+    daq_device.ScansAvailableFcn = @(src,evt,x) daq_upload(src,evt,gui_fig);
 catch me
     % Error if DAQ could not be configured
     error('Timelite - DAQ device could not be configured: \n %s',me.message)
 end
 
-% Display DAQ channel info
-channel_text = [ ...
-    {sprintf('Sample rate:  %d',daq_device.Rate)}
-    {sprintf('Sample rate:  %d',daq_device.Rate)}; ...
-    {sprintf('Samples/upload:  %d \n',daq_device.ScansAvailableFcnCount)}
-    {'Channels: '}; ...
-    join([{daq_device.Channels.ID}',{daq_device.Channels.Name}',],': ')];
+% Start listener for experiment controller
+try
+client_expcontroller = tcpclient("163.1.249.17",plab.locations.timelite_port);
+configureCallback(client_expcontroller, "terminator", ...
+    @(src,event,x) read_expcontroller_data(src,event,gui_fig));
+catch me
+    % Error if no connection to experiment controller
+    error('Timelite - Cannot connect to experiment controller: \n %s',me.message)
+end
 
-set(controls_h(1),'String',channel_text);
-
-% Set DAQ update function
-daq_device.ScansAvailableFcn = @(src,evt,x) daq_upload(src,evt,gui_fig);
+% Write text
+status_text = [ ...
+    {sprintf('Status: \n')}
+    {sprintf('Sample rate: %d',daq_device.Rate)}
+    {sprintf('Samples/upload: %d \n',daq_device.ScansAvailableFcnCount)}
+    {'Channels: '}
+    join([{daq_device.Channels.ID}',{daq_device.Channels.Name}',],' | ')];
+set(text_h,'String',status_text)
 
 % Initialize and upload gui data
 gui_data = struct;
-gui_data.controls_h = controls_h;
+gui_data.text_h = text_h;
+gui_data.stop_button_h = stop_button_h;
 gui_data.daq_device = daq_device;
+gui_data.print_status = 'Listening for start';
+gui_data.client_expcontroller = client_expcontroller;
 
-guidata(gui_fig,gui_data);
-
-% When setup is complete, enable controls
-set(controls_h,'Enable','on');
-
-end
-
-function daq_manual(h,eventdata,gui_fig)
-
-switch h.Value
-    case 1
-        % Manual recording is turned on
-
-        % Get gui data
-        gui_data = guidata(gui_fig);
-
-        % Change button display and disable other buttons
-        h.String = 'Stop';
-        h.BackgroundColor = [0.8,0,0];
-        h.ForegroundColor = 'w';
-        set(gui_data.controls_h(gui_data.controls_h ~= h),'Enable','off');
-
-        % User choose mouse name
-        mouse_name = cell2mat(inputdlg('Mouse name'));
-        if isempty(mouse_name)
-            % (if no mouse entered, do nothing)
-            return
-        end
-
-        % Set save filename
-        error('need to update manual save location')
-        save_dir = plab.locations.root_save;
-        gui_data.save_filename = fullfile(save_dir,[mouse_name,'_timelite.mat']);
-
-        % Update gui data
-        guidata(gui_fig,gui_data);
-
-        % Start DAQ acquisition
-        daq_start(gui_fig);
-
-    case 0
-        % Manual recording is turned off
-
-        % Stop recording
-        daq_stop(gui_fig)
-
-        % Get gui data
-        gui_data = guidata(gui_fig);
-
-        % Change button display and disable other buttons
-        h.String = 'Manual';
-        h.BackgroundColor = 'w';
-        h.ForegroundColor = 'k';
-        set(gui_data.controls_h,'Enable','on');
-
-end
-
-end
-
-function daq_listen(h,eventdata,gui_fig)
-% Get gui data
-gui_data = guidata(gui_fig);
-
-% Set up listener for experiment controller
-gui_data.client_expcontroller = tcpclient("163.1.249.17",plab.locations.timelite_port);
-configureCallback(gui_data.client_expcontroller, "terminator", ...
-    @(src,event,x) read_expcontroller_data(src,event,gui_fig));
+% Update status
+update_status_text(gui_data.text_h,'Listening...');
 
 % Update gui data
 guidata(gui_fig,gui_data);
 
+end
+
+function daq_manual_stop(h,eventdata,gui_fig)
+% Manually stop recording
+
+% Display confirmation dialog
+confirm = questdlg('\fontsize{14}Stop timelite recording?','Confirm timelite stop', ...
+    'Yes','No',struct('Default','No','Interpreter','tex'));
+
+if strcmp(confirm,'Yes')
+    daq_stop(gui_fig)
+end
 end
 
 function daq_start(gui_fig)
@@ -164,14 +115,28 @@ gui_data.save_file_mat = matfile(gui_data.save_filename,'Writable',true);
 % Start DAQ acquisition
 start(gui_data.daq_device,'continuous');
 
+% Update status
+update_status_text(gui_data.text_h,'RECORDING');
+
 % Create live plot (unclosable)
+gui_fig_position = gui_fig.Position;
+live_fig_position = ...
+    [gui_fig_position(1)+gui_fig_position(3),gui_fig_position(2), ...
+    1-(gui_fig_position(1)+gui_fig_position(3)),gui_fig_position(4)];
+
 live_plot_fig = figure('CloseRequestFcn',[],'color','w', ...
-    'Units','normalized','Position',[0.5,0,0.5,1], ...
+    'Units','normalized','Position',live_fig_position, ...
     'Name','Timelite live plot','menu','none');
 gui_data.live_plot_fig = live_plot_fig;
 
+% Enable stop button
+set(gui_data.stop_button_h,'Enable','on');
+
 % Update gui data
 guidata(gui_fig,gui_data);
+
+% Update text
+update_text(gui_fig);
 
 end
 
@@ -183,8 +148,14 @@ gui_data = guidata(gui_fig);
 % Stop DAQ acquisition
 stop(gui_data.daq_device)
 
+% Update status
+update_status_text(gui_data.text_h,'Listening...');
+
 % Delete live plot
 delete(gui_data.live_plot_fig);
+
+% Disable stop button
+set(gui_data.stop_button_h,'Enable','off');
 
 % TO DO: upload to server (if server available)
 
@@ -265,12 +236,12 @@ if strcmp(expcontroller_message, 'stop')
 else
     % If experiment controller experiment info
     
-    exp_info = jsondecode(expcontroller_message);
+    rec_info = jsondecode(expcontroller_message);
 
     % Set local filename
     gui_data.save_filename = ...
         plab.locations.make_local_filename( ...
-        exp_info.mouse,exp_info.date,num2str(exp_info.protocol),'timelite.mat');
+        rec_info.mouse,rec_info.date,rec_info.time,'timelite.mat');
 
     % Make local save directory
     mkdir(fileparts(gui_data.save_filename))
@@ -284,8 +255,14 @@ end
 
 end
 
+function update_status_text(text_h,status)
+% Update status text
 
+curr_text = get(text_h,'String');
+new_text = [{sprintf('Status: %s',status)};curr_text(2:end)];
+set(text_h,'String',new_text);
 
+end
 
 
 
