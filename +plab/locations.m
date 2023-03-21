@@ -1,15 +1,14 @@
 % Definitions for shared locations across the lab
 
-% TO DO: add method to construct (and search for?) filename
-% - model in AP_cortexlab_filename
+% TO DO:
+% Add method to search for filename? like AP_cortexlab filename
 % maybe also something like AP_find_experiments
-
 
 classdef locations
     properties( Constant = true )
 
         %% NAS server location
-        server_path = 'Z:\';
+        server_data_path = 'P:\Data';
 
         %% Local data paths
         local_data_path = 'C:\LocalData';
@@ -26,6 +25,30 @@ classdef locations
         %% Github paths
         github_rigging = 'C:\????\PetersLab_rigging';
          
+    end
+
+    methods(Static)
+
+        function local_filename = make_local_filename(animal,day,recording,filename)
+            % Local filename structure: 
+            % local_data_path/animal/day/recording/filename
+            if isnumeric(recording)
+                recording = num2str(recording);
+            end
+            local_filename = fullfile(plab.locations.local_data_path, ...
+                animal,day,recording,filename);
+        end
+        function server_filename = make_server_filename(animal,day,recording,filename)
+            % Server filename structure: 
+            % server_data_path/animal/day/recording/filename
+            if isnumeric(recording)
+                recording = num2str(recording);
+            end
+            server_filename = fullfile(plab.locations.server_data_path, ...
+                animal,day,recording,filename);
+        end
+
+
     end
 
 end

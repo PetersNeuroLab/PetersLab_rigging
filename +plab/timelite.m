@@ -259,7 +259,7 @@ gui_data = guidata(gui_fig);
 % Get message from experiment controller
 expcontroller_message = readline(client);
 
-if strfind(expcontroller_message, 'stop')
+if strcmp(expcontroller_message, 'stop')
     % If experiment controller sends stop, stop DAQ acquisition
     daq_stop(gui_fig);
 else
@@ -269,7 +269,7 @@ else
 
     % Set local filename
     gui_data.save_filename = ...
-        fullfile(plab.locations.local_data_path, ...
+        plab.locations.make_local_filename( ...
         exp_info.mouse,exp_info.date,num2str(exp_info.protocol),'timelite.mat');
 
     % Make local save directory

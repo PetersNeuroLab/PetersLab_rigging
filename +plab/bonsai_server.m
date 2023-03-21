@@ -41,7 +41,7 @@ end
 function readData(client, ~, bonsai_server_fig)
     disp('Data received')
     client.UserData = readline(client);
-    if strfind(client.UserData, 'stop')
+    if strcmp(client.UserData, 'stop')
         % send stop to bonsai
         communication_handles = guidata(bonsai_server_fig);
         plab.bonsai_server_helpers.bonsai_oscsend(communication_handles.u_bonsai,'/stop',"localhost",30000,'s','stop');
