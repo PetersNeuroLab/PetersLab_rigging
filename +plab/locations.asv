@@ -34,17 +34,23 @@ classdef locations
         %% Methods to construct filenames
         % Filename structure: 
         % storage\animal\<YYYY-MM-DD>\<recording_HHMM>\filename
-        % e.g. P:\AP001\2023-03-21\recording_1301\timelite.mat
+        % e.g. P:\AP001\2023-03-21\recording_
 
         function local_filename = make_local_filename(animal,rec_day,rec_time,filename)
             % Generate local filename
+            if isnumeric(rec_time)
+                rec_time = num2str(rec_time);
+            end
             local_filename = fullfile(plab.locations.local_data_path, ...
-                animal,rec_day,sprintf('recording_%s',rec_time),filename);
+                animal,rec_day,rec_time,filename);
         end
         function server_filename = make_server_filename(animal,rec_day,rec_time,filename)
             % Generate server filename
+            if isnumeric(rec_time)
+                rec_time = num2str(rec_time);
+            end
             server_filename = fullfile(plab.locations.server_data_path, ...
-                animal,rec_day,sprintf('recording_%s',rec_time),filename);
+                animal,rec_day,rec_time,filename);
         end
 
 
