@@ -58,8 +58,13 @@ function run_bonsai(bonsai_server_fig)
     % decode json
     data_struct = jsondecode(communication_handles.client_mc.UserData);
     
-    % make dirs
+    % Set local filename
+    save_filename = ...
+        plab.locations.make_local_filename( ...
+        data_struct.mouse,data_struct.date,data_struct.time,[data_struct.protocol_name '.bonsai']);
 
+    % Make local save directory
+    mkdir(fileparts(gui_data.save_filename))
 
     % get paths for files
     workflowpath = fullfile(plab.locations.root_workflows, data_struct.protocol_path);
