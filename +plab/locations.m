@@ -33,23 +33,23 @@ classdef locations
 
         %% Methods to construct filenames
 
-        function local_filename = make_local_filename(animal,day,recording,filename)
+        function local_filename = make_local_filename(animal,day,protocol,filename)
             % Local filename structure: 
             % local_data_path/animal/day/recording/filename
-            if isnumeric(recording)
-                recording = num2str(recording);
+            if isnumeric(protocol)
+                protocol = num2str(protocol);
             end
             local_filename = fullfile(plab.locations.local_data_path, ...
-                animal,day,recording,filename);
+                animal,day,protocol,filename);
         end
-        function server_filename = make_server_filename(animal,day,recording,filename)
+        function server_filename = make_server_filename(animal,day,protocol,filename)
             % Server filename structure: 
             % server_data_path/animal/day/recording/filename
-            if isnumeric(recording)
-                recording = num2str(recording);
+            if isnumeric(protocol)
+                protocol = num2str(protocol);
             end
             server_filename = fullfile(plab.locations.server_data_path, ...
-                animal,day,recording,filename);
+                animal,day,protocol,filename);
         end
 
 
