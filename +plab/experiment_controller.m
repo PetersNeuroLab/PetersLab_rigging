@@ -24,3 +24,29 @@ write(server_mousecam,  'start', 'string');
 % send stop message
 writeline(server_stim,'stop');
 
+
+%% Andy tests
+
+server_timelite = tcpserver("0.0.0.0",plab.locations.timelite_port);
+
+bonsai = 'trial_test.bonsai';
+mouse_name = 'AP201';
+current_day = datetime('now','format','yyyy-MM-dd');
+current_time = datetime('now','format','HHmm');
+
+recording_info = jsonencode(struct( ...
+    'mouse',mouse_name, ...
+    'date',current_day, ...
+    'bonsai',bonsai, ...
+    'time',current_time));
+
+writeline(server_timelite,recording_info);
+
+writeline(server_timelite, 'stop');
+
+
+
+
+
+
+
