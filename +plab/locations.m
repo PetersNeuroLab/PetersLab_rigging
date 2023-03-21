@@ -7,27 +7,31 @@
 classdef locations
     properties( Constant = true )
 
-        %% NAS server location
+        %% Set common lab locations
+
+        % NAS server location
         server_data_path = 'P:\Data';
 
-        %% Local data paths
+        % Local data paths
         local_data_path = 'C:\LocalData';
 
-        %% Ports for tcp servers and clients
+        % Ports for tcp servers and clients
         bonsai_port = 50001
         timelite_port = 50002
         mousecam_port = 50003
 
-        %% Local save
+        % Local save
         root_save = 'C:\Users\peterslab\Documents';
         root_workflows = 'C:\Users\peterslab\Documents\GitHub\PetersLab_code\Bonsai stuff';
 
-        %% Github paths
+        % Github paths
         github_rigging = 'C:\????\PetersLab_rigging';
          
     end
 
     methods(Static)
+
+        %% Methods to construct filenames
 
         function local_filename = make_local_filename(animal,day,recording,filename)
             % Local filename structure: 
