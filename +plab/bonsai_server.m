@@ -61,7 +61,7 @@ function run_bonsai(bonsai_server_fig)
     % Set local filename for bonsai workflow
     local_worfkflow_file = ...
         plab.locations.make_local_filename( ...
-        data_struct.mouse,data_struct.date,data_struct.time,[data_struct.protocol_name '.bonsai']);
+        data_struct.mouse,data_struct.date,data_struct.time,data_struct.protocol_name);
     [save_filepath,~,~] = fileparts(local_worfkflow_file);
 
     % Make local save directory
