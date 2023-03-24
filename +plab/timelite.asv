@@ -267,11 +267,9 @@ function move_data_to_server
 
 % Check if the server is available
 if ~exist(plab.locations.server_data_path,'dir')
-    warning('Server not accessible at %s',plab.locations.server_data_path)
+    warning('Server not access
     return
 end
-
-
 
 end
 
