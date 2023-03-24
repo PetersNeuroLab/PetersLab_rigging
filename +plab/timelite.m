@@ -67,11 +67,10 @@ gui_data = struct;
 gui_data.text_h = text_h;
 gui_data.stop_button_h = stop_button_h;
 gui_data.daq_device = daq_device;
-gui_data.print_status = 'Listening for start';
 gui_data.client_expcontroller = client_expcontroller;
 
 % Update status
-update_status_text(gui_data.text_h,'Listening...');
+update_status_text(gui_data.text_h,'Listening for start...');
 
 % Update gui data
 guidata(gui_fig,gui_data);
