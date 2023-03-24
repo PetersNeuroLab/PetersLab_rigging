@@ -20,8 +20,7 @@ uicontrol('Parent',gui_fig,'Style','text', ...
     'Units','normalized','BackgroundColor',[0.8,0.8,0.8],'Position',[0,0.95,1,0.05]);
 
 text_h = uicontrol('Parent',gui_fig,'Style','text', ...
-    'String','Setting up timelite...','FontSize',12, ...
-    'FontName','Courier','HorizontalAlignment','left', ...
+    'FontSize',12,'FontName','Courier','HorizontalAlignment','left', ...
     'Units','normalized','BackgroundColor','w','Position',[0,0.1,1,0.85]);
 
 % Initialize stop button
@@ -34,6 +33,7 @@ stop_button_h = uicontrol('Parent',gui_fig,'Style','pushbutton', ...
 drawnow;
 
 % Set up DAQ
+update_status_text(text_h,'Setting up DAQ...');
 try
     % Set up DAQ according to local config file
     daq_device = plab.local_rig.timelite_config;
@@ -44,12 +44,14 @@ catch me
 end
 
 % Start listener for experiment controller
+update_status_text(text_h,'Connecting to experiment server...');
 try
-client_expcontroller = tcpclient("163.1.249.17",plab.locations.timelite_port);
+client_expcontroller = tcpclient("163.1.249.17",plab.locations.timelite_port,'ConnectTimeout',2);
 configureCallback(client_expcontroller, "terminator", ...
     @(src,event,x) read_expcontroller_data(src,event,gui_fig));
 catch me
     % Error if no connection to experiment controller
+    update_status_text(text_h,'Error connecting to experiment server');
     error('Timelite -- Cannot connect to experiment controller: \n %s',me.message)
 end
 
