@@ -1,12 +1,12 @@
 function timelite
 % Light-weight NI-DAQ acquisition GUI (lite version of Timeline)
 %
+% FOR RIG-SPECIFIC DAQ SETUP: 
+% Make local custom version of <plab.timelite_config>
+%
 % Requires: 
 % data acquisition toolbox
 % instrument control toolbox
-
-%%%% TO DO: 
-% - upload to server
 
 %% Make GUI
 
@@ -40,7 +40,7 @@ try
     daq_device.ScansAvailableFcn = @(src,evt,x) daq_upload(src,evt,gui_fig);
 catch me
     % Error if DAQ could not be configured
-    error('Timelite - DAQ device could not be configured: \n %s',me.message)
+    error('Timelite -- DAQ device could not be configured: \n %s',me.message)
 end
 
 % Start listener for experiment controller
@@ -50,7 +50,7 @@ configureCallback(client_expcontroller, "terminator", ...
     @(src,event,x) read_expcontroller_data(src,event,gui_fig));
 catch me
     % Error if no connection to experiment controller
-    error('Timelite - Cannot connect to experiment controller: \n %s',me.message)
+    error('Timelite -- Cannot connect to experiment controller: \n %s',me.message)
 end
 
 % Write text
@@ -147,7 +147,7 @@ gui_data = guidata(gui_fig);
 stop(gui_data.daq_device)
 
 % Update status
-update_status_text(gui_data.text_h,'Listening...');
+update_status_text(gui_data.text_h,'Listening for start...');
 
 % Delete live plot
 delete(gui_data.live_plot_fig);
@@ -155,7 +155,8 @@ delete(gui_data.live_plot_fig);
 % Disable stop button
 set(gui_data.stop_button_h,'Enable','off');
 
-% TO DO: upload to server (if server available)
+% Move data to server
+move_data_to_server(gui_data.text_h);
 
 % Update gui data
 guidata(gui_fig,gui_data);
@@ -232,8 +233,7 @@ if strcmp(expcontroller_message, 'stop')
     % If experiment controller sends stop, stop DAQ acquisition
     daq_stop(gui_fig);
 else
-    % If experiment controller experiment info
-    
+    % Otherwise, assume message is information to start protocol    
     rec_info = jsondecode(expcontroller_message);
 
     % Set local filename
@@ -262,7 +262,7 @@ set(text_h,'String',new_text);
 
 end
 
-function move_data_to_server
+function move_data_to_server(text_h)
 % Move data from local to server
 
 % Check if the server is available
@@ -271,8 +271,20 @@ if ~exist(plab.locations.server_data_path,'dir')
     return
 end
 
+% Move/merge all local data directories onto the server
+local_data_dirs = dir(plab.locations.local_data_path);
+for curr_dir = setdiff({local_data_dirs.name},[".",".."])
 
+    curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
+    curr_dir_server = fullfile(plab.locations.server_data_path,curr_dir);
 
+    update_status_text(text_h,sprintf('Copying: %s --> %s',curr_dir_local,curr_dir_server))
+
+    [status,message] = movefile(curr_dir_local,curr_dir_server);
+    if ~status
+        warning('Timelite -- Failed copying to server: %s',message);
+    end
+end
 end
 
 
