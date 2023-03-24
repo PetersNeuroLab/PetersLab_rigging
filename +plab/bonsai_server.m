@@ -58,24 +58,24 @@ function run_bonsai(bonsai_server_fig)
     % decode json
     data_struct = jsondecode(communication_handles.client_mc.UserData);
     
-    % Set local filename
-    save_filename = ...
+    % Set local filename for bonsai workflow
+    local_worfkflow_file = ...
         plab.locations.make_local_filename( ...
-        data_struct.mouse,data_struct.date,data_struct.time,[data_struct.protocol_name '.bonsai']);
+        data_struct.mouse,data_struct.date,data_struct.time,data_struct.protocol_name);
+    [save_filepath,~,~] = fileparts(local_worfkflow_file);
 
     % Make local save directory
-    mkdir(fileparts(gui_data.save_filename))
+    mkdir(fileparts(local_worfkflow_file));
 
     % get paths for files
-    workflowpath = fullfile(plab.locations.root_workflows, data_struct.protocol_path);
-    local_worfkflowpath = fullfile(protocol_dir, data_struct.protocol_name);
-    filename = fullfile(save_path, 'test.csv');
+    workflowpath = fullfile(plab.locations.local_workflow_path, data_struct.protocol_path, data_struct.protocol_name);
+    save_filename = fullfile(save_filepath, 'test.csv');
 
     % copy bonsai workflow in new folder
-    copyfile(workflowpath, local_worfkflowpath);
+    copyfile(workflowpath, local_worfkflow_file);
 
     % start bonsai
-    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflowpath, {'FileName', filename}, [], 1);
+    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'FileName', save_filename}, [], 1);
     
     bonsai_timer_fcn = timer('TimerFcn', ...
     {@get_bonsai_message,communication_handles}, ...
