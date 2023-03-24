@@ -220,9 +220,6 @@ gui_data = guidata(gui_fig);
 stop(gui_data.video_object)
 fclose(gui_data.header_fileID);
 
-% Move data to server
-move_data_to_server;
-
 end
 
 %% Preview/record functions
@@ -339,7 +336,7 @@ for curr_dir = setdiff({local_data_dirs.name},[".",".."])
 
     [status,message] = movefile(curr_dir_local,curr_dir_server);
     if ~status
-        warning('Mousecam -- Failed copying to server: %s',message);
+        warning('Timelite -- Failed copying to server: %s',message);
     end
 end
 end
