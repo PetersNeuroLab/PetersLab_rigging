@@ -26,9 +26,6 @@ src.Gain = 6;
 src.ShutterMode = 'manual';
 src.Shutter = 6;
 src.Brightness = 7;
-% Turn strobe on for GPIO3
-src.Strobe3 = 'On';
-src.Strobe3Polarity = 'High';
 
 % Set GPIO pin direction with GenTL adaptor
 cam_DeviceName = imaqhwinfo('gentl').DeviceInfo.DeviceName;
@@ -38,6 +35,10 @@ src = getselectedsource(video_object);
 src.LineSelector = 'Line2';
 src.LineMode = 'Input'; 
 src.LineMode = 'Input'; % (need to double this line to work??)
+% GPIO3: strobe output
+src.LineSelector = 'Line3'; 
+src.LineMode = 'Output';
+src.LineSource = "ExposureActive";
 
 video_object.FramesPerTrigger = Inf;
 video_object.LoggingMode = 'disk&memory';
@@ -152,20 +153,14 @@ switch h.Value
 
         % User choose mouse name
         animal = cell2mat(inputdlg('Mouse name'));
-        if isempty(animal)
+        if isempty(mouse_name)
             % (if no mouse entered, do nothing)
             return
         end
 
         % Set save filename
         save_dir = plab.locations.local_data_path;
-        rec_day = datestr(now,'YYYY-mm-DD');
-        rec_time = datestr(now,'HHMM');
-        gui_data.save_filename = plab.locations.make_local_filename( ...
-            animal,rec_day,rec_time,'mousecam.mj2');
-
-        % Make local data directory
-        mkdir(fileparts(gui_data.save_filename));
+        gui_data.save_filename = make_local_filename(animal,rec_day,rec_time,'mousecam.mj2');
 
         % Update gui data
         guidata(gui_fig,gui_data);
@@ -199,12 +194,12 @@ function cam_start(gui_fig)
 gui_data = guidata(gui_fig);
 
 % Create videowriter
-[cam_path,cam_file] = fileparts(gui_data.save_filename);
+[cam_file,cam_path] = fileparts(gui_data.save_filename);
 vidWriter = VideoWriter(fullfile(cam_path,cam_file), 'Motion JPEG 2000');
 vidWriter.CompressionRatio = 10;
 gui_data.video_object.DiskLogger = vidWriter;
 
-header_fn = fullfile(cam_path,[cam_file,'_header.bin']);
+header_fn = fullfile(cam_path,[cam_file(1:end-4),'_header.bin']);
 gui_data.header_fileID = fopen(header_fn,'w');
 
 % Set header reader function
@@ -351,8 +346,6 @@ for curr_dir = setdiff({local_data_dirs.name},[".",".."])
     [status,message] = movefile(curr_dir_local,curr_dir_server);
     if ~status
         warning('Mousecam -- Failed copying to server: %s',message);
-    else
-        display('Done.')
     end
 end
 end

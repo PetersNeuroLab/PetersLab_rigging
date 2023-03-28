@@ -53,6 +53,8 @@ ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ai5','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'reward_valve';
 
+% acqlive - out - p1 line 0
+
 
 
 
