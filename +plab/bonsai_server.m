@@ -2,9 +2,12 @@ function bonsai_server
 
 %% Initialize bonsai server
 
-% Create figure
+% Create figure on iPad screens
+monitors_pos = get(0, 'MonitorPosition');
+ipad_screens = monitors_pos(1,:);
+set(0,'DefaultFigurePosition', ipad_screens);
 bonsai_server_fig = ...
-    uifigure('Units','normalized','Position',[0,0,1,1],'color',[0.5,0.5,0.5], ...
+    uifigure('Units','normalized','color',[0.5,0.5,0.5], ...
     'toolbar','none','menubar','none','CloseRequestFcn',@close_bonsai_server);
 
 % Set up structure for listeners and receivers
