@@ -283,7 +283,10 @@ for curr_dir = setdiff({local_data_dirs.name},[".",".."])
 
     [status,message] = movefile(curr_dir_local,curr_dir_server);
     if ~status
+        update_status_text(text_h,'Last copy to server failed! Listening for start...');
         warning('Timelite -- Failed copying to server: %s',message);
+    else
+        update_status_text(text_h,'Listening for start...');
     end
 end
 end
