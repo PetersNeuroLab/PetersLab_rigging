@@ -84,8 +84,6 @@ end
 
 function user_buttonpress(h,eventdata,gui_fig)
 
-%%%% TO DO: check recording status
-
 % If DAQ is running: stop recording (with confirmation dialog)
 confirm = questdlg('\fontsize{14}Stop timelite?','Confirm timelite stop', ...
     'Yes','No',struct('Default','No','Interpreter','tex'));
@@ -93,11 +91,20 @@ if strcmp(confirm,'Yes')
     daq_stop(gui_fig)
 end
 
-% If DAQ isn't running: start DAQ with no saving (preview mode)
-daq_start(gui_fig,[])
+% If DAQ isn't running: enter preview mode (don't save data)
+daq_preview(gui_fig)
 
 end
 
+function daq_preview(gui_fig)
+
+% Get gui data
+gui_data = guidata(gui_fig);
+
+daq_start(gui_fig,[]
+
+
+end
 
 function daq_start(gui_fig,save_filename)
 
@@ -124,10 +131,8 @@ else
     gui_data.save_file_mat = [];
 end
 
-% Start DAQ input acquisition, set outputs to HIGH
+% Start DAQ acquisition
 start(gui_data.daq_device,'continuous');
-pause(2); % ensure start before outputs high
-write(daq_device,true);
 
 % Update status
 update_status_text(gui_data.text_h,'RECORDING');
@@ -159,9 +164,7 @@ function daq_stop(gui_fig)
 % Get gui data
 gui_data = guidata(gui_fig);
 
-% Stop DAQ input acquisition, set outputs to LOW
-write(daq_device,false); 
-pause(2); % ensure outputs low before stopping
+% Stop DAQ acquisition
 stop(gui_data.daq_device)
 
 % Update status

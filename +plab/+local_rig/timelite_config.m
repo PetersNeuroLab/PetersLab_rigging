@@ -25,6 +25,7 @@ daq_device.ScansAvailableFcnCount = daq_buffer_time*daq_sample_rate;
 
 %% Configure input/output channels
 
+% Analog inputs
 ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ctr0','Position');
 ch.EncoderType = 'X4';
 ch.Name = 'wheel';
@@ -53,12 +54,9 @@ ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ai5','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'reward_valve';
 
-% acqlive - out - p1 line 0
+% Digital output
 ch = addoutput(daq_device,daqs_available.DeviceID(use_daq_idx),'port1/line0','Digital');
 ch.Name = 'widefield_on';
-% write(daq_device,true);
-% pause(5);
-write(daq_device,false);
 
 
 
