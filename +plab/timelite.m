@@ -219,7 +219,7 @@ end
 
 function daq_plot(obj,gui_data,daq_data,gui_fig)
 
-plot_data_t = 10; % seconds of data to plot
+plot_data_t = 1; % seconds of data to plot
 
 if isfield(gui_data,'live_plot_fig')
     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
