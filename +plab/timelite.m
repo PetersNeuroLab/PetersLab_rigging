@@ -192,7 +192,7 @@ gui_data = guidata(gui_fig);
 
 % Read buffered data
 [daq_data,daq_timestamps] = ...
-    read(obj,obj.NumScansAvailable,'OutputFormat','Matrix');
+    read(obj,'OutputFormat','Matrix');
 
 % Counter data: convert from unsigned to signed integer type
 % (allow for negative values, rather than overflow)
