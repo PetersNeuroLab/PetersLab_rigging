@@ -15,48 +15,59 @@ use_daq_idx = 1;
 
 %% Connect to DAQ
 
-% Find and connect to DAQ
+% Find and connect to DAQ, create daq object structure
 daqs_available = daqlist;
-daq_device = daq(daqs_available.VendorID(use_daq_idx));
+daq_device = struct;
 
-% Set DAQ properties 
-daq_device.Rate = daq_sample_rate;
-daq_device.ScansAvailableFcnCount = daq_buffer_time*daq_sample_rate;
+% Set up DAQ analog input
+daq_device.analog = daq(daqs_available.VendorID(use_daq_idx));
+daq_device.analog.Rate = daq_sample_rate;
+daq_device.analog.ScansAvailableFcnCount = daq_buffer_time*daq_sample_rate;
 
-%% Configure input/output channels
+% Set up DAQ digital output
+% (needs separate object: on-demand instead of clocked)
+daq_device.digital = daq(daqs_available.VendorID(use_daq_idx));
+
+%% Configure analog inputs
 
 % Analog inputs
-ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ctr0','Position');
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ctr0','Position');
 ch.EncoderType = 'X4';
 ch.Name = 'wheel';
 
-ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ai0','Voltage');
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai0','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'flipper';
 
-ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ai1','Voltage');
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai1','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'widefield_camera';
 
-ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ai2','Voltage');
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai2','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'face_camera';
 
-ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ai3','Voltage');
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai3','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'photodiode';
 
-ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ai4','Voltage');
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai4','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'stim_screen';
 
-ch = addinput(daq_device,daqs_available.DeviceID(use_daq_idx),'ai5','Voltage');
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai5','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'reward_valve';
 
-% Digital output
-ch = addoutput(daq_device,daqs_available.DeviceID(use_daq_idx),'port1/line0','Digital');
+%% Configure digital outputs
+
+ch = addoutput(daq_device.digital,daqs_available.DeviceID(use_daq_idx),'port1/line0','Digital');
 ch.Name = 'widefield_on';
+
+
+
+
+
 
 
 
