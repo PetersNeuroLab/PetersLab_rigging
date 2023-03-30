@@ -71,7 +71,7 @@ function run_bonsai(bonsai_server_fig)
     mkdir(fileparts(local_worfkflow_file));
 
     % get paths for files
-    workflowpath = fullfile(plab.locations.local_workflow_path, data_struct.protocol_path, data_struct.protocol_name);
+    workflowpath = fullfile(plab.locations.github_rigging, data_struct.protocol_path, data_struct.protocol_name);
     save_filename = fullfile(save_filepath, 'test.csv');
 
     % copy bonsai workflow in new folder

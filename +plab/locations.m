@@ -18,7 +18,7 @@ classdef locations
         mousecam_port = 50003
 
         % Local bonsai workflow folder
-        local_workflow_path = 'C:\Users\peterslab\Documents\GitHub\PetersLab_code\Bonsai stuff';
+        local_workflow_path = 'C:\Users\peterslab\Documents\GitHub\PetersLab_rigging';
 
         % Github paths
         github_rigging = 'C:\Users\peterslab\Documents\GitHub\PetersLab_rigging';
