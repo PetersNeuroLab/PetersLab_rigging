@@ -711,15 +711,8 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="StringProperty">
-          <Value>C:\Users\petersa\Desktop\bonsai.csv</Value>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="PropertyMapping">
-        <PropertyMappings>
-          <Property Name="FileName" />
-        </PropertyMappings>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="FileName" />
       </Expression>
       <Expression xsi:type="GroupWorkflow">
         <Name>Saver</Name>
@@ -993,7 +986,6 @@ it.Item4 as Timestamp
       <Edge From="7" To="8" Label="Source2" />
       <Edge From="8" To="9" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
-      <Edge From="11" To="12" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

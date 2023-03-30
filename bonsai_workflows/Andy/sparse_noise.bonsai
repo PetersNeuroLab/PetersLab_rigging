@@ -661,10 +661,8 @@
         </Workflow>
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
-      <Expression xsi:type="PropertyMapping">
-        <PropertyMappings>
-          <Property Name="FileName" />
-        </PropertyMappings>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="FileName" />
       </Expression>
       <Expression xsi:type="GroupWorkflow">
         <Name>Saver</Name>
