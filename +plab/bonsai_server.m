@@ -91,6 +91,7 @@ end
 function get_bonsai_message(obj, ~, communication_handles)
     getlastmessage = communication_handles.osclistener.getMessageArgumentsAsString();    
     if ~isempty(getlastmessage)
+        disp('Read something')
         % close Bonsai
         system('taskkill /F /IM Bonsai.EXE');
         system('taskkill /F /IM OpenConsole.EXE');
