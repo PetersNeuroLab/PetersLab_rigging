@@ -5,6 +5,7 @@
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:p1="clr-namespace:BonVision.Collections;assembly=BonVision"
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
@@ -283,6 +284,22 @@
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
               <rx:Name>StimOn</rx:Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="osc:CreateUdpClient">
+                <osc:Name>Receiver</osc:Name>
+                <osc:Port>30000</osc:Port>
+                <osc:RemoteHostName />
+                <osc:RemotePort>0</osc:RemotePort>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="osc:CreateUdpClient">
+                <osc:Name>Emitter</osc:Name>
+                <osc:Port>0</osc:Port>
+                <osc:RemoteHostName>localhost</osc:RemoteHostName>
+                <osc:RemotePort>20000</osc:RemotePort>
+              </Combinator>
             </Expression>
           </Nodes>
           <Edges>
@@ -653,6 +670,47 @@
           <rx:Count>10</rx:Count>
         </Combinator>
       </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Stop</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address>/stop</osc:Address>
+              <osc:TypeTag>s</osc:TypeTag>
+              <osc:Connection>Receiver</osc:Connection>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TakeUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TakeLast">
+                <rx:Count>1</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>stop</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="osc:SendMessage">
+              <osc:Connection>Emitter</osc:Connection>
+              <osc:Address>/stop</osc:Address>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="2" Label="Source2" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="2" To="6" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
           <Value>C:\Users\petersa\Desktop\bonsai.csv</Value>
@@ -933,8 +991,9 @@ it.Item4 as Timestamp
       <Edge From="5" To="8" Label="Source1" />
       <Edge From="6" To="7" Label="Source1" />
       <Edge From="7" To="8" Label="Source2" />
-      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

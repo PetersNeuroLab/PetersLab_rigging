@@ -7,6 +7,7 @@
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
@@ -554,6 +555,22 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Edge From="11" To="12" Label="Source1" />
                 </Edges>
               </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="osc:CreateUdpClient">
+                <osc:Name>Receiver</osc:Name>
+                <osc:Port>30000</osc:Port>
+                <osc:RemoteHostName />
+                <osc:RemotePort>0</osc:RemotePort>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="osc:CreateUdpClient">
+                <osc:Name>Emitter</osc:Name>
+                <osc:Port>0</osc:Port>
+                <osc:RemoteHostName>localhost</osc:RemoteHostName>
+                <osc:RemotePort>20000</osc:RemotePort>
+              </Combinator>
             </Expression>
           </Nodes>
           <Edges>
@@ -1179,6 +1196,47 @@ def process(value):
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Repeat" />
       </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Stop</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address>/stop</osc:Address>
+              <osc:TypeTag>s</osc:TypeTag>
+              <osc:Connection>Receiver</osc:Connection>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TakeUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TakeLast">
+                <rx:Count>1</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="StringProperty">
+                <Value>stop</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="osc:SendMessage">
+              <osc:Connection>Emitter</osc:Connection>
+              <osc:Address>/stop</osc:Address>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="2" Label="Source2" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="2" To="6" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
       <Expression xsi:type="ExternalizedMapping">
         <Property Name="FileName" />
       </Expression>
@@ -1566,7 +1624,8 @@ it.Item4 as Timestamp
       <Edge From="13" To="14" Label="Source1" />
       <Edge From="14" To="15" Label="Source2" />
       <Edge From="15" To="16" Label="Source1" />
-      <Edge From="17" To="18" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="18" To="19" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
