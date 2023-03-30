@@ -692,7 +692,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="StringProperty">
-                <Value>stop</Value>
+                <Value>done</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="osc:SendMessage">
