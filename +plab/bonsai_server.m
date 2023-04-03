@@ -62,20 +62,25 @@ function run_bonsai(bonsai_server_fig)
     data_struct = jsondecode(communication_handles.client_mc.UserData);
     
     % Set local filename for bonsai workflow
-    local_worfkflow_file = ...
+    [~, bonsai_folder] = fileparts(data_struct.protocol_path);
+
+    local_worfkflow_path = ...
         plab.locations.make_local_filename( ...
-        data_struct.mouse,data_struct.date,data_struct.time,data_struct.protocol_name);
-    [save_filepath,~,~] = fileparts(local_worfkflow_file);
+        data_struct.mouse,data_struct.date,data_struct.time,bonsai_folder);
+    [save_filepath,~,~] = fileparts(local_worfkflow_path);
 
     % Make local save directory
-    mkdir(fileparts(local_worfkflow_file));
+    mkdir(fileparts(save_filepath));
 
     % get paths for files
-    workflowpath = fullfile(plab.locations.local_workflow_path, data_struct.protocol_path, data_struct.protocol_name);
+    workflowpath = fullfile(plab.locations.local_workflow_path, data_struct.protocol_path);
     save_filename = fullfile(save_filepath, 'test.csv');
+    local_worfkflow_file = fullfile(local_worfkflow_path, data_struct.protocol_name);
 
     % copy bonsai workflow in new folder
-    copyfile(workflowpath, local_worfkflow_file);
+    copyfile(workflowpath, local_worfkflow_path);
+
+    cd(local_worfkflow_path);
 
     % start bonsai
     plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'FileName', save_filename}, [], 1);
