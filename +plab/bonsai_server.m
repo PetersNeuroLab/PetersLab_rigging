@@ -5,9 +5,9 @@ function bonsai_server
 % Create figure on iPad screens
 monitors_pos = get(0, 'MonitorPosition');
 ipad_screens = monitors_pos(1,:);
-set(0,'DefaultFigurePosition', ipad_screens);
+% set(0,'DefaultFigurePosition', ipad_screens);
 bonsai_server_fig = ...
-    uifigure('Units','normalized','color',[0.5,0.5,0.5], ...
+    uifigure('Position',ipad_screens,'color',[0.5,0.5,0.5], ...
     'toolbar','none','menubar','none','CloseRequestFcn',@close_bonsai_server);
 
 % Set up structure for listeners and receivers
@@ -91,6 +91,7 @@ end
 function get_bonsai_message(obj, ~, communication_handles)
     getlastmessage = communication_handles.osclistener.getMessageArgumentsAsString();    
     if ~isempty(getlastmessage)
+        disp('Read something')
         % close Bonsai
         system('taskkill /F /IM Bonsai.EXE');
         system('taskkill /F /IM OpenConsole.EXE');
