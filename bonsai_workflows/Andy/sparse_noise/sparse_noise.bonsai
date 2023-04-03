@@ -676,7 +676,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="dsp:MatrixWriter">
-                <dsp:Path>C:\Users\petersa\Desktop\NoiseLocations.bin</dsp:Path>
+                <dsp:Path>C:\LocalData\NoiseLocations.bin</dsp:Path>
                 <dsp:Suffix>None</dsp:Suffix>
                 <dsp:Overwrite>true</dsp:Overwrite>
                 <dsp:Layout>ColumnMajor</dsp:Layout>
@@ -700,7 +700,7 @@ it.Item4 as Timestamp
 </scr:Expression>
             </Expression>
             <Expression xsi:type="io:CsvWriter">
-              <io:FileName>C:\Users\petersa\Desktop\bonsai.csv</io:FileName>
+              <io:FileName>C:\LocalData\bonsai.csv</io:FileName>
               <io:Append>false</io:Append>
               <io:Overwrite>true</io:Overwrite>
               <io:Suffix>None</io:Suffix>
