@@ -2,7 +2,7 @@
 <WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:p1="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
+                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
@@ -11,7 +11,7 @@
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
-                 xmlns:p2="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
+                 xmlns:p1="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
                  xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
@@ -97,9 +97,9 @@
           <Workflow>
             <Nodes>
               <Expression xsi:type="Combinator">
-                <Combinator xsi:type="p1:KeyDown">
-                  <p1:Filter>Right</p1:Filter>
-                  <p1:SuppressRepetitions>false</p1:SuppressRepetitions>
+                <Combinator xsi:type="wie:KeyDown">
+                  <wie:Filter>Right</wie:Filter>
+                  <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
                 </Combinator>
               </Expression>
               <Expression xsi:type="Combinator">
@@ -108,9 +108,9 @@
                 </Combinator>
               </Expression>
               <Expression xsi:type="Combinator">
-                <Combinator xsi:type="p1:KeyDown">
-                  <p1:Filter>Left</p1:Filter>
-                  <p1:SuppressRepetitions>false</p1:SuppressRepetitions>
+                <Combinator xsi:type="wie:KeyDown">
+                  <wie:Filter>Left</wie:Filter>
+                  <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
                 </Combinator>
               </Expression>
               <Expression xsi:type="Combinator">
@@ -149,7 +149,7 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="io:CreateSerialPort">
                 <io:Name>myArduino</io:Name>
-                <io:PortName>COM6</io:PortName>
+                <io:PortName>COM4</io:PortName>
                 <io:BaudRate>250000</io:BaudRate>
                 <io:Parity>None</io:Parity>
                 <io:ParityReplace>63</io:ParityReplace>
@@ -528,7 +528,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>12204.001</Phase>
+                    <Phase>13178.0293</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -684,7 +684,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT1.7S</rx:DueTime>
+                <rx:DueTime>PT1S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -775,7 +775,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT2.3S</rx:DueTime>
+                <rx:DueTime>PT4S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1000,13 +1000,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:CreateDiscreteUniform">
-                      <p2:Lower>0</p2:Lower>
-                      <p2:Upper>360</p2:Upper>
+                    <Combinator xsi:type="p1:CreateDiscreteUniform">
+                      <p1:Lower>0</p1:Lower>
+                      <p1:Upper>360</p1:Upper>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:Sample" />
+                    <Combinator xsi:type="p1:Sample" />
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>TrialStimPhase</Name>
@@ -1231,9 +1231,9 @@ def process(value):
             <Edge From="0" To="2" Label="Source2" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="2" To="6" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
