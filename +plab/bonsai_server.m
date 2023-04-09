@@ -74,7 +74,7 @@ function run_bonsai(bonsai_server_fig)
 
     % get paths for files
     workflowpath = fullfile(plab.locations.local_workflow_path, data_struct.protocol_path);
-    save_filename = fullfile(save_filepath, 'test.csv');
+%     save_filename = fullfile(save_filepath, 'test.csv');
     local_worfkflow_file = fullfile(local_worfkflow_path, data_struct.protocol_name);
 
     % copy bonsai workflow in new folder
@@ -83,7 +83,7 @@ function run_bonsai(bonsai_server_fig)
     cd(local_worfkflow_path);
 
     % start bonsai
-    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'FileName', save_filename}, [], 1);
+    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_filepath}, [], 1);
     
     bonsai_timer_fcn = timer('TimerFcn', ...
     {@get_bonsai_message,communication_handles}, ...
