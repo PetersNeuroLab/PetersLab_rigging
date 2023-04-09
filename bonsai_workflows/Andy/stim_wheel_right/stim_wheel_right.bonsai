@@ -596,7 +596,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
         </Workflow>
       </Expression>
       <Expression xsi:type="ExternalizedMapping">
-        <Property Name="Calibration_val" />
+        <Property Name="CalibrationValue" />
       </Expression>
       <Expression xsi:type="GroupWorkflow">
         <Name>Valve</Name>
@@ -606,7 +606,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Name>RewardAmount</Name>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="Calibration_val" />
+              <Property Name="Value" DisplayName="CalibrationValue" />
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">

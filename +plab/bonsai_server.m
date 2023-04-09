@@ -83,7 +83,7 @@ function run_bonsai(bonsai_server_fig)
     cd(local_worfkflow_path);
 
     % start bonsai
-    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_filepath}, [], 1);
+    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_filepath, 'CalibrationValue', 1000}, [], 1);
     
     bonsai_timer_fcn = timer('TimerFcn', ...
     {@get_bonsai_message,communication_handles}, ...
