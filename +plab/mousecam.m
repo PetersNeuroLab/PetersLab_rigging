@@ -346,15 +346,14 @@ local_data_dirs = dir(plab.locations.local_data_path);
 for curr_dir = setdiff({local_data_dirs.name},[".",".."])
 
     curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
-    curr_dir_server = fullfile(plab.locations.server_data_path,curr_dir);
+    update_status_text(text_h,sprintf('Copying: %s --> %s',curr_dir_local,plab.locations.server_data_path))
 
-    fprintf('Copying: %s --> %s \n',curr_dir_local,curr_dir_server)
-
-    [status,message] = movefile(curr_dir_local,curr_dir_server);
+    [status,message] = movefile(curr_dir_local,plab.locations.server_data_path);
     if ~status
-        warning('Mousecam -- Failed copying to server: %s',message);
+        update_status_text(text_h,'Last copy to server failed! Listening for start...');
+        warning('Timelite -- Failed copying to server: %s',message);
     else
-        display('Done.')
+        update_status_text(text_h,'Listening for start...');
     end
 end
 end
