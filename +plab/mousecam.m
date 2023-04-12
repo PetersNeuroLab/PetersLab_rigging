@@ -123,16 +123,18 @@ guidata(gui_fig,gui_data);
 end
 
 function cam_listen(h,event_data,gui_fig)
+
 % Get gui data
 gui_data = guidata(gui_fig);
 
 % Set up listener for experiment controller
-client_expcontroller = tcpclient("163.1.249.17",plab.locations.mousecam_port);
-configureCallback(client_expcontroller, "terminator", ...
+gui_data.client_expcontroller = tcpclient("163.1.249.17",plab.locations.mousecam_port);
+configureCallback(gui_data.client_expcontroller, "terminator", ...
     @(src,event,x) read_expcontroller_data(src,event,gui_fig));
 
 % Update gui data
 guidata(gui_fig,gui_data);
+
 end
 
 function cam_manual(h,eventdata,gui_fig)
