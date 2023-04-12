@@ -126,7 +126,7 @@ function move_data_to_server
     
         curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
     
-        fprintf('Copying: %s --> %s \n',curr_dir_local,curr_dir_server)
+        fprintf('Copying: %s --> %s \n',curr_dir_local,plab.locations.server_data_path)
         [status,message] = movefile(curr_dir_local,plab.locations.server_data_path);
         if ~status
             warning('Bonsai server -- Failed copying to server: %s',message);
