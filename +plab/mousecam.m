@@ -346,8 +346,8 @@ local_data_dirs = dir(plab.locations.local_data_path);
 for curr_dir = setdiff({local_data_dirs.name},[".",".."])
 
     curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
-    
-    fprintf('Copying: %s --> %s \n',curr_dir_local,curr_dir_server)
+
+    fprintf('Copying: %s --> %s \n',curr_dir_local,plab.locations.server_data_path)
     [status,message] = movefile(curr_dir_local,plab.locations.server_data_path);
     if ~status
         warning('Mousecam -- Failed copying to server: %s',message);
