@@ -39,7 +39,7 @@ classdef locations
             end
 
             % Set local data path
-            x = fullfile(local_data_drive,'Local_data');
+            x = fullfile(local_data_drive,'LocalData');
   
         end
 

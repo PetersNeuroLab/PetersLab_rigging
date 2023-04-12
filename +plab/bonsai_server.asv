@@ -107,35 +107,35 @@ function get_bonsai_message(obj, ~, communication_handles)
         stop(obj)
         delete(obj)
         % move to server
-        move_data_to_server
+
     end
 end
 
 function move_data_to_server
-    % Move data from local to server
-    
-    % Check if the server is available
-    if ~exist(plab.locations.server_data_path,'dir')
-        warning('Server not accessible at %s',plab.locations.server_data_path)
-        return
+% Move data from local to server
+
+% Check if the server is available
+if ~exist(plab.locations.server_data_path,'dir')
+    warning('Server not accessible at %s',plab.locations.server_data_path)
+    return
+end
+
+% Move/merge all local data directories onto the server
+local_data_dirs = dir(plab.locations.local_data_path);
+for curr_dir = setdiff({local_data_dirs.name},[".",".."])
+
+    curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
+    curr_dir_server = fullfile(plab.locations.server_data_path,curr_dir);
+
+    fprintf('Copying: %s --> %s \n',curr_dir_local,curr_dir_server)
+
+    [status,message] = movefile(curr_dir_local,curr_dir_server);
+    if ~status
+        warning('Mousecam -- Failed copying to server: %s',message);
+    else
+        display('Done.')
     end
-    
-    % Move/merge all local data directories onto the server
-    local_data_dirs = dir(plab.locations.local_data_path);
-    for curr_dir = setdiff({local_data_dirs.name},[".",".."])
-    
-        curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
-        curr_dir_server = fullfile(plab.locations.server_data_path,curr_dir);
-    
-        fprintf('Copying: %s --> %s \n',curr_dir_local,curr_dir_server)
-    
-        [status,message] = movefile(curr_dir_local,curr_dir_server);
-        if ~status
-            warning('Mousecam -- Failed copying to server: %s',message);
-        else
-            display('Done.')
-        end
-    end
+end
 end
 
 function close_bonsai_server(obj, ~)
