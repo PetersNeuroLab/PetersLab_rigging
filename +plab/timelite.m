@@ -127,11 +127,15 @@ if ~isempty(save_filename)
     gui_data.save_file_mat = matfile(save_filename,'Writable',true);
     % Update status
     update_status_text(gui_data.text_h,'RECORDING');
+    % Update gui data
+    guidata(gui_fig,gui_data);
 else
     % If no save filename, empty (preview mode - no recording)
     gui_data.save_file_mat = [];
     % Update status
     update_status_text(gui_data.text_h,'PREVIEWING');
+    % Update gui data
+    guidata(gui_fig,gui_data);
 end
 
 % Start DAQ input acquisition, set outputs to HIGH
@@ -221,7 +225,7 @@ function daq_plot(obj,gui_data,daq_data,gui_fig)
 
 plot_data_t = 2; % seconds of data to plot
 
-if isfield(gui_data,'live_plot_fig')
+if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
         % If nothing plotted, create traces and plot data at end
         blank_data = zeros(plot_data_t*obj.Rate,size(daq_data,2));
