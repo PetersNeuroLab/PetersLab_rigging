@@ -163,17 +163,17 @@ switch h.Value
         save_dir = plab.locations.local_data_path;
         rec_day = datestr(now,'YYYY-mm-DD');
         rec_time = datestr(now,'HHMM');
-        save_filename = plab.locations.make_local_filename( ...
+        gui_data.save_filename = plab.locations.make_local_filename( ...
             animal,rec_day,rec_time,'mousecam.mj2');
 
         % Make local data directory
-        mkdir(fileparts(save_filename));
+        mkdir(fileparts(gui_data.save_filename));
 
         % Update gui data
         guidata(gui_fig,gui_data);
 
         % Start DAQ acquisition
-        cam_start(gui_fig,save_filename);
+        cam_start(gui_fig);
 
     case 0
         % Manual recording is turned off
@@ -194,14 +194,14 @@ end
 
 end
 
-function cam_start(gui_fig,save_filename)
+function cam_start(gui_fig)
 % Start recording
 
 % Get GUI data
 gui_data = guidata(gui_fig);
 
 % Create videowriter
-[cam_path,cam_file] = fileparts(save_filename);
+[cam_path,cam_file] = fileparts(gui_data.save_filename);
 vidWriter = VideoWriter(fullfile(cam_path,cam_file), 'Motion JPEG 2000');
 vidWriter.CompressionRatio = 10;
 gui_data.video_object.DiskLogger = vidWriter;
@@ -314,20 +314,20 @@ if strcmp(expcontroller_message, 'stop')
     % If experiment controller sends stop, stop DAQ acquisition
     cam_stop(gui_fig);
 else
-    % If experiment controller send experiment info
+    % If experiment controller experiment info
     
     rec_info = jsondecode(expcontroller_message);
 
     % Set local filename
-    save_filename = ...
+    gui_data.save_filename = ...
         plab.locations.make_local_filename( ...
-        rec_info.mouse,rec_info.date,rec_info.time,'mousecam.mj2');
+        exp_info.mouse,exp_info.date,num2str(exp_info.protocol),'mousecam.mj2');
 
     % Make local save directory
-    mkdir(fileparts(save_filename))
+    mkdir(fileparts(gui_data.save_filename))
     
     % Start camera recording acquisition
-    cam_start(gui_fig,save_filename)
+    cam_start(gui_fig)
 end
 
 end
@@ -346,11 +346,14 @@ local_data_dirs = dir(plab.locations.local_data_path);
 for curr_dir = setdiff({local_data_dirs.name},[".",".."])
 
     curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
-    
-    fprintf('Copying: %s --> %s \n',curr_dir_local,curr_dir_server)
+    update_status_text(text_h,sprintf('Copying: %s --> %s',curr_dir_local,plab.locations.server_data_path))
+
     [status,message] = movefile(curr_dir_local,plab.locations.server_data_path);
     if ~status
-        warning('Mousecam -- Failed copying to server: %s',message);
+        update_status_text(text_h,'Last copy to server failed! Listening for start...');
+        warning('Timelite -- Failed copying to server: %s',message);
+    else
+        update_status_text(text_h,'Listening for start...');
     end
 end
 end
