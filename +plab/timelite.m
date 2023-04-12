@@ -123,8 +123,8 @@ if ~isempty(save_filename)
     % (daq data - to be filled during streaming)
     [timestamps,data] = deal([]);
     % (save initial variables and keep open for streaming)
-    save(gui_data.save_filename,'daq_info','timestamps','data','-v7.3');
-    gui_data.save_file_mat = matfile(gui_data.save_filename,'Writable',true);
+    save(save_filename,'daq_info','timestamps','data','-v7.3');
+    gui_data.save_file_mat = matfile(save_filename,'Writable',true);
     % Update status
     update_status_text(gui_data.text_h,'RECORDING');
 else
