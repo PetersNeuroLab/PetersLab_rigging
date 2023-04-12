@@ -219,7 +219,7 @@ end
 
 function daq_plot(obj,gui_data,daq_data,gui_fig)
 
-plot_data_t = 1; % seconds of data to plot
+plot_data_t = 2; % seconds of data to plot
 
 if isfield(gui_data,'live_plot_fig')
     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
@@ -299,11 +299,9 @@ local_data_dirs = dir(plab.locations.local_data_path);
 for curr_dir = setdiff({local_data_dirs.name},[".",".."])
 
     curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
-    curr_dir_server = fullfile(plab.locations.server_data_path,curr_dir);
+    update_status_text(text_h,sprintf('Copying: %s --> %s',curr_dir_local,plab.locations.server_data_path))
 
-    update_status_text(text_h,sprintf('Copying: %s --> %s',curr_dir_local,curr_dir_server))
-
-    [status,message] = movefile(curr_dir_local,curr_dir_server);
+    [status,message] = movefile(curr_dir_local,plab.locations.server_data_path);
     if ~status
         update_status_text(text_h,'Last copy to server failed! Listening for start...');
         warning('Timelite -- Failed copying to server: %s',message);
