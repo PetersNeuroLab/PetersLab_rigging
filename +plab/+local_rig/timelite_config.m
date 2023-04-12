@@ -59,6 +59,14 @@ ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai5','Volt
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'reward_valve';
 
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai6','Voltage');
+ch.TerminalConfig = 'SingleEnded';
+ch.Name = 'violet_light';
+
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai7','Voltage');
+ch.TerminalConfig = 'SingleEnded';
+ch.Name = 'blue_light';
+
 %% Configure digital outputs
 
 ch = addoutput(daq_device.digital,daqs_available.DeviceID(use_daq_idx),'port1/line0','Digital');
