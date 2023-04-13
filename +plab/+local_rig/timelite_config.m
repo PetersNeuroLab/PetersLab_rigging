@@ -70,7 +70,7 @@ ch.Name = 'blue_light';
 %% Configure digital outputs
 
 ch = addoutput(daq_device.digital,daqs_available.DeviceID(use_daq_idx),'port1/line0','Digital');
-ch.Name = 'widefield_on';
+ch.Name = 'acqLive';
 
 
 
