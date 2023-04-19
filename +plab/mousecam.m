@@ -3,7 +3,7 @@ function mousecam
 % 
 % Currently assumes camera is Flir Chameleon3 CM3-U3-13Y3M
 
-%% Set up camera (specific to rig - make this breakout later)
+%% Set up camera (specific to rig - make this breakout later?)
 
 % Clears existing matlab image aquisitions objects
 imaqreset
@@ -42,7 +42,7 @@ src.LineMode = 'Input'; % (need to double this line to work??)
 video_object.FramesPerTrigger = Inf;
 video_object.LoggingMode = 'disk&memory';
 
-%% Set up figure
+%% Set up GUI
 
 gui_fig = figure('MenuBar','none','Units','Normalized', ...
     'Position',[0.01,0.2,0.32,0.5],'color','w');
@@ -62,6 +62,11 @@ setappdata(im_preview,'gui_fig',gui_fig);
 preview(video_object,im_preview);
 axis(im_axes);axis tight equal
 
+% Status text
+status_text_h = uicontrol('Parent',gui_fig,'Style','text', ...
+    'FontSize',12,'FontName','Courier','HorizontalAlignment','left', ...
+    'Units','normalized','BackgroundColor','w','Position',[0,0.9,1,0.1]);
+
 % Control buttons
 button_fontsize = 12;
 view_button_position = [0,0.85,0.3,0.1];
@@ -71,11 +76,21 @@ controls_h(1) = uicontrol('Parent',gui_fig,'Style','pushbutton','FontSize',butto
     'String','Set ROI','Callback',{@set_roi,gui_fig});
 controls_h(end+1) = uicontrol('Parent',gui_fig,'Style','togglebutton','FontSize',button_fontsize, ...
     'Units','normalized','Position',view_button_position,'BackgroundColor','w', ...
-    'String','Listen','Callback',{@cam_listen,gui_fig});
-controls_h(end+1) = uicontrol('Parent',gui_fig,'Style','togglebutton','FontSize',button_fontsize, ...
-    'Units','normalized','Position',view_button_position,'BackgroundColor','w', ...
     'String','Manual','Callback',{@cam_manual,gui_fig});
 align(controls_h,'fixed',20,'middle');
+
+% Start listener for experiment controller
+update_status_text(status_text_h,'Connecting to experiment server...');
+try
+    client_expcontroller = tcpclient("163.1.249.17",plab.locations.mousecam_port,'ConnectTimeout',2);
+    configureCallback(client_expcontroller, "terminator", ...
+        @(src,event,x) read_expcontroller_data(src,event,gui_fig));
+    update_status_text(status_text_h,'Listening for start...');
+catch me
+    % Error if no connection to experiment controller
+    update_status_text(status_text_h,'Error connecting to experiment server');
+    error('Mousecam -- Cannot connect to experiment controller: \n %s',me.message)
+end
 
 % Store gui data
 gui_data.video_object = video_object;
@@ -83,7 +98,9 @@ gui_data.gui_fig = gui_fig;
 gui_data.im_axes = im_axes;
 gui_data.im_preview = im_preview;
 gui_data.embedded_info_text = embedded_info_text;
+gui_data.status_text_h = status_text_h;
 gui_data.controls_h = controls_h;
+gui_data.client_expcontroller = client_expcontroller;
 
 % Update GUI data
 guidata(gui_fig,gui_data);
@@ -118,21 +135,6 @@ gui_data.video_object.roi = roi_position;
 axes(gui_data.im_axes); axis tight;
 
 % Update GUI data
-guidata(gui_fig,gui_data);
-
-end
-
-function cam_listen(h,event_data,gui_fig)
-
-% Get gui data
-gui_data = guidata(gui_fig);
-
-% Set up listener for experiment controller
-gui_data.client_expcontroller = tcpclient("163.1.249.17",plab.locations.mousecam_port);
-configureCallback(gui_data.client_expcontroller, "terminator", ...
-    @(src,event,x) read_expcontroller_data(src,event,gui_fig));
-
-% Update gui data
 guidata(gui_fig,gui_data);
 
 end
@@ -218,6 +220,9 @@ start(gui_data.video_object)
 % Reset relative display info
 gui_data.set_relative_info_flag = true;
 
+% Update status text
+update_status_text(gui_data.status_text_h,'RECORDING');
+
 % Update GUI data
 guidata(gui_fig,gui_data);
 
@@ -229,12 +234,18 @@ function cam_stop(gui_fig)
 % Get GUI data
 gui_data = guidata(gui_fig);
 
+% Update status text
+update_status_text(gui_data.status_text_h,'Stopping recording...');
+
 % Stop recording and close header file
 stop(gui_data.video_object)
 fclose(gui_data.header_fileID);
 
 % Move data to server
-move_data_to_server;
+move_data_to_server(gui_data.status_text_h);
+
+% Update status text
+update_status_text(gui_data.status_text_h,'Listening for start...');
 
 end
 
@@ -299,6 +310,15 @@ end
 
 end
 
+function update_status_text(status_text_h,status)
+% Update status text
+
+curr_text = get(status_text_h,'String');
+new_text = [{sprintf('Status: %s',status)};curr_text(2:end)];
+set(status_text_h,'String',new_text);
+
+end
+
 %% Cross-computer functions
 
 function read_expcontroller_data(client,event,gui_fig)
@@ -332,7 +352,7 @@ end
 
 end
 
-function move_data_to_server
+function move_data_to_server(status_text_h)
 % Move data from local to server
 
 % Check if the server is available
@@ -346,11 +366,14 @@ local_data_dirs = dir(plab.locations.local_data_path);
 for curr_dir = setdiff({local_data_dirs.name},[".",".."])
 
     curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
+    update_status_text(status_text_h,sprintf('Copying: %s --> %s',curr_dir_local,plab.locations.server_data_path))
 
-    fprintf('Copying: %s --> %s \n',curr_dir_local,plab.locations.server_data_path)
     [status,message] = movefile(curr_dir_local,plab.locations.server_data_path);
     if ~status
+        update_status_text(status_text_h,'Last copy to server failed! Listening for start...');
         warning('Mousecam -- Failed copying to server: %s',message);
+    else
+        update_status_text(status_text_h,'Listening for start...');
     end
 end
 end
