@@ -51,7 +51,7 @@ gui_fig = figure('MenuBar','none','Units','Normalized', ...
 im_axes = axes(gui_fig,'Position',[0,0.05,1,0.8]);
 im_preview = image(zeros(video_object.VideoResolution));
 
-embedded_info_text = uicontrol('Style','text','String','asdf', ...
+embedded_info_text = uicontrol('Style','text','String','Embedded header information', ...
     'Units','normalized','Position',[0,0,1,0.05], ...
     'BackgroundColor','w','HorizontalAlignment','left','FontSize',12, ...
     'FontName','Consolas');
@@ -215,7 +215,8 @@ gui_data.header_fileID = fopen(header_fn,'w');
 gui_data.video_object.FramesAcquiredFcnCount = 1;
 gui_data.video_object.FramesAcquiredFcn = {@record_cam_header,gui_data.header_fileID};
 
-start(gui_data.video_object)
+% Start recording
+start(gui_data.video_object);
 
 % Reset relative display info
 gui_data.set_relative_info_flag = true;
@@ -262,24 +263,26 @@ gui_data = guidata(gui_fig);
 
 % Decode embedded pixel data
 flipper_pin = 2; % GPIO input for flipper
-embed_pixels = eventdata.Data(1,1:40)';
-[timestamp, frame_num, flipper] = AP_preprocess_face_camera(embed_pixels, flipper_pin);
+header_pixels = eventdata.Data(1,1:40)';
+mousecam_header = read_mousecam_header(header_pixels, flipper_pin);
 
 % Set relative timestamp/frame display
 if ~isfield(gui_data,'set_relative_info_flag')
     gui_data.set_relative_info_flag = true;
 end
 if gui_data.set_relative_info_flag
-    gui_data.relative_info.timestamp = timestamp;
-    gui_data.relative_info.frame_num = frame_num;
+    gui_data.relative_info.timestamp = mousecam_header.timestamps;
+    gui_data.relative_info.frame_num = mousecam_header.frame_num;
     gui_data.set_relative_info_flag = false;
 end
 
 % Print camera info
 preview_embedded_info = ...
     sprintf('Framerate: %s, Timestamp: %.3f, Frame: %d, Flipper: %d', ...
-    eventdata.FrameRate,timestamp - gui_data.relative_info.timestamp, ...
-    frame_num - gui_data.relative_info.frame_num,flipper);
+    eventdata.FrameRate, ...
+    mousecam_header.timestamps - gui_data.relative_info.timestamp, ...
+    mousecam_header.frame_num - gui_data.relative_info.frame_num, ...
+    mousecam_header.flipper);
 set(gui_data.embedded_info_text,'String',preview_embedded_info);
 
 % Update preview image
