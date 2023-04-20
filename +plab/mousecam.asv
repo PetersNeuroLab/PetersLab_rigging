@@ -3,9 +3,8 @@ function mousecam
 % 
 % Currently assumes camera is Flir Chameleon3 CM3-U3-13Y3M
 %
-% Note about strobes: The camera constantly collects frames when triggering
-% is off, and the only trigger mode is by frame rather than framerate. This
-% means that subsets of strobes will always correspond to recorded frames.
+% Note about strobes: 
+
 
 %% Set up camera (specific to rig - make this breakout later?)
 
