@@ -179,7 +179,9 @@ update_status_text(gui_data.status_text_h,'Listening for start...');
 delete(gui_data.live_plot_fig);
 
 % Move data to server
-move_data_to_server(gui_data.status_text_h);
+if ~isempty(gui_data.save_file_mat)
+    move_data_to_server(gui_data.save_file_mat.Properties.Source,gui_data.status_text_h);
+end
 
 % Update gui data
 guidata(gui_fig,gui_data);
@@ -289,7 +291,7 @@ set(status_text_h,'String',new_text);
 
 end
 
-function move_data_to_server(status_text_h)
+function move_data_to_server(curr_data_filename,status_text_h)
 % Move data from local to server
 
 % Check if the server is available
@@ -298,21 +300,30 @@ if ~exist(plab.locations.server_data_path,'dir')
     return
 end
 
-% Move/merge all local data directories onto the server
-local_data_dirs = dir(plab.locations.local_data_path);
-for curr_dir = setdiff({local_data_dirs.name},[".",".."])
+% Move local data directories to server
+curr_mousecam_path_server = strrep(curr_data_filename, ...
+    plab.locations.local_data_path,plab.locations.server_data_path);
+update_status_text(status_text_h,'Copying to server')
+[status,message] = movefile(curr_data_filename,curr_mousecam_path_server);
+if ~status
+    update_status_text(status_text_h,'Last server copy failed! Listening for start');
+    warning('Failed copying to server: %s',message);
+else
+    update_status_text(status_text_h,'Listening for start');
+end
 
-    curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
-    update_status_text(status_text_h,sprintf('Copying: %s --> %s',curr_dir_local,plab.locations.server_data_path))
-
-    [status,message] = movefile(curr_dir_local,plab.locations.server_data_path);
-    if ~status
-        update_status_text(status_text_h,'Last copy to server failed! Listening for start...');
-        warning('Timelite -- Failed copying to server: %s',message);
-    else
-        update_status_text(status_text_h,'Listening for start...');
+% Delete empty local folders
+% (3 hierarchy levels: protocol > day > animal)
+curr_hierarchy_path = fileparts(curr_data_filename);
+for hierarchy_levels = 1:3
+    hierarchy_dir = dir(curr_hierarchy_path);
+    if all(contains({hierarchy_dir.name},'.'))
+        rmdir(curr_hierarchy_path)
+        % Move up one step in hierarchy
+        curr_hierarchy_path = fileparts(curr_hierarchy_path);
     end
 end
+
 end
 
 
