@@ -46,33 +46,25 @@ classdef locations
 
         %% Methods to construct filenames
         % Filename structure:
-        % storage\animal\<YYYY-MM-DD>\<Protocol_HHMM>\filepart1\...\filepartN
+        % storage\animal\<YYYY-MM-DD>\<Protocol_HHMM>\filename
         % e.g. P:\AP001\2023-03-21\Protocol_1301\timelite.mat
-        %      P:\AP001\2023-03-21\Protocol_1301\widefield\svdSpatialComponents_blue.npy
 
-        function local_filename = make_local_filename(animal,rec_day,rec_time,varargin)
+        function local_filename = make_local_filename(animal,rec_day,rec_time,filename)
             % Generate local filename
-            % local_filename = make_local_filename(animal,rec_day,rec_time,filepart1,...,filepartN)
-
-            % Format components
-            filename_components = [{plab.locations.local_data_path, ...
-                animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
-
-            % Ensure uniform char type, format as path
-            local_filename = cell2mat(join(convertContainedStringsToChars(filename_components),filesep));
-
+            % local_filename = make_local_filename(animal,rec_day,rec_time,filename)
+            local_filename = fullfile(plab.locations.local_data_path, ...
+                animal,rec_day,sprintf('Protocol_%s',rec_time),filename);
         end
         function server_filename = make_server_filename(animal,rec_day,rec_time,varargin)
             % Generate server filename
             % server_filename = make_server_filename(animal,rec_day,rec_time,filepart1,...,filepartN)
 
-            % Format components
             filename_components = [{plab.locations.server_data_path, ...
                 animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
 
-            % Ensure uniform char type, format as path
-            server_filename = cell2mat(join(convertContainedStringsToChars(filename_components),filesep));
 
+            server_filename = fullfile(plab.locations.server_data_path, ...
+                animal,rec_day,sprintf('Protocol_%s',rec_time),filename);
         end
 
 
