@@ -66,15 +66,15 @@ function run_bonsai(bonsai_server_fig)
 
     local_worfkflow_path = ...
         plab.locations.make_local_filename( ...
-        data_struct.mouse,data_struct.date,data_struct.time,bonsai_folder);
-    [save_filepath,~,~] = fileparts(local_worfkflow_path);
+        data_struct.mouse,data_struct.date,data_struct.time, ...
+        'bonsai',bonsai_folder);
+    [save_path,~,~] = fileparts(local_worfkflow_path);
 
     % Make local save directory
-    mkdir(fileparts(save_filepath));
+    mkdir(fileparts(save_path));
 
     % get paths for files
     workflowpath = fullfile(plab.locations.local_workflow_path, data_struct.protocol_path);
-%     save_filename = fullfile(save_filepath, 'test.csv');
     local_worfkflow_file = fullfile(local_worfkflow_path, data_struct.protocol_name);
 
     % copy bonsai workflow in new folder
@@ -83,13 +83,19 @@ function run_bonsai(bonsai_server_fig)
     cd(local_worfkflow_path);
 
     % start bonsai
-    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_filepath}, [], 1);
+    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_path}, [], 1);
     
+    % Update save path into GUI data
+    communication_handles.save_path = save_path;
+    guidata(bonsai_server_fig,communication_handles);
+
+    % Start timer function to listen for "stopped" message
     bonsai_timer_fcn = timer('TimerFcn', ...
     {@get_bonsai_message,communication_handles}, ...
     'Period', 1/10, 'ExecutionMode','fixedDelay', ...
     'TasksToExecute', inf);
     start(bonsai_timer_fcn)
+
 
 end
 
@@ -106,34 +112,48 @@ function get_bonsai_message(obj, ~, communication_handles)
         % delete timer
         stop(obj)
         delete(obj)
-        % move to server
-        move_data_to_server
+
+        % Change directory to root folder
+        cd(matlabroot)
+
+        % Move data to server
+        move_data_to_server(communication_handles.save_path);
+
     end
 end
 
-function move_data_to_server
-    % Move data from local to server
-    
-    % Check if the server is available
-    if ~exist(plab.locations.server_data_path,'dir')
-        warning('Server not accessible at %s',plab.locations.server_data_path)
-        return
-    end
-    
-    % Move/merge all local data directories onto the server
-    local_data_dirs = dir(plab.locations.local_data_path);
-    for curr_dir = setdiff({local_data_dirs.name},[".",".."])
-    
-        curr_dir_local = fullfile(plab.locations.local_data_path,curr_dir);
-    
-        fprintf('Copying: %s --> %s \n',curr_dir_local,plab.locations.server_data_path)
-        [status,message] = movefile(curr_dir_local,plab.locations.server_data_path);
-        if ~status
-            warning('Bonsai server -- Failed copying to server: %s',message);
-        else
-            display('Done.')
+function move_data_to_server(curr_data_path)
+% Move data from local to server
+
+% Check if the server is available
+if ~exist(plab.locations.server_data_path,'dir')
+    warning('Server not accessible at %s',plab.locations.server_data_path)
+    return
+end
+
+% Move local data directories to server
+curr_data_path_server = strrep(curr_data_path, ...
+    plab.locations.local_data_path,plab.locations.server_data_path);
+[status,message] = movefile(curr_data_path,curr_data_path_server);
+if ~status
+    warning('Failed copying to server: %s',message);
+else
+end
+
+% Delete empty local folders
+% (3 hierarchy levels: protocol > day > animal)
+try
+    curr_hierarchy_path = fileparts(curr_data_path);
+    for hierarchy_levels = 1:3
+        hierarchy_dir = dir(curr_hierarchy_path);
+        if all(contains({hierarchy_dir.name},'.'))
+            rmdir(curr_hierarchy_path)
+            % Move up one step in hierarchy
+            curr_hierarchy_path = fileparts(curr_hierarchy_path);
         end
     end
+end
+
 end
 
 function close_bonsai_server(obj, ~)

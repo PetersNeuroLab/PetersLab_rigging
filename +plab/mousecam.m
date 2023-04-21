@@ -382,13 +382,15 @@ end
 
 % Delete empty local folders
 % (3 hierarchy levels: protocol > day > animal)
-curr_hierarchy_path = fileparts(curr_data_path);
-for hierarchy_levels = 1:3
-    hierarchy_dir = dir(curr_hierarchy_path);
-    if all(contains({hierarchy_dir.name},'.'))
-        rmdir(curr_hierarchy_path)
-        % Move up one step in hierarchy
-        curr_hierarchy_path = fileparts(curr_hierarchy_path);
+try
+    curr_hierarchy_path = fileparts(curr_data_path);
+    for hierarchy_levels = 1:3
+        hierarchy_dir = dir(curr_hierarchy_path);
+        if all(contains({hierarchy_dir.name},'.'))
+            rmdir(curr_hierarchy_path)
+            % Move up one step in hierarchy
+            curr_hierarchy_path = fileparts(curr_hierarchy_path);
+        end
     end
 end
 
