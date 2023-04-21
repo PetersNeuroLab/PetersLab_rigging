@@ -380,16 +380,17 @@ else
     update_status_text(status_text_h,'Listening for start');
 end
 
+keyboard
 % Delete empty local folders
-% (3 steps: protocol > day > animal)
+% (3 steps: subfolder > protocol > day > animal)
 curr_hierarchy_path = fileparts(curr_mousecam_path);
 for hierarchy_levels = 1:3
-    hierarchy_dir = dir(curr_hierarchy_path);
-    if all(contains({hierarchy_dir.name},'.'))
-        rmdir(curr_hierarchy_path)
-        % Move up one step in hierarchy
-        curr_hierarchy_path = fileparts(curr_hierarchy_path);
-    end
+hierarchy_dir = dir(curr_hierarchy_path);
+if all(contains({local_dir.name},'.'))
+    delete(hierarchy_dir)
+    % Move up one step in hierarchy
+    curr_hierarchy_path = fileparts(curr_hierarchy_path);
+end
 end
 
 end
