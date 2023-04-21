@@ -375,13 +375,13 @@ update_status_text(status_text_h,'Copying to server')
 [status,message] = movefile(curr_data_path,curr_mousecam_path_server);
 if ~status
     update_status_text(status_text_h,'Last server copy failed! Listening for start');
-    warning('Mousecam -- Failed copying to server: %s',message);
+    warning('Failed copying to server: %s',message);
 else
     update_status_text(status_text_h,'Listening for start');
 end
 
 % Delete empty local folders
-% (3 steps: protocol > day > animal)
+% (3 hierarchy levels: protocol > day > animal)
 curr_hierarchy_path = fileparts(curr_data_path);
 for hierarchy_levels = 1:3
     hierarchy_dir = dir(curr_hierarchy_path);
