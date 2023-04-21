@@ -170,7 +170,7 @@ switch h.Value
         rec_day = datestr(now,'YYYY-mm-DD');
         rec_time = datestr(now,'HHMM');
         save_filename = plab.locations.make_local_filename( ...
-            animal,rec_day,rec_time,'mousecam.mj2');
+            animal,rec_day,rec_time,'mousecam','mousecam.mj2');
 
         % Make local data directory
         mkdir(fileparts(save_filename));
