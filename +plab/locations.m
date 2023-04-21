@@ -67,8 +67,13 @@ classdef locations
             % server_filename = make_server_filename(animal,rec_day,rec_time,filepart1,...,filepartN)
 
             % Format components
-            filename_components = [{plab.locations.server_data_path, ...
-                animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
+            if ~isempty(rec_time)
+                filename_components = [{plab.locations.server_data_path, ...
+                    animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
+            else
+                filename_components = [{plab.locations.server_data_path, ...
+                    animal,rec_day},varargin];
+            end
 
             % Ensure uniform char type, format as path
             server_filename = cell2mat(join(convertContainedStringsToChars(filename_components),filesep));
