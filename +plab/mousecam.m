@@ -246,8 +246,8 @@ stop(gui_data.video_object)
 fclose(gui_data.header_fileID);
 
 % Move data to server
-curr_mousecam_path = get(gui_data.video_object.DiskLogger,'path');
-move_data_to_server(curr_mousecam_path,gui_data.status_text_h);
+curr_data_path = get(gui_data.video_object.DiskLogger,'path');
+move_data_to_server(curr_data_path,gui_data.status_text_h);
 
 % Update status text
 update_status_text(gui_data.status_text_h,'Listening for start');
@@ -359,7 +359,7 @@ end
 
 end
 
-function move_data_to_server(curr_mousecam_path,status_text_h)
+function move_data_to_server(curr_data_path,status_text_h)
 % Move data from local to server
 
 % Check if the server is available
@@ -369,10 +369,10 @@ if ~exist(plab.locations.server_data_path,'dir')
 end
 
 % Move local data directories to server
-curr_mousecam_path_server = strrep(curr_mousecam_path, ...
+curr_mousecam_path_server = strrep(curr_data_path, ...
     plab.locations.local_data_path,plab.locations.server_data_path);
 update_status_text(status_text_h,'Copying to server')
-[status,message] = movefile(curr_mousecam_path,curr_mousecam_path_server);
+[status,message] = movefile(curr_data_path,curr_mousecam_path_server);
 if ~status
     update_status_text(status_text_h,'Last server copy failed! Listening for start');
     warning('Mousecam -- Failed copying to server: %s',message);
@@ -382,7 +382,7 @@ end
 
 % Delete empty local folders
 % (3 steps: protocol > day > animal)
-curr_hierarchy_path = fileparts(curr_mousecam_path);
+curr_hierarchy_path = fileparts(curr_data_path);
 for hierarchy_levels = 1:3
     hierarchy_dir = dir(curr_hierarchy_path);
     if all(contains({hierarchy_dir.name},'.'))
