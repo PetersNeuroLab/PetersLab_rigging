@@ -45,7 +45,7 @@ ch.Name = 'widefield_camera';
 
 ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai2','Voltage');
 ch.TerminalConfig = 'SingleEnded';
-ch.Name = 'face_camera';
+ch.Name = 'mouse_camera';
 
 ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai3','Voltage');
 ch.TerminalConfig = 'SingleEnded';
