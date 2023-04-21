@@ -369,10 +369,10 @@ if ~exist(plab.locations.server_data_path,'dir')
 end
 
 % Move local data directories to server
-curr_mousecam_path_server = strrep(curr_data_path, ...
+curr_data_path_server = strrep(curr_data_path, ...
     plab.locations.local_data_path,plab.locations.server_data_path);
 update_status_text(status_text_h,'Copying to server')
-[status,message] = movefile(curr_data_path,curr_mousecam_path_server);
+[status,message] = movefile(curr_data_path,curr_data_path_server);
 if ~status
     update_status_text(status_text_h,'Last server copy failed! Listening for start');
     warning('Failed copying to server: %s',message);
