@@ -1001,6 +1001,8 @@ it.Item4 as Timestamp
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="SavePath" />
+              <Property Name="CsvName" />
+              <Property Name="BinName" />
             </Expression>
             <Expression xsi:type="GroupWorkflow">
               <Name>SaveInfo</Name>
@@ -1022,7 +1024,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="StringProperty">
-                      <Value>test.csv</Value>
+                      <Value>bonsai_events.csv</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
