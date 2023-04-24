@@ -80,8 +80,6 @@ function run_bonsai(bonsai_server_fig)
     % copy bonsai workflow in new folder
     copyfile(workflowpath, local_worfkflow_path);
 
-    cd(local_worfkflow_path);
-
     % start bonsai
     plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_path}, [], 1);
     
