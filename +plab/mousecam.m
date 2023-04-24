@@ -219,7 +219,6 @@ gui_data.video_object.FramesAcquiredFcnCount = 1;
 gui_data.video_object.FramesAcquiredFcn = {@record_cam_header,gui_data.header_fileID};
 
 % Start recording
-pause(2); % pause to allow other rigging to start
 start(gui_data.video_object);
 
 % Reset relative display info
