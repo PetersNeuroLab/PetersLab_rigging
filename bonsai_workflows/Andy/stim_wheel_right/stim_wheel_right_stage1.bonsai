@@ -35,8 +35,8 @@
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
               <RangeMin>1</RangeMin>
-              <RangeMax>2</RangeMax>
-              <Count>11</Count>
+              <RangeMax>3</RangeMax>
+              <Count>21</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -48,9 +48,9 @@
               <Property Name="Count" DisplayName="#QuiescenceVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <RangeMin>2</RangeMin>
-              <RangeMax>4</RangeMax>
-              <Count>21</Count>
+              <RangeMin>0.5</RangeMin>
+              <RangeMax>1</RangeMax>
+              <Count>6</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>QuiescenceTimes</Name>
