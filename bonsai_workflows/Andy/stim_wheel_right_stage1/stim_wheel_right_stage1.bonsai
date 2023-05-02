@@ -85,7 +85,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>5</Value>
+                <Value>6</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
