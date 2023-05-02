@@ -32,7 +32,13 @@ startFlag = '--start';
 noEditorFlag = '--noeditor'; %use this instead of startFlag to start Bonsai without showing the editor
 cmdsep = ' ';
 if external
-command = [['"' bonsaiExePath '"'] cmdsep ['"' workflowPath '"'] cmdsep startFlag];
+    % In system command:
+    % - cd to local Bonsai path (necessary for Bonsai to
+    % see Extensions folder if it exists)
+    % - open specific Bonsai exe
+    % - open specific workflow
+    % - start workflow
+command = [['cd ' fileparts(workflowPath) ' &'] cmdsep ['"' bonsaiExePath '"'] cmdsep ['"' workflowPath '"'] cmdsep startFlag];
 else
 command = [['"' bonsaiExePath '"']  cmdsep ['"' workflowPath '"'] cmdsep noEditorFlag];
 end
@@ -53,6 +59,7 @@ end
 %% run the command
 [sysecho] = system(command);
 end
+
 
 
 %% parse the addOptArray

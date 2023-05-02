@@ -79,9 +79,6 @@ function run_bonsai(bonsai_server_fig)
     % copy bonsai workflow in new folder
     copyfile(workflowpath, local_worfkflow_path);
 
-    % change path to workflow so bonsai sees extensions 
-    cd(local_worfkflow_path);
-
     % start bonsai
     plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_path}, [], 1);
     
@@ -112,9 +109,6 @@ function get_bonsai_message(obj, ~, communication_handles)
         % delete timer
         stop(obj)
         delete(obj)
-
-        % Change directory to root folder
-        cd(matlabroot)
 
         % Move data to server
         move_data_to_server(communication_handles.save_path);
@@ -158,24 +152,19 @@ end
 
 function close_bonsai_server(obj, ~)
 
-% Confirm close
-confirm_close = uiconfirm(obj,'Close Bonsai server?','Confirm close');
-if strcmp(confirm_close,'OK')
+% Get OSC handler and stop listeners
+communication_handles = guidata(obj);
+communication_handles.oscreceiver.stopListening();
+communication_handles.oscreceiver.close();
 
-    % Get OSC handler and stop listeners
-    communication_handles = guidata(obj);
-    communication_handles.oscreceiver.stopListening();
-    communication_handles.oscreceiver.close();
+% Delete the figure
+delete(obj);
 
-    % Delete the figure
-    delete(obj);
+% Clear TCP client
+delete(communication_handles.client_mc)
 
-    % Clear TCP client
-    delete(communication_handles.client_mc)
-    
-    % Exit matlab (stops the waitfor and resets ports)
-    exit
-end
+% Exit matlab (stops the waitfor and resets ports)
+exit
 
 end
 
