@@ -38,6 +38,35 @@ communication_handles.oscreceiver.startListening();
 % Upload receiver/listener to figure
 guidata(bonsai_server_fig,communication_handles);
 
+% Setup arduino for water rewards
+setup_arduino(bonsai_server_fig);
+
+end
+
+function setup_arduino(bonsai_server_fig)
+% connect to arduino and calculate amount of time valve open for reward
+% amount
+    
+    communication_handles = guidata(bonsai_server_fig);
+    
+    cal_value = readmatrix("C:\Water_calibration\calibration.csv");
+    reward_amount = 6; 
+    time_valve_open = num2str(cal_value * reward_amount);
+
+    communication_handles.arduino_device = serialport("COM10", 250000);
+    configureTerminator(communication_handles.arduino_device,"CR");
+    set(bonsai_server_fig,'KeyPressFcn',@give_water);
+
+    communication_handles.time_valve_open = time_valve_open;
+
+    guidata(bonsai_server_fig,communication_handles);
+end
+
+function give_water(bonsai_server_fig,event)
+    if strcmp(event.Key, 'w')
+        communication_handles = guidata(bonsai_server_fig);
+        writeline(communication_handles.arduino_device, communication_handles.time_valve_open);
+    end
 end
 
 function readData(client, ~, bonsai_server_fig)
@@ -56,6 +85,9 @@ end
 function run_bonsai(bonsai_server_fig)
 
     communication_handles = guidata(bonsai_server_fig);
+
+    % clear arduino device
+    communication_handles = rmfield(communication_handles,'arduino_device');
 
     % decode json
     data_struct = jsondecode(communication_handles.client_mc.UserData);
@@ -88,7 +120,7 @@ function run_bonsai(bonsai_server_fig)
 
     % Start timer function to listen for "stopped" message
     bonsai_timer_fcn = timer('TimerFcn', ...
-    {@get_bonsai_message,communication_handles}, ...
+    {@get_bonsai_message,bonsai_server_fig}, ...
     'Period', 1/10, 'ExecutionMode','fixedDelay', ...
     'TasksToExecute', inf);
     start(bonsai_timer_fcn)
@@ -96,7 +128,10 @@ function run_bonsai(bonsai_server_fig)
 
 end
 
-function get_bonsai_message(obj, ~, communication_handles)
+function get_bonsai_message(obj, ~, bonsai_server_fig)
+
+    communication_handles = guidata(bonsai_server_fig);
+
     getlastmessage = communication_handles.osclistener.getMessageArgumentsAsString();    
     if ~isempty(getlastmessage)
         disp('Read something')
@@ -113,6 +148,8 @@ function get_bonsai_message(obj, ~, communication_handles)
         % Move data to server
         move_data_to_server(communication_handles.save_path);
 
+        % Setup arduino for water rewards
+        setup_arduino(bonsai_server_fig);
     end
 end
 
