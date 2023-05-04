@@ -274,7 +274,9 @@ else
         rec_info.mouse,rec_info.date,rec_info.time,'timelite.mat');
 
     % Make local save directory
-    mkdir(fileparts(save_filename))
+    if ~exist(fileparts(save_filename),'dir')
+        mkdir(fileparts(save_filename))
+    end
     
     % Start DAQ acquisition
     daq_start(gui_fig,save_filename)

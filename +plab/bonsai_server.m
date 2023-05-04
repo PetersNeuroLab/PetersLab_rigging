@@ -44,8 +44,7 @@ setup_arduino(bonsai_server_fig);
 end
 
 function setup_arduino(bonsai_server_fig)
-% connect to arduino and calculate amount of time valve open for reward
-% amount
+% connect to arduino and calculate amount of time valve open for reward amount
     
     communication_handles = guidata(bonsai_server_fig);
     
