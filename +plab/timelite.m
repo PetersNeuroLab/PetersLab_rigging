@@ -42,7 +42,7 @@ try
     daq_device.analog.ScansAvailableFcn = @(src,evt,x) daq_upload(src,evt,gui_fig);
 catch me
     % Error if DAQ could not be configured
-    error('Timelite -- DAQ device could not be configured: \n %s',me.message)
+    warning(me.identifier,'Timelite -- DAQ device could not be configured: \n %s',me.message)
 end
 
 % Start listener for experiment controller
@@ -73,7 +73,9 @@ gui_data = struct;
 gui_data.status_text_h = status_text_h;
 gui_data.user_button_h = user_button_h;
 gui_data.daq_device = daq_device;
-gui_data.client_expcontroller = client_expcontroller;
+if exist('client_expcontroller','var')
+    gui_data.client_expcontroller = client_expcontroller;
+end
 
 % Update status
 update_status_text(gui_data.status_text_h,'Listening for start...');

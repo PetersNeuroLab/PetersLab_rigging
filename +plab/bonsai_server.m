@@ -39,7 +39,7 @@ communication_handles.oscreceiver.startListening();
 guidata(bonsai_server_fig,communication_handles);
 
 % Setup arduino for water rewards
-setup_arduino(bonsai_server_fig);
+% setup_arduino(bonsai_server_fig);
 
 end
 
@@ -86,7 +86,7 @@ function run_bonsai(bonsai_server_fig)
     communication_handles = guidata(bonsai_server_fig);
 
     % clear arduino device
-    communication_handles = rmfield(communication_handles,'arduino_device');
+%     communication_handles = rmfield(communication_handles,'arduino_device');
 
     % decode json
     data_struct = jsondecode(communication_handles.client_mc.UserData);
@@ -148,7 +148,7 @@ function get_bonsai_message(obj, ~, bonsai_server_fig)
         move_data_to_server(communication_handles.save_path);
 
         % Setup arduino for water rewards
-        setup_arduino(bonsai_server_fig);
+%         setup_arduino(bonsai_server_fig);
     end
 end
 
