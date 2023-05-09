@@ -4,25 +4,25 @@
 
 function hamamatsu_test
 
-% % Connect and set up camera
-% cam_DeviceName = imaqhwinfo('hamamatsu').DeviceInfo.DeviceName;
-% video_object = videoinput('hamamatsu',cam_DeviceName);
-% src = getselectedsource(video_object);
-% 
-% video_object.LoggingMode = "disk";
-% 
-% % Set input trigger
-% src.TriggerSource = "external";
-% src.TriggerActive = "level";
-% src.TriggerGlobalExposure = "globalreset";
-% 
-% % Set outputs
-% src.OutputTriggerKindOpt1 = "triggerready";
-% src.OutputTriggerKindOpt2 = "exposure";
+% Connect and set up camera
+% NOTE: bit depth, binning, and speed mode, set by format
+% To see list of formats:
+% imaqhwinfo('hamamatsu').DeviceInfo.SupportedFormats';
 
-% FOR TESTING ON WEBCAM
-cam_DeviceName = imaqhwinfo('winvideo').DeviceInfo.DeviceName;
-video_object = videoinput('winvideo',cam_DeviceName);
+cam_DeviceName = imaqhwinfo('hamamatsu').DeviceInfo.DeviceName;
+video_object = videoinput('hamamatsu',cam_DeviceName);
+src = getselectedsource(video_object);
+
+video_object.LoggingMode = "disk";
+
+% Set input trigger
+src.TriggerSource = "external";
+src.TriggerActive = "level";
+src.TriggerGlobalExposure = "globalreset";
+
+% Set outputs
+src.OutputTriggerKindOpt1 = "triggerready";
+src.OutputTriggerKindOpt2 = "exposure";
 
 
 %% Set up GUI
