@@ -42,7 +42,7 @@ try
     daq_device.analog.ScansAvailableFcn = @(src,evt,x) daq_upload(src,evt,gui_fig);
 catch me
     % Error if DAQ could not be configured
-    warning(me.identifier,'Timelite -- DAQ device could not be configured: \n %s',me.message)
+    error(me.identifier,'Timelite -- DAQ device could not be configured: \n %s',me.message)
 end
 
 % Start listener for experiment controller
@@ -54,7 +54,7 @@ configureCallback(client_expcontroller, "terminator", ...
 catch me
     % Error if no connection to experiment controller
     update_status_text(status_text_h,'Error connecting to experiment server');
-    error('Timelite -- Cannot connect to experiment controller: \n %s',me.message)
+    warning(me.identifier,'Timelite -- Cannot connect to experiment controller: \n %s',me.message)
 end
 
 % Write text
