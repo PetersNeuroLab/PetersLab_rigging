@@ -398,23 +398,6 @@ end
 end
 
 
-%% STORING FOR NOW: READ HEADER FROM SAVE
-
-% % Load in set of frames from middle of experiment
-% fn = 'C:\Users\peterslab\Documents\MATLAB\face_camera\mmmgui_test\test.mj2';
-% vr = VideoReader(fn);
-% curr_movie = read(vr);
-%
-% header_fn = [fn(1:end-4),'_header.bin'];
-% header_fileID = fopen(header_fn,'r');
-% embed_pixels = reshape(fread(header_fileID),40,[]);
-% fclose(header_fileID);
-%
-% flipper_pin = 2;
-% [timestamps, frame_num, flipper] = AP_preprocess_face_camera(embed_pixels, flipper_pin);
-
-
-
 
 
 

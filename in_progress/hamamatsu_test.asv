@@ -260,8 +260,7 @@ gui_data.im_preview_color{gui_data.im_preview_curr_color} = ...
 himage.CData = horzcat(gui_data.im_preview_color{:});
 
 % Queue next color
-gui_data.im_preview_curr_color = ...
-    1 + mod(gui_data.im_preview_curr_color,length(gui_data.im_preview_color));
+gui_data.im_preview_curr_color = 1+mod(gui_data.im_preview_curr_color+1,length(gui_data.im_preview_color));
 
 % Update GUI data
 guidata(gui_fig,gui_data);
