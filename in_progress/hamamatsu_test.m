@@ -10,7 +10,7 @@ function hamamatsu_test
 % imaqhwinfo('hamamatsu').DeviceInfo.SupportedFormats';
 
 cam_DeviceName = imaqhwinfo('hamamatsu').DeviceInfo.DeviceName;
-video_object = videoinput('hamamatsu',cam_DeviceName);
+video_object = videoinput('hamamatsu',cam_DeviceName,'MONO16_BIN2x2_1024x1024_FastMode');
 src = getselectedsource(video_object);
 
 video_object.LoggingMode = "disk";
@@ -23,7 +23,6 @@ src.TriggerGlobalExposure = "globalreset";
 % Set outputs
 src.OutputTriggerKindOpt1 = "triggerready";
 src.OutputTriggerKindOpt2 = "exposure";
-
 
 %% Set up GUI
 
@@ -252,12 +251,22 @@ gui_fig = getappdata(himage,'gui_fig');
 gui_data = guidata(gui_fig);
 
 % Update appropriate color preview
-%%%%%%%% TEMPORARY: FIRST PAGE (FOR RGB CAMERA TEST)
-gui_data.im_preview_color{gui_data.im_preview_curr_color} = ...
-    eventdata.Data(:,:,1);
-
+% gui_data.im_preview_color{gui_data.im_preview_curr_color} = ...
+%     eventdata.Data;
+gui_data.im_preview_color{1} = ...
+    eventdata.Data;
+if gui_data.im_preview_curr_color == 1
 % Update preview
-himage.CData = horzcat(gui_data.im_preview_color{:});
+im_preview_sizes = cell2mat(reshape(cellfun(@size, ...
+    gui_data.im_preview_color,'uni',false),[],1));
+if all(all(im_preview_sizes == im_preview_sizes(1,:)))
+    % (if image sizes are the same, concatenate)
+    himage.CData = horzcat(gui_data.im_preview_color{:});
+else
+    % (otherwise: just show the current image)
+    himage.CData = gui_data.im_preview_color{gui_data.im_preview_curr_color};
+end
+end
 
 % Queue next color
 gui_data.im_preview_curr_color = ...
