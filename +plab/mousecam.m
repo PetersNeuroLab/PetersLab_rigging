@@ -269,7 +269,7 @@ gui_data = guidata(gui_fig);
 % Decode embedded pixel data
 flipper_pin = 2; % GPIO input for flipper
 header_pixels = eventdata.Data(1,1:40)';
-mousecam_header = read_mousecam_header(header_pixels, flipper_pin);
+mousecam_header = plab.mousecam.read_mousecam_header(header_pixels, flipper_pin);
 
 % Set relative timestamp/frame display
 if ~isfield(gui_data,'set_relative_info_flag')
