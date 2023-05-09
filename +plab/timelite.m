@@ -169,7 +169,7 @@ gui_data = guidata(gui_fig);
 
 % Stop DAQ input acquisition, set outputs to LOW
 write(gui_data.daq_device.digital,false); 
-pause(4); % ensure outputs low and other GUIs finished before stopping
+pause(2); % ensure outputs low and other GUIs finished before stopping
 stop(gui_data.daq_device.analog)
 
 % Update status

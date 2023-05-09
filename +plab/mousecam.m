@@ -242,7 +242,7 @@ gui_data = guidata(gui_fig);
 update_status_text(gui_data.status_text_h,'Stopping recording');
 
 % Stop recording and close header file
-pause(2); % pause to allow other rigging to stop
+pause(1); % pause to allow flipper to stop
 stop(gui_data.video_object)
 fclose(gui_data.header_fileID);
 
