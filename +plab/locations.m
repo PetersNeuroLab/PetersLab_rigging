@@ -67,7 +67,7 @@ classdef locations
             % server_filename = make_server_filename(animal,rec_day,rec_time,filepart1,...,filepartN)
 
             % Format components
-            if isempty(rec_time)
+            if nargin == 2 || isempty(rec_time)
                 filename_components = [{plab.locations.server_data_path, ...
                     animal},varargin];
             else
