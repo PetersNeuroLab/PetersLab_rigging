@@ -69,7 +69,7 @@ classdef locations
             % Format components
             if nargin == 2 || isempty(rec_time)
                 filename_components = [{plab.locations.server_data_path, ...
-                    animal},varargin];
+                    animal,rec_day},varargin];
             else
                 filename_components = [{plab.locations.server_data_path, ...
                     animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
