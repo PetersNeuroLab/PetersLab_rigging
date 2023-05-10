@@ -67,12 +67,12 @@ classdef locations
             % server_filename = make_server_filename(animal,rec_day,rec_time,filepart1,...,filepartN)
 
             % Format components
-            if ~isempty(rec_time)
+            if isempty(rec_time)
                 filename_components = [{plab.locations.server_data_path, ...
-                    animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
+                    animal},varargin];
             else
                 filename_components = [{plab.locations.server_data_path, ...
-                    animal,rec_day},varargin];
+                    animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
             end
 
             % Ensure uniform char type, format as path
