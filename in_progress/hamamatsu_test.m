@@ -11,9 +11,10 @@ function hamamatsu_test
 
 cam_DeviceName = imaqhwinfo('hamamatsu').DeviceInfo.DeviceName;
 video_object = videoinput('hamamatsu',cam_DeviceName,'MONO16_BIN2x2_1024x1024_FastMode');
+% video_object = videoinput('hamamatsu',cam_DeviceName,'MONO12_BIN2x2_1024x1024_FastMode');
 src = getselectedsource(video_object);
 
-video_object.LoggingMode = "disk";
+% video_object.LoggingMode = "disk";
 
 % Set input trigger
 src.TriggerSource = "external";
@@ -27,21 +28,21 @@ src.OutputTriggerKindOpt2 = "exposure";
 %% Set up GUI
 
 gui_fig = figure('MenuBar','none','Units','Normalized', ...
-    'Position',[0.01,0.2,0.32,0.5],'color','w');
+    'Position',[0.01,0.2,0.32,0.5],'color','w','Colormap',gray);
 
 % Preview image (2 images side-by-side: [color 1, color 2])
 im_axes = axes(gui_fig,'Position',[0,0.05,1,0.8]);
-im_preview = image(zeros(1));
+im_preview = imagesc(zeros(1));
 
 embedded_info_text = uicontrol('Style','text','String','Embedded header information', ...
     'Units','normalized','Position',[0,0,1,0.05], ...
     'BackgroundColor','w','HorizontalAlignment','left','FontSize',12, ...
     'FontName','Consolas');
 
-setappdata(im_preview,'UpdatePreviewWindowFcn',@preview_cam);
+% setappdata(im_preview,'UpdatePreviewWindowFcn',@preview_cam);
 setappdata(im_preview,'gui_fig',gui_fig);
 
-preview(video_object,im_preview);
+% preview(video_object,im_preview);
 axis(im_axes);axis tight equal
 
 % Status text
@@ -93,6 +94,12 @@ gui_data.im_preview_color = ...
 % Update GUI data
 guidata(gui_fig,gui_data);
 
+%%%%%% TESTING
+video_object.FramesAcquiredFcn = {@preview_cam,gui_fig};
+video_object.FramesAcquiredFcnCount = 8;
+video_object.FramesPerTrigger = Inf;
+start(video_object);
+
 end
 
 %% Button functions
@@ -117,7 +124,10 @@ if any(roi_position(2:3) == 0)
     roi_position = [0,0,gui_data.video_object.VideoResolution];
 end
 delete(roi);
+
+stop(gui_data.video_object);
 gui_data.video_object.roi = roi_position;
+start(gui_data.video_object);
 
 % Set tight axes
 axes(gui_data.im_axes); axis tight;
@@ -241,36 +251,42 @@ end
 
 %% Preview/record functions
 
-function preview_cam(h,eventdata,himage)
+function preview_cam(h,eventdata,gui_fig)
 % Custom preview function: output header information
 
-% Get GUI fig (grab different - can't input to this function)
-gui_fig = getappdata(himage,'gui_fig');
+% % Get GUI fig (grab different - can't input to this function)
+% gui_fig = getappdata(himage,'gui_fig');
 
 % Get GUI data
 gui_data = guidata(gui_fig);
 
-% Update appropriate color preview
-% gui_data.im_preview_color{gui_data.im_preview_curr_color} = ...
-%     eventdata.Data;
-gui_data.im_preview_color{1} = ...
-    eventdata.Data;
-if gui_data.im_preview_curr_color == 1
-% Update preview
-im_preview_sizes = cell2mat(reshape(cellfun(@size, ...
-    gui_data.im_preview_color,'uni',false),[],1));
-if all(all(im_preview_sizes == im_preview_sizes(1,:)))
-    % (if image sizes are the same, concatenate)
-    himage.CData = horzcat(gui_data.im_preview_color{:});
-else
-    % (otherwise: just show the current image)
-    himage.CData = gui_data.im_preview_color{gui_data.im_preview_curr_color};
+data = peekdata(gui_data.video_object,2);
+if size(data,4) ~= 2
+    return
 end
-end
+set(gui_data.im_preview,'CData',reshape(data,size(data,1),[]))
 
-% Queue next color
-gui_data.im_preview_curr_color = ...
-    1 + mod(gui_data.im_preview_curr_color,length(gui_data.im_preview_color));
+% % Update appropriate color preview
+% % gui_data.im_preview_color{gui_data.im_preview_curr_color} = ...
+% %     eventdata.Data;
+% gui_data.im_preview_color{1} = ...
+%     eventdata.Data;
+% if gui_data.im_preview_curr_color == 1
+% % Update preview
+% im_preview_sizes = cell2mat(reshape(cellfun(@size, ...
+%     gui_data.im_preview_color,'uni',false),[],1));
+% if all(all(im_preview_sizes == im_preview_sizes(1,:)))
+%     % (if image sizes are the same, concatenate)
+%     himage.CData = horzcat(gui_data.im_preview_color{:});
+% else
+%     % (otherwise: just show the current image)
+%     himage.CData = gui_data.im_preview_color{gui_data.im_preview_curr_color};
+% end
+% end
+% 
+% % Queue next color
+% gui_data.im_preview_curr_color = ...
+%     1 + mod(gui_data.im_preview_curr_color,length(gui_data.im_preview_color));
 
 % Update GUI data
 guidata(gui_fig,gui_data);
