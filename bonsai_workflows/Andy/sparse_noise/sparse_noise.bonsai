@@ -72,6 +72,14 @@
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>ScreenExtentY</Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>10</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>NthPhotodiodeFlip</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -81,6 +89,7 @@
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -322,22 +331,8 @@
                 <osc:RemotePort>20000</osc:RemotePort>
               </Combinator>
             </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="RewardAmount" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>5</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>RewardAmount</Name>
-            </Expression>
           </Nodes>
-          <Edges>
-            <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
-          </Edges>
+          <Edges />
         </Workflow>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
@@ -550,7 +545,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:Timer">
-                <gl:DueTime>PT10M</gl:DueTime>
+                <gl:DueTime>PT10S</gl:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -575,10 +570,69 @@
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:Accumulate" />
-            <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Name>Mod2</scr:Name>
-              <scr:Expression>it % 2</scr:Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>PhotodiodeSquare</Name>
             </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>NthPhotodiodeFlip</Name>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Nth stim" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="rx:Condition">
+              <Name>Nth stim</Name>
+              <Description>True on stim 1, and every Nth stim thereafter (e..g if set to 10, [1,11,21...])</Description>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="IntProperty">
+                      <Value>1</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="ExternalizedMapping">
+                    <Property Name="Value" DisplayName="Nth stim" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="IntProperty">
+                      <Value>10</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="Mod" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="Equal" />
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="4" Label="Source1" />
+                  <Edge From="1" To="6" Label="Source2" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source2" />
+                  <Edge From="4" To="5" Label="Source1" />
+                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="6" To="7" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>1</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:WithLatestFrom" />
+            </Expression>
+            <Expression xsi:type="Subtract" />
             <Expression xsi:type="MulticastSubject">
               <Name>PhotodiodeSquare</Name>
             </Expression>
@@ -604,8 +658,14 @@
             <Edge From="18" To="19" Label="Source1" />
             <Edge From="20" To="21" Label="Source1" />
             <Edge From="21" To="22" Label="Source1" />
-            <Edge From="22" To="23" Label="Source1" />
-            <Edge From="23" To="24" Label="Source1" />
+            <Edge From="22" To="26" Label="Source1" />
+            <Edge From="23" To="28" Label="Source2" />
+            <Edge From="24" To="25" Label="Source1" />
+            <Edge From="25" To="26" Label="Source2" />
+            <Edge From="26" To="27" Label="Source1" />
+            <Edge From="27" To="28" Label="Source1" />
+            <Edge From="28" To="29" Label="Source1" />
+            <Edge From="29" To="30" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -724,7 +784,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="dsp:MatrixWriter">
-                <dsp:Path>C:\LocalData\NoiseLocations.bin</dsp:Path>
+                <dsp:Path>C:\LocalData\test\NoiseLocations.bin</dsp:Path>
                 <dsp:Suffix>None</dsp:Suffix>
                 <dsp:Overwrite>true</dsp:Overwrite>
                 <dsp:Layout>ColumnMajor</dsp:Layout>
@@ -753,7 +813,7 @@ it.Item4 as Timestamp
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="io:CsvWriter">
-              <io:FileName>C:\LocalData\bonsai.csv</io:FileName>
+              <io:FileName>C:\LocalData\test\bonsai_events.csv</io:FileName>
               <io:Append>false</io:Append>
               <io:Overwrite>true</io:Overwrite>
               <io:Suffix>None</io:Suffix>
@@ -852,6 +912,20 @@ it.Item4 as Timestamp
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>NthPhotodiodeFlip</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>MakeString</scr:Name>
+                    <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                    <MemberName>Name</MemberName>
+                    <Value>NthPhotodiodeFlip</Value>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Merge" />
                   </Expression>
@@ -872,8 +946,8 @@ it.Item4 as Timestamp
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="3" Label="Source1" />
                   <Edge From="2" To="3" Label="Source2" />
-                  <Edge From="3" To="25" Label="Source1" />
-                  <Edge From="4" To="26" Label="Source2" />
+                  <Edge From="3" To="29" Label="Source1" />
+                  <Edge From="4" To="30" Label="Source2" />
                   <Edge From="5" To="6" Label="Source1" />
                   <Edge From="6" To="16" Label="Source1" />
                   <Edge From="7" To="8" Label="Source1" />
@@ -885,19 +959,23 @@ it.Item4 as Timestamp
                   <Edge From="13" To="14" Label="Source1" />
                   <Edge From="14" To="24" Label="Source1" />
                   <Edge From="15" To="16" Label="Source2" />
-                  <Edge From="16" To="25" Label="Source2" />
+                  <Edge From="16" To="29" Label="Source2" />
                   <Edge From="17" To="18" Label="Source2" />
-                  <Edge From="18" To="25" Label="Source3" />
+                  <Edge From="18" To="29" Label="Source3" />
                   <Edge From="19" To="20" Label="Source2" />
-                  <Edge From="20" To="25" Label="Source4" />
+                  <Edge From="20" To="29" Label="Source4" />
                   <Edge From="21" To="22" Label="Source2" />
-                  <Edge From="22" To="25" Label="Source5" />
+                  <Edge From="22" To="29" Label="Source5" />
                   <Edge From="23" To="24" Label="Source2" />
-                  <Edge From="24" To="25" Label="Source6" />
+                  <Edge From="24" To="29" Label="Source6" />
                   <Edge From="25" To="26" Label="Source1" />
-                  <Edge From="26" To="27" Label="Source1" />
-                  <Edge From="27" To="28" Label="Source1" />
-                  <Edge From="28" To="29" Label="Source1" />
+                  <Edge From="26" To="28" Label="Source1" />
+                  <Edge From="27" To="28" Label="Source2" />
+                  <Edge From="28" To="29" Label="Source7" />
+                  <Edge From="29" To="30" Label="Source1" />
+                  <Edge From="30" To="31" Label="Source1" />
+                  <Edge From="31" To="32" Label="Source1" />
+                  <Edge From="32" To="33" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -915,7 +993,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="StringProperty">
-                      <Value>C:\Users\peterslab\Documents\MissMouse0801</Value>
+                      <Value>C:\LocalData\test</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
