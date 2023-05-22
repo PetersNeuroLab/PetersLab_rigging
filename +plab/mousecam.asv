@@ -271,34 +271,34 @@ flipper_pin = 2; % GPIO input for flipper
 header_pixels = eventdata.Data(1,1:40)';
 mousecam_header = plab.mousecam.read_mousecam_header(header_pixels, flipper_pin);
 
-% % Set relative timestamp/frame display
-% if ~isfield(gui_data,'set_relative_info_flag')
-%     gui_data.set_relative_info_flag = true;
-% end
-% if gui_data.set_relative_info_flag
-%     % Store previous and current value
-%     gui_data.relative_info.timestamp = [0,0];
-%     gui_data.relative_info.frame_num = [0,0];
-%     gui_data.set_relative_info_flag = false;
-% else
-%     % Camera clock resets every 127s: if timestamp goes backwards, set new
-%     % relative time
-% 
-%     new_timestamp = circshift(gui_data.relative_info.timestamp,-1);
-%     new_timestamp(2) = new_timestamp(2) + mousecam_header.timestamps;
-%     if diff(new_timestamp) <0
-%         keyboard
-%     end
-%     gui_data.relative_info.timestamp = new_timestamp;
-%         
-% end
+% Set relative timestamp/frame display
+if ~isfield(gui_data,'set_relative_info_flag')
+    gui_data.set_relative_info_flag = true;
+end
+if gui_data.set_relative_info_flag
+    % Store previous and current value
+    gui_data.relative_info.timestamp = [0,0];
+    gui_data.relative_info.frame_num = [0,0];
+    gui_data.set_relative_info_flag = false;
+else
+    % Camera clock resets every 127s: if timestamp goes backwards, set new
+    % relative time
+
+    new_timestamp = circshift(gui_data.relative_info.timestamp,-1);
+    new_timestamp(2) = new_timestamp(2) + mousecam_header.timestamps;
+    if diff(new_timestamp) <0
+        keyboard
+    end
+    gui_data.relative_info.timestamp = new_timestamp;
+        
+end
 
 % Print camera info
 preview_embedded_info = ...
-    sprintf('Framerate: %s, Timestamp: %.1f, Frame: %d, Flipper: %d', ...
+    sprintf('Framerate: %s, Timestamp: %d, Frame: %d, Flipper: %d', ...
     eventdata.FrameRate, ...
-    mousecam_header.timestamps, ...
-    mousecam_header.frame_num, ...
+    gui_data.relative_info.timestamp(end), ...
+    gui_data.relative_info.frame_num(end), ...
     mousecam_header.flipper);
 set(gui_data.embedded_info_text,'String',preview_embedded_info);
 
