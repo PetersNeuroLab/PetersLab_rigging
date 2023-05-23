@@ -188,27 +188,31 @@ stop(gui_data.daq_device.analog)
 % Delete live plot
 delete(gui_data.live_plot_fig);
 
-% Move binary streamed data into mat file
-update_status_text(gui_data.status_text_h,'Converting data binary to mat');
-
-% --> Rewind and read data (reshaped into t x [timestamps,chan])
-n_channels = length(gui_data.daq_device.analog.Channels);
-
-frewind(gui_data.save_file_bin);
-recorded_daq_data = reshape(fread(gui_data.save_file_bin,'single'),n_channels+1,[])';
-
-% --> Write data to mat file
-gui_data.save_file_mat.timestamps = recorded_daq_data(:,1);
-gui_data.save_file_mat.data = recorded_daq_data(:,2:end);
-
-% --> Close and delete temporary bin file
-bin_filename = fopen(gui_data.save_file_bin);
-fclose(gui_data.save_file_bin);
-delete(bin_filename)
-
-% Move data to server
+% Saved file handling (if recorded, not on preview)
 if ~isempty(gui_data.save_file_mat)
+
+    % Move binary streamed data into mat file
+    update_status_text(gui_data.status_text_h,'Converting data binary to mat');
+    drawnow;
+
+    % --> Rewind and read data (reshaped into t x [timestamps,chan])
+    n_channels = length(gui_data.daq_device.analog.Channels);
+
+    frewind(gui_data.save_file_bin);
+    recorded_daq_data = reshape(fread(gui_data.save_file_bin,'single'),n_channels+1,[])';
+
+    % --> Write data to mat file
+    gui_data.save_file_mat.timestamps = recorded_daq_data(:,1);
+    gui_data.save_file_mat.data = recorded_daq_data(:,2:end);
+
+    % --> Close and delete temporary bin file
+    bin_filename = fopen(gui_data.save_file_bin);
+    fclose(gui_data.save_file_bin);
+    delete(bin_filename)
+
+    % Move data to server
     move_data_to_server(gui_data.save_file_mat.Properties.Source,gui_data.status_text_h);
+
 end
 
 % Update gui data
@@ -266,6 +270,7 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
         blank_data = zeros(plot_data_t*obj.Rate,size(daq_data,2));
         gui_data.live_plot_traces = stackedplot(gui_data.live_plot_fig,(0:size(blank_data,1)-1)/obj.Rate,blank_data);
         gui_data.live_plot_traces.DisplayLabels = {gui_data.daq_device.analog.Channels.Name};
+
         % Update gui data
         guidata(gui_fig,gui_data);
     end
@@ -277,7 +282,42 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
 
     % Draw new data to plot
     gui_data.live_plot_traces.YData = new_plot_data;
-    gui_data.live_plot_traces.DisplayLabels = {gui_data.daq_device.analog.Channels.Name};
+    % (??! this line is really slow ~0.2s, no way to not clear the
+    % displaylabels on a stackedplot, really dumb feature)
+%     gui_data.live_plot_traces.DisplayLabels = {gui_data.daq_device.analog.Channels.Name};
+
+
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     %%%%%% TRYING ALTERNATE: SINGLE LINE WITH CHANGING Y-VALUES
+%     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
+% 
+%         plot_spacing = 1;
+%         daq_data_padded = [nan(plot_data_t*obj.Rate,size(daq_data,2));nan(1,size(daq_data,2))];
+%         plot_data_timestamps = (0:size(daq_data_padded,1)-1)/obj.Rate;
+%         live_plot_traces_ycenters = (0:size(daq_data_padded,2)-1)*plot_spacing;
+%         live_plot_axis = axes(gui_data.live_plot_fig, ...
+%             'YTick',live_plot_traces_ycenters, ...
+%             'YTickLabel',strrep({gui_data.daq_device.analog.Channels.Name},'_',' '));
+%         hold on
+%         axis tight
+% 
+%         gui_data.live_plot_traces = ...
+%             plot(repmat(plot_data_timestamps,1,size(daq_data_padded,2)), ...
+%             reshape(daq_data_padded + live_plot_traces_ycenters,[],1));
+% 
+%         gui_data.live_plot_traces.UserData = live_plot_traces_ycenters;
+% 
+%         % Update gui data
+%         guidata(gui_fig,gui_data);
+%     end
+% 
+%     % Shift off old data, swap in new data
+%     old_plot_data = reshape(get(gui_data.live_plot_traces,'YData'),[],size(daq_data,2));
+%     new_plot_data = [old_plot_data(size(daq_data,1)+1:end-1,:); ...
+%         daq_data;nan(1,size(daq_data,2)) + gui_data.live_plot_traces.UserData];
+% 
+%     gui_data.live_plot_traces.YData = reshape(new_plot_data,[],1);
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     % Update gui data
     guidata(gui_fig,gui_data);
