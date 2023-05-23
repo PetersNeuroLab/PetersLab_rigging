@@ -225,12 +225,12 @@ function daq_upload(obj,event,gui_fig)
 % Get gui data
 gui_data = guidata(gui_fig);
 
-% Read buffered data
+% Read all buffered data
 [daq_data,daq_timestamps] = ...
     read(obj,'all','OutputFormat','Matrix');
 
 % If data is empty, return
-% (not sure why this happens sometimes - starts after long runtime)
+% (happens if overlapping function calls so nothing left in buffer)
 if isempty(daq_data)
     return
 end
