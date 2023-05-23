@@ -34,10 +34,12 @@ user_button_h = uicontrol('Parent',gui_fig,'Style','pushbutton', ...
 drawnow;
 
 % Set up DAQ
-update_status_text(status_text_h,'Setting up DAQ...');
+update_status_text(status_text_h,'Setting up DAQ');
 try
-    % Set up DAQ according to local config file
+    % Reset DAQ (and turn off on-demand channel warning)
     daqreset;
+    warning('off','daq:Session:onDemandOnlyChannelsAdded');
+    % Set up DAQ according to local config file
     daq_device = plab.local_rig.timelite_config;
     daq_device.analog.ScansAvailableFcn = @(src,evt,x) daq_upload(src,evt,gui_fig);
 catch me
@@ -46,7 +48,7 @@ catch me
 end
 
 % Start listener for experiment controller
-update_status_text(status_text_h,'Connecting to experiment server...');
+update_status_text(status_text_h,'Connecting to experiment server');
 try
 client_expcontroller = tcpclient("163.1.249.17",plab.locations.timelite_port,'ConnectTimeout',2);
 configureCallback(client_expcontroller, "terminator", ...
@@ -78,7 +80,7 @@ if exist('client_expcontroller','var')
 end
 
 % Update status
-update_status_text(gui_data.status_text_h,'Listening for start...');
+update_status_text(gui_data.status_text_h,'Listening for start');
 
 % Update gui data
 guidata(gui_fig,gui_data);
@@ -113,7 +115,9 @@ function daq_start(gui_fig,save_filename)
 gui_data = guidata(gui_fig);
 
 if ~isempty(save_filename)
-    % If save filename, create save file
+    % If save filename: 
+
+    % Create mat file (to convert at the end)
     % (daq information)
     daq_info = struct( ...
         'rate',gui_data.daq_device.analog.Rate, ...
@@ -124,9 +128,15 @@ if ~isempty(save_filename)
         'channel_name',{gui_data.daq_device.analog.Channels.Name});
     % (daq data - to be filled during streaming)
     [timestamps,data] = deal([]);
-    % (save initial variables and keep open for streaming)
+    % (save initial variables and keep open for adding at the end)
     save(save_filename,'daq_info','timestamps','data','-v7.3');
     gui_data.save_file_mat = matfile(save_filename,'Writable',true);
+
+    % Create binary file (for streaming)
+    [save_path,save_name] = fileparts(save_filename);
+    save_bin_filename = fullfile(save_path,sprintf('%s.bin',save_name));
+    gui_data.save_file_bin = fopen(save_bin_filename,'w+');
+
     % Update status
     update_status_text(gui_data.status_text_h,'RECORDING');
     % Update gui data
@@ -170,15 +180,31 @@ function daq_stop(gui_fig)
 gui_data = guidata(gui_fig);
 
 % Stop DAQ input acquisition, set outputs to LOW
+update_status_text(gui_data.status_text_h,'Running final 4s');
 write(gui_data.daq_device.digital,false); 
 pause(4); % ensure outputs low and other GUIs finished before stopping
 stop(gui_data.daq_device.analog)
 
-% Update status
-update_status_text(gui_data.status_text_h,'Listening for start...');
-
 % Delete live plot
 delete(gui_data.live_plot_fig);
+
+% Move binary streamed data into mat file
+update_status_text(gui_data.status_text_h,'Converting data binary to mat');
+
+% --> Rewind and read data (reshaped into t x [timestamps,chan])
+n_channels = length(gui_data.daq_device.analog.Channels);
+
+frewind(gui_data.save_file_bin);
+recorded_daq_data = reshape(fread(gui_data.save_file_bin,'single'),n_channels+1,[])';
+
+% --> Write data to mat file
+gui_data.save_file_mat.timestamps = recorded_daq_data(:,1);
+gui_data.save_file_mat.data = recorded_daq_data(:,2:end);
+
+% --> Close and delete temporary bin file
+bin_filename = fopen(gui_data.save_file_bin);
+fclose(gui_data.save_file_bin);
+delete(bin_filename)
 
 % Move data to server
 if ~isempty(gui_data.save_file_mat)
@@ -188,7 +214,8 @@ end
 % Update gui data
 guidata(gui_fig,gui_data);
 
-% Enable preview button
+% Reset status and preview button
+update_status_text(gui_data.status_text_h,'Listening for start');
 set(gui_data.user_button_h,'String','PREVIEW','BackgroundColor',[0,0.8,0]);
 
 end
@@ -202,6 +229,12 @@ gui_data = guidata(gui_fig);
 [daq_data,daq_timestamps] = ...
     read(obj,'all','OutputFormat','Matrix');
 
+% If data is empty, return
+% (not sure why this happens sometimes - starts after long runtime)
+if isempty(daq_data)
+    return
+end
+
 % Counter data: convert from unsigned to signed integer type
 % (allow for negative values, rather than overflow)
 % (assumes 32-bit counter)
@@ -209,15 +242,13 @@ position_channels_idx = strcmp({obj.Channels.MeasurementType},'Position');
 daq_data(:,position_channels_idx) = ...
     double(typecast(uint32(daq_data(:,position_channels_idx)),'int32'));
 
-% If save file exists, save data by appending
+% If save file exists, write to binary file
 if isfield(gui_data,'save_file_mat') && ~isempty(gui_data.save_file_mat)
-    % (get index for new data)
-    curr_data_size = size(gui_data.save_file_mat.timestamps,1);
-    new_data_size = length(daq_timestamps);
-    new_data_row_idx = curr_data_size+1:curr_data_size+new_data_size;
-    % (write data appended to existing data .mat file)
-    gui_data.save_file_mat.timestamps(new_data_row_idx,1) = daq_timestamps;
-    gui_data.save_file_mat.data(new_data_row_idx,1:size(daq_data,2)) = daq_data;
+    % Format: [timestamp 1, ch1 t1, ch2 t1...timestamp N, chN tN])
+    % Precision: single (timestamps lose ~4us precision, 32-bit counter is
+    % preserved, 16-bit AI is preserved but 2x space)
+    bin_write_data = reshape(single([daq_timestamps,daq_data])',[],1);
+    fwrite(gui_data.save_file_bin,bin_write_data,'single');
 end
 
 % Plot data
