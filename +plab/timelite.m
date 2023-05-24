@@ -256,15 +256,25 @@ if isfield(gui_data,'save_file_mat') && ~isempty(gui_data.save_file_mat)
 end
 
 % Plot data
+tic
 daq_plot(obj,gui_data,daq_data,gui_fig);
-
+toc
 end
 
 function daq_plot(obj,gui_data,daq_data,gui_fig)
 
+% Annoying feature: 
+% stackplot looks nicer (rescales, shows axes), but changing y-values
+% erases labeling, and adding labeling takes >100ms
+%
+% having one long plot can keep labels, but doesn't show axis scales and
+% requires either not rescaling or finageling to rescale
+
 plot_data_t = 5; % seconds of data to plot
 
+%%%%%%%%%%% OLD: STACKEDPLOT
 if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
+
     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
         % If nothing plotted, create traces and plot data at end
         blank_data = zeros(plot_data_t*obj.Rate,size(daq_data,2));
@@ -284,28 +294,32 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
     gui_data.live_plot_traces.YData = new_plot_data;
     % (??! this line is really slow ~0.2s, no way to not clear the
     % displaylabels on a stackedplot, really dumb feature)
-%     gui_data.live_plot_traces.DisplayLabels = {gui_data.daq_device.analog.Channels.Name};
+    %     gui_data.live_plot_traces.DisplayLabels = {gui_data.daq_device.analog.Channels.Name};
 
+    %  Update gui datad
+    guidata(gui_fig,gui_data);
+
+end
 
 %     %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     %%%%%% TRYING ALTERNATE: SINGLE LINE WITH CHANGING Y-VALUES
-%     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
+%     % (flip data so increasing channels go downward)
+%     plot_spacing = 6;
+%     live_plot_traces_ycenters = (0:size(daq_data,2)-1)*plot_spacing;
 % 
-%         plot_spacing = 1;
+%     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
+%         
 %         daq_data_padded = [nan(plot_data_t*obj.Rate,size(daq_data,2));nan(1,size(daq_data,2))];
 %         plot_data_timestamps = (0:size(daq_data_padded,1)-1)/obj.Rate;
-%         live_plot_traces_ycenters = (0:size(daq_data_padded,2)-1)*plot_spacing;
 %         live_plot_axis = axes(gui_data.live_plot_fig, ...
-%             'YTick',live_plot_traces_ycenters, ...
-%             'YTickLabel',strrep({gui_data.daq_device.analog.Channels.Name},'_',' '));
+%             'YTick',sort(live_plot_traces_ycenters), ...
+%             'YTickLabel',fliplr(strrep({gui_data.daq_device.analog.Channels.Name},'_',' ')));
 %         hold on
 %         axis tight
 % 
 %         gui_data.live_plot_traces = ...
 %             plot(repmat(plot_data_timestamps,1,size(daq_data_padded,2)), ...
 %             reshape(daq_data_padded + live_plot_traces_ycenters,[],1));
-% 
-%         gui_data.live_plot_traces.UserData = live_plot_traces_ycenters;
 % 
 %         % Update gui data
 %         guidata(gui_fig,gui_data);
@@ -314,14 +328,15 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
 %     % Shift off old data, swap in new data
 %     old_plot_data = reshape(get(gui_data.live_plot_traces,'YData'),[],size(daq_data,2));
 %     new_plot_data = [old_plot_data(size(daq_data,1)+1:end-1,:); ...
-%         daq_data;nan(1,size(daq_data,2)) + gui_data.live_plot_traces.UserData];
+%         (fliplr(daq_data) + live_plot_traces_ycenters);nan(1,size(daq_data,2))];
 % 
 %     gui_data.live_plot_traces.YData = reshape(new_plot_data,[],1);
+%     
+%     % Update gui data
+%     guidata(gui_fig,gui_data);
+% 
+% end
 %     %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    % Update gui data
-    guidata(gui_fig,gui_data);
-end
 
 end
 
