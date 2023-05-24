@@ -1515,6 +1515,20 @@ it.Item4 as Timestamp
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>RewardAmount</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>MakeString</scr:Name>
+                    <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                    <MemberName>Name</MemberName>
+                    <Value>RewardAmount</Value>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Merge" />
                   </Expression>
@@ -1543,24 +1557,28 @@ it.Item4 as Timestamp
                   <Edge From="8" To="9" Label="Source1" />
                   <Edge From="9" To="19" Label="Source1" />
                   <Edge From="10" To="11" Label="Source2" />
-                  <Edge From="11" To="25" Label="Source1" />
+                  <Edge From="11" To="29" Label="Source1" />
                   <Edge From="12" To="13" Label="Source2" />
-                  <Edge From="13" To="25" Label="Source2" />
+                  <Edge From="13" To="29" Label="Source2" />
                   <Edge From="14" To="15" Label="Source2" />
-                  <Edge From="15" To="25" Label="Source3" />
+                  <Edge From="15" To="29" Label="Source3" />
                   <Edge From="16" To="17" Label="Source2" />
-                  <Edge From="17" To="25" Label="Source4" />
+                  <Edge From="17" To="29" Label="Source4" />
                   <Edge From="18" To="19" Label="Source2" />
-                  <Edge From="19" To="25" Label="Source5" />
-                  <Edge From="20" To="26" Label="Source2" />
+                  <Edge From="19" To="29" Label="Source5" />
+                  <Edge From="20" To="30" Label="Source2" />
                   <Edge From="21" To="22" Label="Source1" />
                   <Edge From="22" To="24" Label="Source1" />
                   <Edge From="23" To="24" Label="Source2" />
-                  <Edge From="24" To="25" Label="Source6" />
+                  <Edge From="24" To="29" Label="Source6" />
                   <Edge From="25" To="26" Label="Source1" />
-                  <Edge From="26" To="27" Label="Source1" />
-                  <Edge From="27" To="28" Label="Source1" />
-                  <Edge From="28" To="29" Label="Source1" />
+                  <Edge From="26" To="28" Label="Source1" />
+                  <Edge From="27" To="28" Label="Source2" />
+                  <Edge From="28" To="29" Label="Source7" />
+                  <Edge From="29" To="30" Label="Source1" />
+                  <Edge From="30" To="31" Label="Source1" />
+                  <Edge From="31" To="32" Label="Source1" />
+                  <Edge From="32" To="33" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
