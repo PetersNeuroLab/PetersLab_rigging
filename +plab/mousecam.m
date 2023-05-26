@@ -20,10 +20,9 @@ cam_DeviceName = imaqhwinfo('pointgrey').DeviceInfo.DeviceName;
 % - no binning ('F7_Mono8_1280x1024_Mode0')
 % - 2x2 binning ('F7_Mono8_640x512_Mode1')
 video_object = videoinput('pointgrey',cam_DeviceName,'F7_Mono8_640x512_Mode1');
-% video_object = videoinput('pointgrey',cam_DeviceName,'F7_Mono8_1280x1024_Mode0');
-
 
 % (undocumented feature to turn on all embedding)
+% (BUT THIS DOESN'T SEEM TO WORK? Turn on embedding from firmware instead)
 imaqmex('feature','-pointgreyEmbedMetadata',true)
 
 src = getselectedsource(video_object);
