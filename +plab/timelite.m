@@ -256,9 +256,8 @@ if isfield(gui_data,'save_file_mat') && ~isempty(gui_data.save_file_mat)
 end
 
 % Plot data
-tic
 daq_plot(obj,gui_data,daq_data,gui_fig);
-toc
+
 end
 
 function daq_plot(obj,gui_data,daq_data,gui_fig)
