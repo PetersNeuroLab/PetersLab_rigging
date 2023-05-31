@@ -9,21 +9,27 @@ function hamamatsu_test
 % To see list of formats:
 % imaqhwinfo('hamamatsu').DeviceInfo.SupportedFormats';
 
+imaqreset
+
 cam_DeviceName = imaqhwinfo('hamamatsu').DeviceInfo.DeviceName;
-video_object = videoinput('hamamatsu',cam_DeviceName,'MONO16_BIN2x2_1024x1024_FastMode');
-% video_object = videoinput('hamamatsu',cam_DeviceName,'MONO12_BIN2x2_1024x1024_FastMode');
+video_object = videoinput('hamamatsu',cam_DeviceName,'MONO16_BIN2x2_1024x1024_Std');
 src = getselectedsource(video_object);
 
 % video_object.LoggingMode = "disk";
 
 % Set input trigger
+src.TriggerPolarity = "positive";
 src.TriggerSource = "external";
 src.TriggerActive = "level";
 src.TriggerGlobalExposure = "globalreset";
 
 % Set outputs
 src.OutputTriggerKindOpt1 = "triggerready";
+src.OutputTriggerPolarityOpt1 = "positive";
+
 src.OutputTriggerKindOpt2 = "exposure";
+src.OutputTriggerPolarityOpt2 = "positive";
+
 
 %% Set up GUI
 
