@@ -288,8 +288,8 @@ if isfield(gui_data,'save_data_file') && ~isempty(gui_data.save_data_file)
     % [image height, image width, frame number, timestamp]
     write_metadata = [repmat(size(frames,[1,2]),length(frame_metadata),1), ...
         vertcat(frame_metadata.FrameNumber), ...
-        vertcat(frame_metadata.AbsTime)]';
-    fwrite(gui_data.save_metadata_file,write_metadata,'double');
+        vertcat(frame_metadata.AbsTime)];
+    fwrite(gui_data.save_data_file,frames,class(frames));
 end
 
 % Update preview image (only last frame, if multiple)
