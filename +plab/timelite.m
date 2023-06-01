@@ -180,7 +180,7 @@ function daq_stop(gui_fig)
 gui_data = guidata(gui_fig);
 
 % Stop DAQ input acquisition, set outputs to LOW
-update_status_text(gui_data.status_text_h,'Running final 4s');
+update_status_text(gui_data.status_text_h,'Stopping (final 4s)');
 write(gui_data.daq_device.digital,false); 
 pause(4); % ensure outputs low and other GUIs finished before stopping
 stop(gui_data.daq_device.analog)
