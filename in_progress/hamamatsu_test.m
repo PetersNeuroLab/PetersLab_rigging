@@ -4,23 +4,26 @@
 
 function hamamatsu_test
 
+% Clear existing matlab image aquisitions objects
+imaqreset
+
 % Connect and set up camera
 % NOTE: bit depth, binning, and speed mode, set by format
 % To see list of formats:
 % imaqhwinfo('hamamatsu').DeviceInfo.SupportedFormats';
-
-imaqreset
-
 cam_DeviceName = imaqhwinfo('hamamatsu').DeviceInfo.DeviceName;
 video_object = videoinput('hamamatsu',cam_DeviceName,'MONO16_BIN2x2_1024x1024_Std');
 src = getselectedsource(video_object);
 
-% video_object.LoggingMode = "disk";
+% Set logging to go straight to disk
+video_object.LoggingMode = "disk";
 
-% Set input trigger
+% Set input trigger (expose while trigger high)
 src.TriggerPolarity = "positive";
 src.TriggerSource = "external";
 src.TriggerActive = "level";
+
+% Set trigger mode (global reset: all lines start together, end asynch)
 src.TriggerGlobalExposure = "globalreset";
 
 % Set outputs
@@ -100,7 +103,7 @@ gui_data.im_preview_color = ...
 % Update GUI data
 guidata(gui_fig,gui_data);
 
-%%%%%% TESTING
+%%%%%% TESTING ALTERNATING PREVIEW
 video_object.FramesAcquiredFcn = {@preview_cam,gui_fig};
 video_object.FramesAcquiredFcnCount = 8;
 video_object.FramesPerTrigger = Inf;
