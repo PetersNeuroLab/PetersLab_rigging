@@ -117,7 +117,7 @@ end
 
 %% Button functions
 
-function set_roi(h,eventdata,gui_fig)
+function set_roi(obj,eventdata,gui_fig)
 % Draw and set ROI
 
 % Get GUI data
@@ -147,9 +147,9 @@ guidata(gui_fig,gui_data);
 
 end
 
-function cam_manual(h,eventdata,gui_fig)
+function cam_manual(obj,eventdata,gui_fig)
 
-switch h.Value
+switch obj.Value
     case 1
         % Manual recording is turned on
 
@@ -157,10 +157,10 @@ switch h.Value
         gui_data = guidata(gui_fig);
 
         % Change button display and disable other buttons
-        h.String = 'Stop';
-        h.BackgroundColor = [0.8,0,0];
-        h.ForegroundColor = 'w';
-        set(gui_data.controls_h(gui_data.controls_h ~= h),'Enable','off');
+        obj.String = 'Stop';
+        obj.BackgroundColor = [0.8,0,0];
+        obj.ForegroundColor = 'w';
+        set(gui_data.controls_h(gui_data.controls_h ~= obj),'Enable','off');
 
         % User choose mouse name
         animal = cell2mat(inputdlg('Mouse name'));
@@ -195,9 +195,9 @@ switch h.Value
         gui_data = guidata(gui_fig);
 
         % Change button display and disable other buttons
-        h.String = 'Manual';
-        h.BackgroundColor = 'w';
-        h.ForegroundColor = 'k';
+        obj.String = 'Manual';
+        obj.BackgroundColor = 'w';
+        obj.ForegroundColor = 'k';
         set(gui_data.controls_h,'Enable','on');
 
 end
@@ -261,7 +261,7 @@ end
 
 %% Preview/record functions
 
-function preview_embedded_info = preview_cam(h,eventdata,himage)
+function preview_embedded_info = preview_cam(obj,eventdata,himage)
 % Custom preview function: output header information
 
 % Get GUI fig (grab different - can't input to this function)
