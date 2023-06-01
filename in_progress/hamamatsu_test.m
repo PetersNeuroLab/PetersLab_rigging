@@ -15,9 +15,6 @@ cam_DeviceName = imaqhwinfo('hamamatsu').DeviceInfo.DeviceName;
 video_object = videoinput('hamamatsu',cam_DeviceName,'MONO16_BIN2x2_1024x1024_Std');
 src = getselectedsource(video_object);
 
-% Set logging to go straight to disk
-video_object.LoggingMode = "disk";
-
 % Set input trigger (expose while trigger high)
 src.TriggerPolarity = "positive";
 src.TriggerSource = "external";
@@ -27,32 +24,26 @@ src.TriggerActive = "level";
 src.TriggerGlobalExposure = "globalreset";
 
 % Set outputs
+% - Trigger ready: no pixels expose, turn on screens
 src.OutputTriggerKindOpt1 = "triggerready";
 src.OutputTriggerPolarityOpt1 = "positive";
-
+% - Exposure: all lines exposing, turn on illumination
 src.OutputTriggerKindOpt2 = "exposure";
 src.OutputTriggerPolarityOpt2 = "positive";
-
 
 %% Set up GUI
 
 gui_fig = figure('MenuBar','none','Units','Normalized', ...
     'Position',[0.01,0.2,0.32,0.5],'color','w','Colormap',gray);
 
-% Preview image (2 images side-by-side: [color 1, color 2])
-im_axes = axes(gui_fig,'Position',[0,0.05,1,0.8]);
+% Set up preview image
+im_axes = axes(gui_fig,'Position',[0,0.05,1,0.8]); axis tight equal
 im_preview = imagesc(zeros(1));
 
 embedded_info_text = uicontrol('Style','text','String','Embedded header information', ...
     'Units','normalized','Position',[0,0,1,0.05], ...
     'BackgroundColor','w','HorizontalAlignment','left','FontSize',12, ...
     'FontName','Consolas');
-
-% setappdata(im_preview,'UpdatePreviewWindowFcn',@preview_cam);
-setappdata(im_preview,'gui_fig',gui_fig);
-
-% preview(video_object,im_preview);
-axis(im_axes);axis tight equal
 
 % Status text
 status_text_h = uicontrol('Parent',gui_fig,'Style','text', ...
@@ -74,7 +65,7 @@ align(controls_h,'fixed',20,'middle');
 % Start listener for experiment controller
 update_status_text(status_text_h,'Connecting to experiment server');
 try
-    client_expcontroller = tcpclient("163.1.249.17",plab.locations.mousecam_port,'ConnectTimeout',2);
+    client_expcontroller = tcpclient("163.1.249.17",plab.locations.widefield_port,'ConnectTimeout',2);
     configureCallback(client_expcontroller, "terminator", ...
         @(src,event,x) read_expcontroller_data(src,event,gui_fig));
     update_status_text(status_text_h,'Listening for start');
@@ -83,6 +74,11 @@ catch me
     update_status_text(status_text_h,'Error connecting to experiment server');
     warning(me.identifier,'Widefield -- Cannot connect to experiment controller: \n %s',me.message)
 end
+
+% Set function when frames acquired (every 2 frames to display alternating)
+video_object.FramesAcquiredFcn = {@upload_data,gui_fig};
+video_object.FramesAcquiredFcnCount = 2;
+video_object.FramesPerTrigger = Inf;
 
 % Store gui data
 gui_data.video_object = video_object;
@@ -95,19 +91,10 @@ gui_data.controls_h = controls_h;
 if exist('client_expcontroller','var')
     gui_data.client_expcontroller = client_expcontroller;
 end
-% (initialize 2-color preview)
-gui_data.im_preview_curr_color = 1; % (initialize)
-gui_data.im_preview_color = ...
-    repmat({zeros(fliplr(video_object.VideoResolution),'uint16')},1,2);
 
 % Update GUI data
 guidata(gui_fig,gui_data);
 
-%%%%%% TESTING ALTERNATING PREVIEW
-video_object.FramesAcquiredFcn = {@preview_cam,gui_fig};
-video_object.FramesAcquiredFcnCount = 8;
-video_object.FramesPerTrigger = Inf;
-start(video_object);
 
 end
 
@@ -260,11 +247,8 @@ end
 
 %% Preview/record functions
 
-function preview_cam(h,eventdata,gui_fig)
-% Custom preview function: output header information
-
-% % Get GUI fig (grab different - can't input to this function)
-% gui_fig = getappdata(himage,'gui_fig');
+function upload_data(h,eventdata,gui_fig)
+% Display frames and write frames/timestamps to binary file
 
 % Get GUI data
 gui_data = guidata(gui_fig);
@@ -275,50 +259,8 @@ if size(data,4) ~= 2
 end
 set(gui_data.im_preview,'CData',reshape(data,size(data,1),[]))
 
-% % Update appropriate color preview
-% % gui_data.im_preview_color{gui_data.im_preview_curr_color} = ...
-% %     eventdata.Data;
-% gui_data.im_preview_color{1} = ...
-%     eventdata.Data;
-% if gui_data.im_preview_curr_color == 1
-% % Update preview
-% im_preview_sizes = cell2mat(reshape(cellfun(@size, ...
-%     gui_data.im_preview_color,'uni',false),[],1));
-% if all(all(im_preview_sizes == im_preview_sizes(1,:)))
-%     % (if image sizes are the same, concatenate)
-%     himage.CData = horzcat(gui_data.im_preview_color{:});
-% else
-%     % (otherwise: just show the current image)
-%     himage.CData = gui_data.im_preview_color{gui_data.im_preview_curr_color};
-% end
-% end
-% 
-% % Queue next color
-% gui_data.im_preview_curr_color = ...
-%     1 + mod(gui_data.im_preview_curr_color,length(gui_data.im_preview_color));
-
 % Update GUI data
 guidata(gui_fig,gui_data);
-
-end
-
-
-function record_cam_header(video_object,vid_info,header_fileID)
-% Pull headers from memory frames and save
-
-if video_object.FramesAvailable > 0
-
-    % Set embedded pixel index
-    embedded_pixels_idx = 1:40; % 4 px * 10 items = 40 pixels
-
-    % Grab all frames currently in memory
-    curr_im = getdata(video_object, video_object.FramesAvailable);
-
-    % Save raw embedded pixel values in bin file
-    embedded_pixels = permute(curr_im(1,embedded_pixels_idx,1,:),[2,4,1,3]);
-    fwrite(header_fileID,embedded_pixels);
-
-end
 
 end
 

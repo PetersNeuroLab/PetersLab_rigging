@@ -16,6 +16,7 @@ classdef locations
         bonsai_port = 50001
         timelite_port = 50002
         mousecam_port = 50003
+        widefield_port = 50004
 
         % Local bonsai workflow folder
         local_workflow_path = 'C:\Users\peterslab\Documents\GitHub\PetersLab_rigging\bonsai_workflows';
