@@ -268,7 +268,17 @@ end
 
 function daq_plot(obj,gui_data,daq_data,gui_fig)
 
+% Annoying feature: 
+% stackplot looks nicer (rescales, shows axes), but changing y-values
+% erases labeling, and adding labeling takes >100ms
+%
+% having one long plot can keep labels, but doesn't show axis scales and
+% requires either not rescaling or finageling to rescale
+
 plot_data_t = 5; % seconds of data to plot
+
+%%%% OTHER NEW VERSION: TILEDLAYOUT
+
 
 if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
 
@@ -282,13 +292,9 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
             plot(curr_axes,(0:size(blank_data,1)-1)/obj.Rate,blank_data(:,curr_channel));
             ylabel(curr_axes,strrep(gui_data.daq_device.analog.Channels(curr_channel).Name,'_',' '), ...
                 'Rotation',0,'VerticalAlignment','middle','HorizontalAlignment','right');
-            curr_axes.Box = 'off';
-            if curr_channel < size(daq_data,2)
-                curr_axes.XAxis.Visible = 'off';
-            else
-                xlabel(curr_axes,'Time (s)');
-            end
-
+            set(curr_axes,'Box','off');
+            if curr_channel < size(da)
+            
         end
 
         % Update gui data
@@ -308,6 +314,76 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
     guidata(gui_fig,gui_data);
 
 end
+
+%%%%%%%
+
+
+
+% %%%%%%%%%%% OLD: STACKEDPLOT
+% if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
+% 
+%     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
+%         % If nothing plotted, create traces and plot data at end
+%         blank_data = zeros(plot_data_t*obj.Rate,size(daq_data,2));
+%         gui_data.live_plot_traces = stackedplot(gui_data.live_plot_fig,(0:size(blank_data,1)-1)/obj.Rate,blank_data);
+%         gui_data.live_plot_traces.DisplayLabels = {gui_data.daq_device.analog.Channels.Name};
+% 
+%         % Update gui data
+%         guidata(gui_fig,gui_data);
+%     end
+% 
+%     % Shift off old data, swap in new data
+%     old_plot_data = get(gui_data.live_plot_traces,'YData');
+%     new_plot_data = circshift(old_plot_data,-size(daq_data,1),1);
+%     new_plot_data(end-size(daq_data,1)+1:end,:) = daq_data;
+% 
+%     % Draw new data to plot
+%     gui_data.live_plot_traces.YData = new_plot_data;
+%     % (??! this line is really slow ~0.2s, no way to not clear the
+%     % displaylabels on a stackedplot, really dumb feature)
+%     %     gui_data.live_plot_traces.DisplayLabels = {gui_data.daq_device.analog.Channels.Name};
+% 
+%     %  Update gui data
+%     guidata(gui_fig,gui_data);
+% 
+% end
+
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     %%%%%% TRYING ALTERNATE: SINGLE LINE WITH CHANGING Y-VALUES
+%     % (flip data so increasing channels go downward)
+%     plot_spacing = 6;
+%     live_plot_traces_ycenters = (0:size(daq_data,2)-1)*plot_spacing;
+% 
+%     if ~isfield(gui_data,'live_plot_traces') || ~any(isgraphics(gui_data.live_plot_traces))
+%         
+%         daq_data_padded = [nan(plot_data_t*obj.Rate,size(daq_data,2));nan(1,size(daq_data,2))];
+%         plot_data_timestamps = (0:size(daq_data_padded,1)-1)/obj.Rate;
+%         live_plot_axis = axes(gui_data.live_plot_fig, ...
+%             'YTick',sort(live_plot_traces_ycenters), ...
+%             'YTickLabel',fliplr(strrep({gui_data.daq_device.analog.Channels.Name},'_',' ')));
+%         hold on
+%         axis tight
+% 
+%         gui_data.live_plot_traces = ...
+%             plot(repmat(plot_data_timestamps,1,size(daq_data_padded,2)), ...
+%             reshape(daq_data_padded + live_plot_traces_ycenters,[],1));
+% 
+%         % Update gui data
+%         guidata(gui_fig,gui_data);
+%     end
+% 
+%     % Shift off old data, swap in new data
+%     old_plot_data = reshape(get(gui_data.live_plot_traces,'YData'),[],size(daq_data,2));
+%     new_plot_data = [old_plot_data(size(daq_data,1)+1:end-1,:); ...
+%         (fliplr(daq_data) + live_plot_traces_ycenters);nan(1,size(daq_data,2))];
+% 
+%     gui_data.live_plot_traces.YData = reshape(new_plot_data,[],1);
+%     
+%     % Update gui data
+%     guidata(gui_fig,gui_data);
+% 
+% end
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 end
 
