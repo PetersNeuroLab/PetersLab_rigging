@@ -138,14 +138,14 @@ if ~isempty(save_filename)
     gui_data.save_file_bin = fopen(save_bin_filename,'w+');
 
     % Update status
-    update_status_text(gui_data.status_text_h,'RECORDING');
+    update_status_text(gui_data.status_text_h,sprintf('Recording: %s',save_path));
     % Update gui data
     guidata(gui_fig,gui_data);
 else
     % If no save filename, empty (preview mode - no recording)
     gui_data.save_file_mat = [];
     % Update status
-    update_status_text(gui_data.status_text_h,'PREVIEWING');
+    update_status_text(gui_data.status_text_h,'Previewing');
     % Update gui data
     guidata(gui_fig,gui_data);
 end
@@ -184,6 +184,12 @@ update_status_text(gui_data.status_text_h,'Stopping (final 4s)');
 write(gui_data.daq_device.digital,false); 
 pause(4); % ensure outputs low and other GUIs finished before stopping
 stop(gui_data.daq_device.analog)
+
+% Upload remaining data (and get updated gui data)
+if gui_data.daq_device.analog.NumScansAvailable > 0
+    daq_upload(gui_data.daq_device.analog,[],gui_fig);
+    gui_data = guidata(gui_fig);
+end
 
 % Delete live plot
 delete(gui_data.live_plot_fig);
@@ -295,7 +301,7 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
     % displaylabels on a stackedplot, really dumb feature)
     %     gui_data.live_plot_traces.DisplayLabels = {gui_data.daq_device.analog.Channels.Name};
 
-    %  Update gui datad
+    %  Update gui data
     guidata(gui_fig,gui_data);
 
 end
