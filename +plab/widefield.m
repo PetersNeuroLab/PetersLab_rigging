@@ -34,7 +34,7 @@ src.OutputTriggerPolarityOpt2 = "positive";
 %% Set up GUI
 
 gui_fig = figure('MenuBar','none','Units','Normalized', ...
-    'Position',[0.01,0.2,0.32,0.4],'color','w','Colormap',gray);
+    'Position',[0.01,0.1,0.5,0.5],'color','w','Colormap',gray);
 
 % Set up preview image (two colors + moving difference)
 n_axes = 2;
@@ -58,19 +58,18 @@ status_text_h = uicontrol('Parent',gui_fig,'Style','text', ...
 
 % Control buttons
 button_fontsize = 12;
-view_button_position = [0,0.85,0.3,0.1];
+button_position = [0.85,0.9,0.15,0.1];
 clear controls_h
 controls_h(1) = uicontrol('Parent',gui_fig,'Style','pushbutton','FontSize',button_fontsize, ...
-    'Units','normalized','Position',view_button_position,'BackgroundColor','w', ...
+    'Units','normalized','Position',button_position,'BackgroundColor','w', ...
     'String','Set ROI','Callback',{@set_roi,gui_fig},'Enable','on');
-align(controls_h,'fixed',20,'middle');
 
 % Color limit setting
-uicontrol('Parent',gui_fig,'Style','text','FontSize',button_fontsize, ...
-    'Units','normalized','Position',[0.7,0,0.15,0.08],'String','White: ', ...
+clim_text_h = uicontrol('Parent',gui_fig,'Style','text','FontSize',button_fontsize, ...
+    'Units','normalized','Position',[0.85,0,0.05,0.05],'String','White: ', ...
     'BackgroundColor','w','HorizontalAlignment','right');
 clim_h = uicontrol('Parent',gui_fig,'Style','edit','FontSize',button_fontsize, ...
-    'Units','normalized','Position',[0.85,0,0.15,0.08],'String',num2str(2^16));
+    'Units','normalized','Position',[0.9,0,0.10,0.05],'String',num2str(2^16));
 
 % Start listener for experiment controller
 update_status_text(status_text_h,'Connecting to experiment server');
@@ -89,6 +88,22 @@ end
 video_object.FramesAcquiredFcn = {@upload_data,gui_fig};
 video_object.FramesAcquiredFcnCount = 1;
 video_object.FramesPerTrigger = Inf;
+
+% If a previous ROI was used, set that ROI
+matlab_settings = settings;
+if hasGroup(matlab_settings,'widefield')
+    video_object.ROIPosition = matlab_settings.widefield.roi.PersonalValue;
+    % Set axes tight to ROI
+    for curr_axes = 1:length(im_axes)
+        axes(im_axes(curr_axes));
+        axis tight;
+    end
+else
+    % (if no previous ROI, create setting)
+    addGroup(matlab_settings,'widefield');
+    addSetting(matlab_settings.widefield,'roi');
+    matlab_settings.widefield.roi.PersonalValue = video_object.ROIPosition;
+end
 
 % Start the camera
 % (keeping the adapter running benefits in removing abberant expose signals
@@ -156,6 +171,10 @@ for curr_axes = 1:length(gui_data.im_axes)
     axes(gui_data.im_axes(curr_axes));
     axis tight;
 end
+
+% Store ROI for use on next load
+matlab_settings = settings;
+matlab_settings.widefield.roi.PersonalValue = gui_data.video_object.ROIPosition;
 
 % Reset status
 update_status_text(gui_data.status_text_h,'Listening for start');
