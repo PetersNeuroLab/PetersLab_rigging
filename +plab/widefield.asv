@@ -177,8 +177,7 @@ gui_data = guidata(gui_fig);
 set(gui_data.controls_h,'Enable','off');
 
 % Set relative frame info for display
-gui_data.frame_info.start_frame_n = gui_data.frame_info.last_frame_n;
-gui_data.frame_info.start_time = datetime('now');
+gui_data.start_frame_info = [gui_data.last_frame_number,datetime('now')];
 
 % Open files for saving (data, metadata)
 save_data_filename = sprintf('%s_data.bin',save_path);
@@ -253,15 +252,8 @@ if isfield(gui_data,'save_data_file') && ~isempty(gui_data.save_data_file)
     fwrite(gui_data.save_metadata_file,write_metadata,'double');
 end
 
-% Display metadata text
-recording_frame_number = frame_metadata(end).FrameNumber - gui_data.frame_info.start_frame_n;
-recording_timestamp = datetime('now') - gui_data.frame_info.start_time;
-set(gui_data.metadata_text,'String',sprintf( ...
-    'Frame %d, %s', ...
-    recording_frame_number,recording_timestamp))
-
 % Update preview image (only last frame, if multiple)
-update_preview_idx = mod(1+recording_frame_number,length(gui_data.im_preview))+1;
+update_preview_idx = mod(1+frame_metadata(end).FrameNumber,length(gui_data.im_preview))+1;
 set(gui_data.im_preview(update_preview_idx),'CData',frames(:,:,:,end));
 
 user_clim = str2double(get(gui_data.clim_h,'String'));
@@ -272,6 +264,14 @@ end
 if max(max(clim(gui_data.im_axes(update_preview_idx)))) ~= user_clim
     clim(gui_data.im_axes(update_preview_idx),[0,user_clim]);
 end
+
+% Display metadata text
+recording_frame_number = frame_metadata(end).FrameNumber - gui_data.frame_info.start_frame_n;
+recording_timestamp = seconds(frame_timestamps(end) - gui_data.frame_info.start_time);
+recording_timestamp.Format = 'hh:mm:ss';
+set(gui_data.metadata_text,'String',sprintf( ...
+    'Frame number: %d, Duration: %s', ...
+    recording_frame_number,recording_timestamp))
 
 % Store frame number (to display relative to recording start, rather than start trigger)
 gui_data.frame_info.last_frame_n = frame_metadata(end).FrameNumber;
