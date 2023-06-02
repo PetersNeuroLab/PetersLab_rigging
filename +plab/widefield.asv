@@ -34,7 +34,7 @@ src.OutputTriggerPolarityOpt2 = "positive";
 %% Set up GUI
 
 gui_fig = figure('MenuBar','none','Units','Normalized', ...
-    'Position',[0.01,0.1,0.5,0.5],'color','w','Colormap',gray);
+    'Position',[0.01,0.1,0.45,0.5],'color','w','Colormap',gray);
 
 % Set up preview image (two colors + moving difference)
 n_axes = 2;
@@ -58,7 +58,7 @@ status_text_h = uicontrol('Parent',gui_fig,'Style','text', ...
 
 % Control buttons
 button_fontsize = 12;
-button_position = [0.85,0.9,0.15,0.1];
+button_position = [0.85,0,0.15,0.08];
 clear controls_h
 controls_h(1) = uicontrol('Parent',gui_fig,'Style','pushbutton','FontSize',button_fontsize, ...
     'Units','normalized','Position',button_position,'BackgroundColor','w', ...
@@ -66,10 +66,11 @@ controls_h(1) = uicontrol('Parent',gui_fig,'Style','pushbutton','FontSize',butto
 
 % Color limit setting
 clim_text_h = uicontrol('Parent',gui_fig,'Style','text','FontSize',button_fontsize, ...
-    'Units','normalized','Position',[0.85,0,0.05,0.05],'String','White: ', ...
+    'Units','normalized','Position',button_position,'String','White: ', ...
     'BackgroundColor','w','HorizontalAlignment','right');
 clim_h = uicontrol('Parent',gui_fig,'Style','edit','FontSize',button_fontsize, ...
-    'Units','normalized','Position',[0.9,0,0.10,0.05],'String',num2str(2^16));
+    'Units','normalized','Position',button_position,'String',num2str(2^16));
+align([controls_h,clim_text_h,clim_h],'fixed',20,'middle');
 
 % Start listener for experiment controller
 update_status_text(status_text_h,'Connecting to experiment server');
