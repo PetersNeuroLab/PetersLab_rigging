@@ -229,6 +229,7 @@ start(gui_data.video_object);
 gui_data.set_relative_info_flag = true;
 
 % Update status text
+set(gui_fig,'color',[1,0.7,0.7]);
 update_status_text(gui_data.status_text_h,'RECORDING');
 
 % Update GUI data
@@ -255,6 +256,7 @@ curr_data_path = get(gui_data.video_object.DiskLogger,'path');
 move_data_to_server(curr_data_path,gui_data.status_text_h);
 
 % Update status text
+set(gui_fig,'color','w');
 update_status_text(gui_data.status_text_h,'Listening for start');
 
 end
