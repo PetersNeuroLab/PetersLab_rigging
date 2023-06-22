@@ -207,6 +207,7 @@ gui_data.save_data_file = fopen(save_data_filename,'w');
 gui_data.save_metadata_file = fopen(save_metadata_filename,'w');
 
 % Update status text
+set(gui_fig,'color',[1,0.7,0.7]);
 update_status_text(gui_data.status_text_h,sprintf('Recording: %s',save_path));
 
 % Update GUI data
@@ -237,6 +238,7 @@ gui_data = rmfield(gui_data,{'save_data_file','save_metadata_file'});
 set(gui_data.controls_h,'Enable','on');
 
 % Update status text
+set(gui_fig,'color','w');
 update_status_text(gui_data.status_text_h,'Listening for start');
 
 % Update GUI data

@@ -230,7 +230,7 @@ gui_data.set_relative_info_flag = true;
 
 % Update status text
 set(gui_fig,'color',[1,0.7,0.7]);
-update_status_text(gui_data.status_text_h,'RECORDING');
+update_status_text(gui_data.status_text_h,sprintf('Recording: %s',save_path));
 
 % Update GUI data
 guidata(gui_fig,gui_data);
