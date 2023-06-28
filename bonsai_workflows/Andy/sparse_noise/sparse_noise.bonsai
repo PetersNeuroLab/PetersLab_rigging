@@ -391,7 +391,7 @@
               <ExtentY>90</ExtentY>
               <LocationX>0</LocationX>
               <LocationY>0</LocationY>
-              <Layer>0</Layer>
+              <Layer>1</Layer>
               <ScaleX>1</ScaleX>
               <ScaleY>1</ScaleY>
               <ShiftX>0</ShiftX>
@@ -545,7 +545,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:Timer">
-                <gl:DueTime>PT10S</gl:DueTime>
+                <gl:DueTime>PT10M</gl:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">

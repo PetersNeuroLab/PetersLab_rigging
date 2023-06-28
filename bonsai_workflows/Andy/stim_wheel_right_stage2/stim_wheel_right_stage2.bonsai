@@ -544,7 +544,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
                     <LocationX>90</LocationX>
                     <LocationY>0</LocationY>
-                    <Layer>0</Layer>
+                    <Layer>1</Layer>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
