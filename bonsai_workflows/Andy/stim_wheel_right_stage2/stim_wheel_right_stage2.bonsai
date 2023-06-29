@@ -544,11 +544,11 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
                     <LocationX>90</LocationX>
                     <LocationY>0</LocationY>
-                    <Layer>1</Layer>
+                    <Layer>0</Layer>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>18735.72</Phase>
+                    <Phase>13922.874</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -924,7 +924,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT6.9S</rx:DueTime>
+                <rx:DueTime>PT4.7S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -987,7 +987,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1.2S</rx:DueTime>
+                <rx:DueTime>PT1.5S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">

@@ -137,8 +137,8 @@
   <DialogSettings xsi:type="WorkflowEditorSettings">
     <Visible>true</Visible>
     <Location>
-      <X>20</X>
-      <Y>307</Y>
+      <X>797</X>
+      <Y>521</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -441,8 +441,8 @@
   <DialogSettings xsi:type="WorkflowEditorSettings">
     <Visible>true</Visible>
     <Location>
-      <X>20</X>
-      <Y>374</Y>
+      <X>798</X>
+      <Y>595</Y>
     </Location>
     <Size>
       <Width>336</Width>

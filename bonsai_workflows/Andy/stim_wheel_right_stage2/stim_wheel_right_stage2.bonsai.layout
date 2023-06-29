@@ -137,8 +137,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>13</X>
-      <Y>293</Y>
+      <X>788</X>
+      <Y>527</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -379,15 +379,19 @@
     </EditorDialogSettings>
   </DialogSettings>
   <DialogSettings>
-    <Visible>false</Visible>
+    <Visible>true</Visible>
     <Location>
-      <X>0</X>
-      <Y>0</Y>
+      <X>787</X>
+      <Y>618</Y>
     </Location>
     <Size>
-      <Width>0</Width>
-      <Height>0</Height>
+      <Width>336</Width>
+      <Height>65</Height>
     </Size>
     <WindowState>Normal</WindowState>
+    <VisualizerTypeName>Bonsai.Design.ObjectTextVisualizer</VisualizerTypeName>
+    <VisualizerSettings>
+      <ObjectTextVisualizer />
+    </VisualizerSettings>
   </DialogSettings>
 </VisualizerLayout>
