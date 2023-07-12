@@ -99,16 +99,16 @@
           <Nodes>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:CreateWindow">
-                <gl:Width>640</gl:Width>
-                <gl:Height>480</gl:Height>
+                <gl:Width>3840</gl:Width>
+                <gl:Height>1024</gl:Height>
                 <gl:VSync>On</gl:VSync>
                 <gl:SwapSync>false</gl:SwapSync>
                 <gl:ClearColor>Gray</gl:ClearColor>
                 <gl:ClearMask>DepthBufferBit ColorBufferBit</gl:ClearMask>
-                <gl:CursorVisible>true</gl:CursorVisible>
+                <gl:CursorVisible>false</gl:CursorVisible>
                 <gl:Location xsi:nil="true" />
-                <gl:WindowBorder>Resizable</gl:WindowBorder>
-                <gl:WindowState>Fullscreen</gl:WindowState>
+                <gl:WindowBorder>Hidden</gl:WindowBorder>
+                <gl:WindowState>Normal</gl:WindowState>
                 <gl:DisplayDevice>Second</gl:DisplayDevice>
                 <gl:TargetRenderFrequency>60</gl:TargetRenderFrequency>
                 <gl:TargetUpdateFrequency xsi:nil="true" />

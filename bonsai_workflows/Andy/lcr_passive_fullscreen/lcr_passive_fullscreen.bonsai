@@ -84,16 +84,16 @@
           <Nodes>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:CreateWindow">
-                <gl:Width>640</gl:Width>
-                <gl:Height>480</gl:Height>
+                <gl:Width>3840</gl:Width>
+                <gl:Height>1024</gl:Height>
                 <gl:VSync>On</gl:VSync>
                 <gl:SwapSync>false</gl:SwapSync>
                 <gl:ClearColor>Gray</gl:ClearColor>
                 <gl:ClearMask>DepthBufferBit ColorBufferBit</gl:ClearMask>
-                <gl:CursorVisible>true</gl:CursorVisible>
+                <gl:CursorVisible>false</gl:CursorVisible>
                 <gl:Location xsi:nil="true" />
-                <gl:WindowBorder>Resizable</gl:WindowBorder>
-                <gl:WindowState>Fullscreen</gl:WindowState>
+                <gl:WindowBorder>Hidden</gl:WindowBorder>
+                <gl:WindowState>Normal</gl:WindowState>
                 <gl:DisplayDevice>Second</gl:DisplayDevice>
                 <gl:TargetRenderFrequency>60</gl:TargetRenderFrequency>
                 <gl:TargetUpdateFrequency xsi:nil="true" />
@@ -521,21 +521,21 @@
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>90</LocationX>
+                    <LocationX>0</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>1</Layer>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>-4010.70459</Phase>
+                    <Phase>-859.4367</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
                     <Opacity>1</Opacity>
-                    <ExtentX>20</ExtentX>
-                    <ExtentY>20</ExtentY>
+                    <ExtentX>90</ExtentX>
+                    <ExtentY>90</ExtentY>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:TakeUntil" />
@@ -625,7 +625,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:Timer">
-                      <gl:DueTime>PT1.9S</gl:DueTime>
+                      <gl:DueTime>PT1.1S</gl:DueTime>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -765,7 +765,7 @@ it.Item4 as Timestamp
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="io:CsvWriter">
-              <io:FileName>C:\bonsai_events.csv</io:FileName>
+              <io:FileName>C:\Users\peterslab\Desktop\bonsai_events.csv</io:FileName>
               <io:Append>false</io:Append>
               <io:Overwrite>true</io:Overwrite>
               <io:Suffix>None</io:Suffix>
@@ -1013,7 +1013,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="StringProperty">
-                      <Value>C:\Users\petersa\Desktop</Value>
+                      <Value>C:\Users\peterslab\Desktop</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
