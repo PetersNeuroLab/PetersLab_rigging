@@ -38,6 +38,9 @@ src.Brightness = 7;
 src.Strobe3 = 'On';
 src.Strobe3Polarity = 'High';
 
+% Reset adapter (keeps avove settings, but releases CPU resources)
+imaqreset
+
 % Set GPIO pin direction with GenTL adaptor
 cam_DeviceName = imaqhwinfo('gentl').DeviceInfo.DeviceName;
 video_object = videoinput('gentl',cam_DeviceName,'Mono8');
