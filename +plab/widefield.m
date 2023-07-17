@@ -46,6 +46,24 @@ for curr_axes = 1:n_axes
     im_preview(curr_axes) = imshow(zeros(video_object.VideoResolution,'uint16'),Border="tight");
 end
 
+% Set up saturation display axes
+n_axes = 2;
+im_saturation_axes = gobjects(n_axes,1);
+im_saturation_preview = gobjects(n_axes,1);
+for curr_axes = 1:n_axes
+    im_saturation_axes(curr_axes) = axes(gui_fig,'Position', ...
+        [(curr_axes-1)*(1/n_axes),0.05,1/n_axes,0.8]);
+    im_saturation = im2uint8(cat(3,true(video_object.VideoResolution), ...
+        false([video_object.VideoResolution,2])));
+    im_saturation_preview(curr_axes) = imshow(im_saturation,Border="tight");
+    % (make it not selectable so ROI can be drawn underneath)
+    set(im_saturation_preview(curr_axes),'PickableParts','none');
+end
+
+% Link all axes
+linkaxes(vertcat(im_axes,im_saturation_axes),'xy')
+
+% Metadata text
 metadata_text = uicontrol('Style','text','String','Frame info', ...
     'Units','normalized','Position',[0,0,1,0.05], ...
     'BackgroundColor','w','HorizontalAlignment','left','FontSize',12, ...
@@ -95,7 +113,7 @@ if hasGroup(matlab_settings,'widefield')
     video_object.ROIPosition = matlab_settings.widefield.roi.PersonalValue;
     % Set axes tight to ROI
     for curr_axes = 1:length(im_axes)
-        axes(im_axes(curr_axes));
+        axis(im_axes(curr_axes));
         axis tight;
     end
 else
@@ -115,8 +133,13 @@ start(video_object);
 % Store gui data
 gui_data.video_object = video_object;
 gui_data.gui_fig = gui_fig;
+
 gui_data.im_axes = im_axes;
 gui_data.im_preview = im_preview;
+
+gui_data.im_saturation_axes = im_saturation_axes;
+gui_data.im_saturation_preview = im_saturation_preview;
+
 gui_data.metadata_text = metadata_text;
 gui_data.status_text_h = status_text_h;
 gui_data.controls_h = controls_h;
@@ -168,7 +191,7 @@ start(gui_data.video_object);
 
 % Set tight axes
 for curr_axes = 1:length(gui_data.im_axes)
-    axes(gui_data.im_axes(curr_axes));
+    axis(gui_data.im_axes(curr_axes));
     axis tight;
 end
 
@@ -293,6 +316,18 @@ end
 if max(max(clim(gui_data.im_axes(update_preview_idx)))) ~= user_clim
     clim(gui_data.im_axes(update_preview_idx),[0,user_clim]);
 end
+
+% Turn on saturation pixels
+% (make saturation pixel mask same size, if different)
+if ~all(size(gui_data.im_saturation_preview(update_preview_idx).CData,[1,2]) == ...
+        size(frames(:,:,end)))
+    im_saturation = im2uint8(cat(3,true(size(frames,[1,2])), ...
+        false([size(frames,[1,2]),2])));
+    set(gui_data.im_saturation_preview(update_preview_idx), ...
+        'CData',im_saturation);
+end
+% (set saturated pixels as visible)
+set(gui_data.im_saturation_preview(update_preview_idx),'AlphaData',frames(:,:,:,end) >= (2^16-1));
 
 % Store frame number (to display relative to recording start, rather than start trigger)
 gui_data.frame_info.last_frame_n = frame_metadata(end).FrameNumber;
