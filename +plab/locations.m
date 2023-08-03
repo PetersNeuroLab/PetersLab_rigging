@@ -61,7 +61,7 @@ classdef locations
                     animal,rec_day},varargin];
             else
                 filename_components = [{plab.locations.local_data_path, ...
-                    animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
+                    animal,rec_day,sprintf('Recording_%s',rec_time)},varargin];
             end
 
             % Ensure uniform char type, format as path
@@ -78,7 +78,7 @@ classdef locations
                     animal,rec_day},varargin];
             else
                 filename_components = [{plab.locations.server_data_path, ...
-                    animal,rec_day,sprintf('Protocol_%s',rec_time)},varargin];
+                    animal,rec_day,sprintf('Recording_%s',rec_time)},varargin];
             end
 
             % Ensure uniform char type, format as path
