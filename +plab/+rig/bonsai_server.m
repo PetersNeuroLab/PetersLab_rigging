@@ -21,7 +21,7 @@ communication_handles.u_bonsai = udpport("IPV4");
 
 % Setup listening to Bonsai workflow
 % (load the jar file)
-java_path = fullfile(fileparts(which('plab.bonsai_server')),'+bonsai_server_helpers');
+java_path = fullfile(fileparts(which('plab.rig.bonsai_server')),'+bonsai_server_helpers');
 javaaddpath(fullfile(java_path,'javaosctomatlab.jar'));
 
 % (import java packages)
@@ -74,7 +74,7 @@ function readData(client, ~, bonsai_server_fig)
     if strcmp(client.UserData, 'stop')
         % send stop to bonsai
         communication_handles = guidata(bonsai_server_fig);
-        plab.bonsai_server_helpers.bonsai_oscsend(communication_handles.u_bonsai,'/stop',"localhost",30000,'s','stop');
+        plab.rig.bonsai_server_helpers.bonsai_oscsend(communication_handles.u_bonsai,'/stop',"localhost",30000,'s','stop');
     else
         run_bonsai(bonsai_server_fig);
     end
@@ -111,7 +111,7 @@ function run_bonsai(bonsai_server_fig)
     copyfile(workflowpath, local_worfkflow_path);
 
     % start bonsai
-    plab.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_path}, [], 1);
+    plab.rig.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_path}, [], 1);
     
     % Update save path into GUI data
     communication_handles.save_path = save_path;
