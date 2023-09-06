@@ -567,10 +567,10 @@
                           <Combinator xsi:type="rx:Merge" />
                         </Expression>
                         <Expression xsi:type="MulticastSubject">
-                          <Name>StimOn</Name>
+                          <Name>PhotodiodeSquare</Name>
                         </Expression>
                         <Expression xsi:type="MulticastSubject">
-                          <Name>PhotodiodeSquare</Name>
+                          <Name>StimOn</Name>
                         </Expression>
                         <Expression xsi:type="WorkflowOutput" />
                       </Nodes>
