@@ -262,11 +262,11 @@ if isfield(gui_data,'save_file_mat') && ~isempty(gui_data.save_file_mat)
 end
 
 % Plot data
-daq_plot(obj,gui_data,daq_data,gui_fig);
+daq_plot(obj,gui_data,daq_data,daq_timestamps,gui_fig);
 
 end
 
-function daq_plot(obj,gui_data,daq_data,gui_fig)
+function daq_plot(obj,gui_data,daq_data,daq_timestamps,gui_fig)
 
 plot_data_t = 5; % seconds of data to plot
 
@@ -296,12 +296,18 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
     end
 
     % For each channel: shift off old data, draw in new data
+    live_plot_axes = get(gui_data.live_plot_traces,'Children');
+
+    old_t = get(get(live_plot_axes(1),'Children'),'XData');
+    new_t = horzcat(old_t(length(daq_timestamps)+1:end), ...
+            reshape(daq_timestamps,1,[]));
+
     for curr_channel = 1:size(daq_data,2)
-        curr_axes = nexttile(gui_data.live_plot_traces,curr_channel);
-        old_plot_data = get(get(curr_axes,'Children'),'YData');
+        old_plot_data = get(get(live_plot_axes(curr_channel),'Children'),'YData');
         new_plot_data = horzcat(old_plot_data(size(daq_data,1)+1:end), ...
             daq_data(:,curr_channel)');
-        set(get(curr_axes,'Children'),'YData',new_plot_data);
+        set(get(live_plot_axes(curr_channel),'Children'), ...
+            'XData',new_t,'YData',new_plot_data);
     end
 
     %  Update gui data
