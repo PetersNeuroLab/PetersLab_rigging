@@ -181,7 +181,7 @@ switch obj.Value
         save_dir = plab.locations.local_data_path;
         rec_day = datestr(now,'YYYY-mm-DD');
         rec_time = datestr(now,'HHMM');
-        save_path = plab.locations.make_local_filename( ...
+        save_path = plab.locations.filename('local', ...
             animal,rec_day,rec_time,'mousecam');
 
         % Make local data directory
@@ -405,7 +405,7 @@ else
 
     % Set local filename
     save_path = ...
-        plab.locations.make_local_filename( ...
+        plab.locations.filename('local', ...
         rec_info.mouse,rec_info.date,rec_info.time,'mousecam');
 
     % Make local save directory
