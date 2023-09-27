@@ -296,7 +296,7 @@ if isfield(gui_data,'live_plot_fig') && isvalid(gui_data.live_plot_fig)
     end
 
     % For each channel: shift off old data, draw in new data
-    live_plot_axes = get(gui_data.live_plot_traces,'Children');
+    live_plot_axes = flipud(get(gui_data.live_plot_traces,'Children'));
 
     old_t = get(get(live_plot_axes(1),'Children'),'XData');
     new_t = horzcat(old_t(length(daq_timestamps)+1:end), ...
