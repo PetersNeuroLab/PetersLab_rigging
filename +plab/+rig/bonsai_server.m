@@ -4,7 +4,9 @@ function bonsai_server
 
 % Create figure on iPad screens
 monitors_pos = get(0, 'MonitorPosition');
-ipad_screens = monitors_pos(1,:);
+% (determine ipad screen by x-width)
+ipad_screens_idx = monitors_pos(:,3) == 3840;
+ipad_screens = monitors_pos(ipad_screens_idx,:);
 bonsai_server_fig = ...
     uifigure('Position',ipad_screens,'color','#828282', ...
     'toolbar','none','menubar','none','CloseRequestFcn',@close_bonsai_server);
