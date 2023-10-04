@@ -660,7 +660,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="wie:KeyDown">
-                      <wie:Filter>W</wie:Filter>
+                      <wie:Filter>LButton RButton Cancel MButton XButton1 XButton2 ShiftKey ControlKey Menu Pause Capital CapsLock KanaMode HanguelMode HangulMode JunjaMode A B C D E F G P Q R S T U V W Shift Control</wie:Filter>
                       <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
                     </Combinator>
                   </Expression>
