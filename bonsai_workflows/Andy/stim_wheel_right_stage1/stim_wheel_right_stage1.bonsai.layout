@@ -324,13 +324,13 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>947</Width>
-        <Height>742</Height>
+        <Width>922</Width>
+        <Height>669</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
   </DialogSettings>
-  <DialogSettings>
+  <DialogSettings xsi:type="WorkflowEditorSettings">
     <Visible>true</Visible>
     <Location>
       <X>26</X>
@@ -345,5 +345,17 @@
     <VisualizerSettings>
       <ObjectTextVisualizer />
     </VisualizerSettings>
+    <EditorDialogSettings>
+      <Visible>false</Visible>
+      <Location>
+        <X>3</X>
+        <Y>3</Y>
+      </Location>
+      <Size>
+        <Width>922</Width>
+        <Height>669</Height>
+      </Size>
+      <WindowState>Normal</WindowState>
+    </EditorDialogSettings>
   </DialogSettings>
 </VisualizerLayout>
