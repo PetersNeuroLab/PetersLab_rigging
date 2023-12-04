@@ -694,6 +694,9 @@
           <rx:Count>1</rx:Count>
         </Combinator>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Last" />
+      </Expression>
       <Expression xsi:type="rx:SelectMany">
         <Name>EndDelay</Name>
         <Workflow>
@@ -1141,7 +1144,8 @@ def process(value):
       <Edge From="8" To="9" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
-      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="13" To="14" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

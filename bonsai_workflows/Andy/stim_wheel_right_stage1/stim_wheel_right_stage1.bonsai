@@ -1172,10 +1172,10 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Name>StimOn</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>PhotodiodeSquare</Name>
+                    <Name>StimContrast</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>StimContrast</Name>
+                    <Name>PhotodiodeSquare</Name>
                   </Expression>
                 </Nodes>
                 <Edges>
