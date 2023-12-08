@@ -382,6 +382,9 @@
                 <io:ReceivedBytesThreshold>1</io:ReceivedBytesThreshold>
               </Combinator>
             </Expression>
+            <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+              <rx:Name>ManualReward</rx:Name>
+            </Expression>
           </Nodes>
           <Edges />
         </Workflow>
