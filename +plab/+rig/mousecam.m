@@ -30,7 +30,7 @@ src.FrameRate = 30;
 src.ExposureMode = 'manual';
 src.Exposure = -6;
 src.GainMode = 'manual';
-src.Gain = 6;
+src.Gain = 10;
 src.ShutterMode = 'manual';
 src.Shutter = 6;
 src.Brightness = 7;
@@ -249,6 +249,10 @@ function cam_start(gui_fig,save_path)
 % Get GUI data
 gui_data = guidata(gui_fig);
 
+% Put camera into trigger mode (temporarily stops acquisition)
+src = getselectedsource(gui_data.video_object);
+src.TriggerMode = 'on';
+
 % Create videowriter
 vidWriter = VideoWriter(fullfile(save_path,'mousecam.mj2'), 'Motion JPEG 2000');
 vidWriter.CompressionRatio = 10;
@@ -261,7 +265,12 @@ gui_data.header_fileID = fopen(header_fn,'w');
 gui_data.video_object.FramesAcquiredFcnCount = 1;
 gui_data.video_object.FramesAcquiredFcn = {@record_cam_header,gui_data.header_fileID};
 
+% Delay to allow Timelite to start
+update_status_text(gui_data.status_text_h,sprintf('Pausing to wait for Timelite...'));
+pause(5);
+
 % Start recording
+% (this automatically turns trigger mode off, since it's not configured)
 start(gui_data.video_object);
 
 % Reset relative display info
@@ -285,9 +294,18 @@ gui_data = guidata(gui_fig);
 % Update status text
 update_status_text(gui_data.status_text_h,'Stopping recording');
 
-% Stop recording and close header file
-pause(2); % pause to allow flipper to stop
+% Put camera on trigger mode to stop acquisiton
+src = getselectedsource(gui_data.video_object);
+src.TriggerMode = 'on';
+
+% Pause to allow Timelite to stop
+pause(6);
+
+% Stop recording
+% (this puts trigger mode back on automatically)
 stop(gui_data.video_object)
+
+% Close header file
 fclose(gui_data.header_fileID);
 
 % Move data to server
