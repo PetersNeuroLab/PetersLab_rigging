@@ -53,6 +53,9 @@ src.LineMode = 'Input'; % (need to double this line to work??)
 video_object.FramesPerTrigger = Inf;
 video_object.LoggingMode = 'disk&memory';
 
+% Turn on trigger mode (only used to pause video at start/end of acq)
+triggerconfig(video_object,'hardware');
+
 %% Set up GUI
 
 gui_fig = figure('MenuBar','none','Units','Normalized', ...
@@ -249,7 +252,7 @@ function cam_start(gui_fig,save_path)
 % Get GUI data
 gui_data = guidata(gui_fig);
 
-% Put camera into trigger mode (temporarily stops acquisition)
+% Put camera into trigger mode (pause acquisition)
 src = getselectedsource(gui_data.video_object);
 src.TriggerMode = 'on';
 
@@ -269,9 +272,9 @@ gui_data.video_object.FramesAcquiredFcn = {@record_cam_header,gui_data.header_fi
 update_status_text(gui_data.status_text_h,sprintf('Pausing to wait for Timelite...'));
 pause(5);
 
-% Start recording
-% (this automatically turns trigger mode off, since it's not configured)
+% Start recording, turn on free-running mode
 start(gui_data.video_object);
+src.TriggerMode = 'off';
 
 % Reset relative display info
 gui_data.set_relative_info_flag = true;
@@ -294,21 +297,18 @@ gui_data = guidata(gui_fig);
 % Update status text
 update_status_text(gui_data.status_text_h,'Stopping recording');
 
-% Put camera on trigger mode to stop acquisiton
-src = getselectedsource(gui_data.video_object);
-src.TriggerMode = 'on';
-
 % Pause to allow Timelite to stop
-pause(6);
-
-% Stop recording
-% (this puts trigger mode back on automatically)
+% (no point stopping acquisiton: putting trigger mode on gives a few
+% exposures that aren't saved, so the number of frames is still different)
+update_status_text(gui_data.status_text_h,'Pausing to wait for Timelite...');
+pause(4);
 stop(gui_data.video_object)
 
 % Close header file
 fclose(gui_data.header_fileID);
 
 % Move data to server
+update_status_text(gui_data.status_text_h,'Moving data to server...');
 curr_data_path = get(gui_data.video_object.DiskLogger,'path');
 move_data_to_server(curr_data_path,gui_data.status_text_h);
 
