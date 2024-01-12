@@ -733,7 +733,7 @@
         </Workflow>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
-        <Name>Stop</Name>
+        <Name>ListenForStop</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="osc:ReceiveMessage">
@@ -741,16 +741,37 @@
               <osc:TypeTag>s</osc:TypeTag>
               <osc:Connection>Receiver</osc:Connection>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="BooleanProperty">
+                <Value>false</Value>
+              </Combinator>
+            </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:TakeUntil" />
+              <Combinator xsi:type="rx:Amb" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:TakeLast">
-                <rx:Count>1</rx:Count>
-              </Combinator>
+              <Combinator xsi:type="rx:First" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="3" Label="Source2" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>SendStop</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="StringProperty">
@@ -764,12 +785,9 @@
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="2" Label="Source2" />
+            <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -1145,7 +1163,8 @@ def process(value):
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
       <Edge From="11" To="12" Label="Source1" />
-      <Edge From="13" To="14" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="14" To="15" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
