@@ -297,7 +297,8 @@ gui_data = guidata(gui_fig);
 % Update status text
 update_status_text(gui_data.status_text_h,'Stopping recording');
 
-% Put into trigger mode (stop acquisition) and pause for Timelite to stop
+% Put into trigger mode (stop acquisition), stop recording
+pause(1); % pause 1s to allow flipper to stop
 src = getselectedsource(gui_data.video_object);
 src.TriggerMode = 'on';
 stop(gui_data.video_object)
