@@ -297,12 +297,16 @@ gui_data = guidata(gui_fig);
 % Update status text
 update_status_text(gui_data.status_text_h,'Stopping recording');
 
+% Put into trigger mode (stop acquisition) and pause for Timelite to stop
+src = getselectedsource(gui_data.video_object);
+src.TriggerMode = 'on';
+stop(gui_data.video_object)
+
 % Pause to allow Timelite to stop
 % (no point stopping acquisiton: putting trigger mode on gives a few
 % exposures that aren't saved, so the number of frames is still different)
 update_status_text(gui_data.status_text_h,'Pausing to wait for Timelite...');
 pause(4);
-stop(gui_data.video_object)
 
 % Close header file
 fclose(gui_data.header_fileID);
@@ -311,6 +315,9 @@ fclose(gui_data.header_fileID);
 update_status_text(gui_data.status_text_h,'Moving data to server...');
 curr_data_path = get(gui_data.video_object.DiskLogger,'path');
 move_data_to_server(curr_data_path,gui_data.status_text_h);
+
+% Put free-running mode back on for preview
+src.TriggerMode = 'off';
 
 % Update status text
 set(gui_fig,'color','w');
