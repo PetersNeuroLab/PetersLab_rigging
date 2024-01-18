@@ -1,5 +1,11 @@
 function bonsai_server
 
+% AP NOTE 2024-01-18: made figure invisisble (to ensure no chance of
+% overlaying bonsai image).
+%
+% Streamline this in future by making bonsai_server an object rather than a
+% GUI
+
 %% Initialize bonsai server
 
 % Create figure on iPad screens
@@ -9,7 +15,8 @@ ipad_screens_idx = monitors_pos(:,3) == 3840;
 ipad_screens = monitors_pos(ipad_screens_idx,:);
 bonsai_server_fig = ...
     uifigure('Position',ipad_screens,'color','#828282', ...
-    'toolbar','none','menubar','none','CloseRequestFcn',@close_bonsai_server);
+    'toolbar','none','menubar','none','CloseRequestFcn',@close_bonsai_server, ...
+    'visible','off');
 
 % Set up structure for listeners and receivers
 communication_handles = struct;
@@ -114,7 +121,7 @@ function run_bonsai(bonsai_server_fig)
 
     % start bonsai
     plab.rig.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_path}, [], 1);
-    
+
     % Update save path into GUI data
     communication_handles.save_path = save_path;
     guidata(bonsai_server_fig,communication_handles);
