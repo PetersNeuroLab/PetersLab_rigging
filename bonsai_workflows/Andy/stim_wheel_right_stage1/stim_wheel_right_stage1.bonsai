@@ -833,89 +833,125 @@ ticks: ticks/revolution for model rotary encoder</Description>
         <Name>PickTrialParams</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="GroupWorkflow">
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>PickTrialStimPhase</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="num:CreateRandom">
+                      <num:Seed xsi:nil="true" />
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:CreateDiscreteUniform">
+                      <p1:Lower>0</p1:Lower>
+                      <p1:Upper>360</p1:Upper>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:Sample" />
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>TrialStimPhase</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="rx:Sink">
               <Name>PickTrialITI</Name>
               <Workflow>
                 <Nodes>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>ITITimes</Name>
+                  <Expression xsi:type="GroupWorkflow">
+                    <Name>PickTrialITI</Name>
+                    <Workflow>
+                      <Nodes>
+                        <Expression xsi:type="SubscribeSubject">
+                          <Name>ITITimes</Name>
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="num:Permutation" />
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="rx:Take">
+                            <rx:Count>1</rx:Count>
+                          </Combinator>
+                        </Expression>
+                        <Expression xsi:type="WorkflowOutput" />
+                      </Nodes>
+                      <Edges>
+                        <Edge From="0" To="1" Label="Source1" />
+                        <Edge From="1" To="2" Label="Source1" />
+                        <Edge From="2" To="3" Label="Source1" />
+                      </Edges>
+                    </Workflow>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="num:Permutation" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Take">
-                      <rx:Count>1</rx:Count>
-                    </Combinator>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>TrialITI</Name>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>TrialITI</Name>
-            </Expression>
-            <Expression xsi:type="GroupWorkflow">
+            <Expression xsi:type="rx:Sink">
               <Name>PickTrialQuiescence</Name>
               <Workflow>
                 <Nodes>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>QuiescenceTimes</Name>
+                  <Expression xsi:type="GroupWorkflow">
+                    <Name>PickTrialQuiescence</Name>
+                    <Workflow>
+                      <Nodes>
+                        <Expression xsi:type="SubscribeSubject">
+                          <Name>QuiescenceTimes</Name>
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="num:Permutation" />
+                        </Expression>
+                        <Expression xsi:type="Combinator">
+                          <Combinator xsi:type="rx:Take">
+                            <rx:Count>1</rx:Count>
+                          </Combinator>
+                        </Expression>
+                        <Expression xsi:type="WorkflowOutput" />
+                      </Nodes>
+                      <Edges>
+                        <Edge From="0" To="1" Label="Source1" />
+                        <Edge From="1" To="2" Label="Source1" />
+                        <Edge From="2" To="3" Label="Source1" />
+                      </Edges>
+                    </Workflow>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="num:Permutation" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Take">
-                      <rx:Count>1</rx:Count>
-                    </Combinator>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>TrialQuiescence</Name>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
                 </Edges>
               </Workflow>
-            </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>TrialQuiescence</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="num:CreateRandom">
-                <num:Seed xsi:nil="true" />
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="p1:CreateDiscreteUniform">
-                <p1:Lower>0</p1:Lower>
-                <p1:Upper>360</p1:Upper>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="p1:Sample" />
-            </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>TrialStimPhase</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
-            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -944,27 +980,39 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>ITIStartTimestamp</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="BooleanProperty">
+                      <Value>true</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>ITIStart</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:SubscribeWhen" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="BooleanProperty">
-                <Value>true</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>ITIStart</Name>
-            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="5" Label="Source1" />
-            <Edge From="4" To="5" Label="Source2" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="3" To="6" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source2" />
+            <Edge From="6" To="7" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -977,6 +1025,89 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>QuiescenceStartTimestamp</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="BooleanProperty">
+                      <Value>true</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>QuiescenceStart</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>RunQuiescenceTimer</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Wheel</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:Abs" />
+                  </Expression>
+                  <Expression xsi:type="rx:Accumulate" />
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>QuiescenceThreshold</Name>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="Value" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="GreaterThanOrEqual">
+                    <Operand xsi:type="DoubleProperty">
+                      <Value>2</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="rx:Condition">
+                    <Workflow>
+                      <Nodes>
+                        <Expression xsi:type="WorkflowInput">
+                          <Name>Source1</Name>
+                        </Expression>
+                        <Expression xsi:type="WorkflowOutput" />
+                      </Nodes>
+                      <Edges>
+                        <Edge From="0" To="1" Label="Source1" />
+                      </Edges>
+                    </Workflow>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>QuiescenceReset</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:TakeUntil" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Repeat" />
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="8" Label="Source1" />
+                  <Edge From="2" To="5" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source2" />
+                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="6" To="7" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source2" />
+                  <Edge From="8" To="9" Label="Source1" />
+                  <Edge From="9" To="10" Label="Source1" />
+                </Edges>
+              </Workflow>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
@@ -1007,78 +1138,19 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Combinator xsi:type="rx:First" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="SubscribeSubject">
-              <Name>Wheel</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="dsp:Abs" />
-            </Expression>
-            <Expression xsi:type="rx:Accumulate" />
-            <Expression xsi:type="SubscribeSubject">
-              <Name>QuiescenceThreshold</Name>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="Value" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="GreaterThanOrEqual">
-              <Operand xsi:type="DoubleProperty">
-                <Value>2</Value>
-              </Operand>
-            </Expression>
-            <Expression xsi:type="rx:Condition">
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="WorkflowInput">
-                    <Name>Source1</Name>
-                  </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>QuiescenceReset</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:TakeUntil" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Repeat" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="BooleanProperty">
-                <Value>true</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>QuiescenceStart</Name>
-            </Expression>
           </Nodes>
           <Edges>
-            <Edge From="0" To="3" Label="Source2" />
+            <Edge From="0" To="5" Label="Source2" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="7" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source2" />
+            <Edge From="5" To="9" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
-            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="8" To="9" Label="Source2" />
+            <Edge From="9" To="10" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source1" />
-            <Edge From="12" To="18" Label="Source1" />
-            <Edge From="12" To="15" Label="Source1" />
-            <Edge From="13" To="14" Label="Source1" />
-            <Edge From="14" To="15" Label="Source2" />
-            <Edge From="15" To="16" Label="Source1" />
-            <Edge From="16" To="17" Label="Source1" />
-            <Edge From="17" To="18" Label="Source2" />
-            <Edge From="18" To="19" Label="Source1" />
-            <Edge From="20" To="21" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -1158,8 +1230,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:First" />
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="GroupWorkflow">
+            <Expression xsi:type="rx:Sink">
               <Name>StimOn</Name>
               <Workflow>
                 <Nodes>
@@ -1185,6 +1256,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                 </Edges>
               </Workflow>
             </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -1202,6 +1274,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="11" To="12" Label="Source1" />
             <Edge From="12" To="13" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
+            <Edge From="14" To="15" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -1234,8 +1307,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                 <rx:DueTime>PT2S</rx:DueTime>
               </Combinator>
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="GroupWorkflow">
+            <Expression xsi:type="rx:Sink">
               <Name>StimOff</Name>
               <Workflow>
                 <Nodes>
@@ -1261,28 +1333,42 @@ ticks: ticks/revolution for model rotary encoder</Description>
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="SubscribeSubject">
+            <Expression xsi:type="rx:Sink">
               <Name>OpenValve</Name>
-            </Expression>
-            <Expression xsi:type="ipy:PythonTransform">
-              <ipy:Name>MakeString</ipy:Name>
-              <ipy:Script>@returns(str)
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>OpenValve</Name>
+                  </Expression>
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Name>MakeString</ipy:Name>
+                    <ipy:Script>@returns(str)
 def process(value):
   return str.format("{0}", value)</ipy:Script>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="io:SerialStringWrite">
+                      <io:PortName>myArduino</io:PortName>
+                      <io:NewLine>\r</io:NewLine>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                </Edges>
+              </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="io:SerialStringWrite">
-                <io:PortName>myArduino</io:PortName>
-                <io:NewLine>\r</io:NewLine>
-              </Combinator>
-            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -1317,8 +1403,7 @@ def process(value):
                 <rx:DueTime>PT2S</rx:DueTime>
               </Combinator>
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="GroupWorkflow">
+            <Expression xsi:type="rx:Sink">
               <Name>StimOff</Name>
               <Workflow>
                 <Nodes>
@@ -1344,11 +1429,13 @@ def process(value):
                 </Edges>
               </Workflow>
             </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
