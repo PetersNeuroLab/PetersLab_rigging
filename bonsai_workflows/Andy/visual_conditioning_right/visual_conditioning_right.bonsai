@@ -34,9 +34,9 @@
               <Property Name="Count" DisplayName="#ITIVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <RangeMin>1</RangeMin>
-              <RangeMax>3</RangeMax>
-              <Count>21</Count>
+              <RangeMin>4</RangeMin>
+              <RangeMax>7</RangeMax>
+              <Count>31</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -49,8 +49,8 @@
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
               <RangeMin>0.5</RangeMin>
-              <RangeMax>1</RangeMax>
-              <Count>6</Count>
+              <RangeMax>2</RangeMax>
+              <Count>16</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>QuiescenceTimes</Name>
@@ -94,6 +94,9 @@
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>RewardAmount</Name>
             </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="StimTime" />
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
                 <Value>1</Value>
@@ -135,9 +138,10 @@
             <Edge From="15" To="16" Label="Source1" />
             <Edge From="16" To="17" Label="Source1" />
             <Edge From="18" To="19" Label="Source1" />
-            <Edge From="20" To="21" Label="Source1" />
+            <Edge From="19" To="20" Label="Source1" />
             <Edge From="21" To="22" Label="Source1" />
-            <Edge From="23" To="24" Label="Source1" />
+            <Edge From="22" To="23" Label="Source1" />
+            <Edge From="24" To="25" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -579,7 +583,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>14266.6494</Phase>
+                    <Phase>3208.56372</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>0</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -839,6 +843,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="MulticastSubject">
               <Name>TrialNumber</Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:First" />
+            </Expression>
             <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="BooleanProperty">
@@ -855,8 +862,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="4" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="5" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -968,7 +976,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT1S</rx:DueTime>
+                <rx:DueTime>PT4.6S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1031,7 +1039,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.7S</rx:DueTime>
+                <rx:DueTime>PT1.9S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1183,11 +1191,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="BooleanProperty">
-                <Value>true</Value>
-              </Combinator>
-            </Expression>
             <Expression xsi:type="MulticastSubject">
               <Name>Outcome</Name>
             </Expression>
@@ -1218,48 +1221,70 @@ ticks: ticks/revolution for model rotary encoder</Description>
               </Workflow>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="SubscribeSubject">
-              <Name>OpenValve</Name>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="SubscribeSubject">
+                <Name>OpenValve</Name>
+              </Builder>
             </Expression>
-            <Expression xsi:type="ipy:PythonTransform">
-              <ipy:Name>MakeString</ipy:Name>
-              <ipy:Script>@returns(str)
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="ipy:PythonTransform">
+                <ipy:Name>MakeString</ipy:Name>
+                <ipy:Script>@returns(str)
 def process(value):
   return str.format("{0}", value)</ipy:Script>
+              </Builder>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="io:SerialStringWrite">
-                <io:PortName>myArduino</io:PortName>
-                <io:NewLine>\r</io:NewLine>
-              </Combinator>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="io:SerialStringWrite">
+                  <io:PortName>myArduino</io:PortName>
+                  <io:NewLine>\r</io:NewLine>
+                </Combinator>
+              </Builder>
             </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="SubscribeSubject">
-          <Name>NTrials</Name>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="PropertyMapping">
-          <PropertyMappings>
-            <Property Name="Count" />
-          </PropertyMappings>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:RepeatCount">
-          <rx:Count>2</rx:Count>
-        </Combinator>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>Repeat</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>NTrials</Name>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Count" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:First" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:RepeatCount">
+                <rx:Count>150</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="4" Label="Source2" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+          </Edges>
+        </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Last" />
@@ -1363,7 +1388,7 @@ it.Item4 as Timestamp
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="io:CsvWriter">
-              <io:FileName>C:\LocalData\test\bonsai_events.csv</io:FileName>
+              <io:FileName>C:\Users\petersa\Desktop\bonsai_events.csv</io:FileName>
               <io:Append>false</io:Append>
               <io:Overwrite>true</io:Overwrite>
               <io:Suffix>None</io:Suffix>
@@ -1476,6 +1501,20 @@ it.Item4 as Timestamp
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
+                  <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                    <MemberName>Name</MemberName>
+                    <Value>StimTime</Value>
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>StimTime</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>MakeString</scr:Name>
+                    <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Merge" />
                   </Expression>
@@ -1504,28 +1543,32 @@ it.Item4 as Timestamp
                   <Edge From="8" To="9" Label="Source1" />
                   <Edge From="9" To="19" Label="Source1" />
                   <Edge From="10" To="11" Label="Source2" />
-                  <Edge From="11" To="29" Label="Source1" />
+                  <Edge From="11" To="33" Label="Source1" />
                   <Edge From="12" To="13" Label="Source2" />
-                  <Edge From="13" To="29" Label="Source2" />
+                  <Edge From="13" To="33" Label="Source2" />
                   <Edge From="14" To="15" Label="Source2" />
-                  <Edge From="15" To="29" Label="Source3" />
+                  <Edge From="15" To="33" Label="Source3" />
                   <Edge From="16" To="17" Label="Source2" />
-                  <Edge From="17" To="29" Label="Source4" />
+                  <Edge From="17" To="33" Label="Source4" />
                   <Edge From="18" To="19" Label="Source2" />
-                  <Edge From="19" To="29" Label="Source5" />
-                  <Edge From="20" To="30" Label="Source2" />
+                  <Edge From="19" To="33" Label="Source5" />
+                  <Edge From="20" To="34" Label="Source2" />
                   <Edge From="21" To="22" Label="Source1" />
                   <Edge From="22" To="24" Label="Source1" />
                   <Edge From="23" To="24" Label="Source2" />
-                  <Edge From="24" To="29" Label="Source6" />
+                  <Edge From="24" To="33" Label="Source6" />
                   <Edge From="25" To="26" Label="Source1" />
                   <Edge From="26" To="28" Label="Source1" />
                   <Edge From="27" To="28" Label="Source2" />
-                  <Edge From="28" To="29" Label="Source7" />
-                  <Edge From="29" To="30" Label="Source1" />
+                  <Edge From="28" To="33" Label="Source7" />
+                  <Edge From="29" To="32" Label="Source2" />
                   <Edge From="30" To="31" Label="Source1" />
                   <Edge From="31" To="32" Label="Source1" />
-                  <Edge From="32" To="33" Label="Source1" />
+                  <Edge From="32" To="33" Label="Source8" />
+                  <Edge From="33" To="34" Label="Source1" />
+                  <Edge From="34" To="35" Label="Source1" />
+                  <Edge From="35" To="36" Label="Source1" />
+                  <Edge From="36" To="37" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1755,7 +1798,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="StringProperty">
-                      <Value>C:\LocalData\test</Value>
+                      <Value>C:\Users\petersa\Desktop</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
@@ -1873,14 +1916,12 @@ def process(value):
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
       <Edge From="11" To="12" Label="Source1" />
-      <Edge From="12" To="15" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
       <Edge From="13" To="14" Label="Source1" />
-      <Edge From="14" To="15" Label="Source2" />
+      <Edge From="14" To="15" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
       <Edge From="16" To="17" Label="Source1" />
-      <Edge From="17" To="18" Label="Source1" />
       <Edge From="18" To="19" Label="Source1" />
-      <Edge From="20" To="21" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
