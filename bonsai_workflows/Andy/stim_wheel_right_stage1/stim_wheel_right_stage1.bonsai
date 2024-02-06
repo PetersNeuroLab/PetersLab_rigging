@@ -548,7 +548,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>18105.4668</Phase>
+                    <Phase>12834.2549</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -973,7 +973,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT2.1S</rx:DueTime>
+                <rx:DueTime>PT1.7S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1020,9 +1020,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
         <Name>QuiescenceTimer</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>QuiescenceReset</Name>
-            </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
@@ -1046,46 +1043,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>0</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Merge" />
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>TrialQuiescence</Name>
-            </Expression>
-            <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Name>MakeTimespan</scr:Name>
-              <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="DueTime" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.5S</rx:DueTime>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:First" />
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="GroupWorkflow">
+            <Expression xsi:type="rx:SelectMany">
               <Name>RunQuiescenceTimer</Name>
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Wheel</Name>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="dsp:Abs" />
-                  </Expression>
-                  <Expression xsi:type="rx:Accumulate" />
                   <Expression xsi:type="SubscribeSubject">
                     <Name>QuiescenceThreshold</Name>
                   </Expression>
@@ -1094,6 +1058,16 @@ ticks: ticks/revolution for model rotary encoder</Description>
                       <Property Name="Value" />
                     </PropertyMappings>
                   </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:SubscribeWhen" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:Abs" />
+                  </Expression>
+                  <Expression xsi:type="rx:Accumulate" />
                   <Expression xsi:type="GreaterThanOrEqual">
                     <Operand xsi:type="DoubleProperty">
                       <Value>2</Value>
@@ -1116,38 +1090,66 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Name>QuiescenceReset</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:TakeUntil" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Repeat" />
                   </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Merge" />
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
                 <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="0" To="4" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="8" Label="Source1" />
-                  <Edge From="2" To="5" Label="Source1" />
-                  <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="4" To="5" Label="Source2" />
+                  <Edge From="2" To="7" Label="Source2" />
+                  <Edge From="3" To="4" Label="Source2" />
+                  <Edge From="4" To="5" Label="Source1" />
                   <Edge From="5" To="6" Label="Source1" />
                   <Edge From="6" To="7" Label="Source1" />
-                  <Edge From="7" To="8" Label="Source2" />
+                  <Edge From="7" To="8" Label="Source1" />
                   <Edge From="8" To="9" Label="Source1" />
+                  <Edge From="9" To="10" Label="Source1" />
+                  <Edge From="10" To="12" Label="Source1" />
+                  <Edge From="11" To="12" Label="Source2" />
+                  <Edge From="12" To="13" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>TrialQuiescence</Name>
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Name>MakeTimespan</scr:Name>
+              <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="DueTime" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Throttle">
+                <rx:DueTime>PT0.9S</rx:DueTime>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:First" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="4" Label="Source2" />
+            <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="2" To="6" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="8" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source2" />
             <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="8" Label="Source2" />
-            <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -1172,6 +1174,32 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="rx:Accumulate" />
             <Expression xsi:type="MulticastSubject">
               <Name>StimX</Name>
+            </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>StimOn</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="IntProperty">
+                      <Value>1</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>StimOn</Name>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>StimContrast</Name>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>PhotodiodeSquare</Name>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                </Edges>
+              </Workflow>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
               <Operand xsi:type="FloatProperty">
@@ -1227,32 +1255,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:First" />
             </Expression>
-            <Expression xsi:type="rx:Sink">
-              <Name>StimOn</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="IntProperty">
-                      <Value>1</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>StimOn</Name>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>StimContrast</Name>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>PhotodiodeSquare</Name>
-                  </Expression>
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
@@ -1262,11 +1264,11 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="5" To="9" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
+            <Edge From="6" To="10" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
-            <Edge From="8" To="12" Label="Source2" />
-            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="13" Label="Source2" />
             <Edge From="10" To="11" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
             <Edge From="12" To="13" Label="Source1" />
@@ -1513,7 +1515,7 @@ it.Item4 as Timestamp
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="io:CsvWriter">
-              <io:FileName>C:\LocalData\test\bonsai_events.csv</io:FileName>
+              <io:FileName>C:\Users\petersa\Desktop\bonsai_events.csv</io:FileName>
               <io:Append>false</io:Append>
               <io:Overwrite>true</io:Overwrite>
               <io:Suffix>None</io:Suffix>
@@ -1905,7 +1907,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="StringProperty">
-                      <Value>C:\LocalData\test</Value>
+                      <Value>C:\Users\petersa\Desktop</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
