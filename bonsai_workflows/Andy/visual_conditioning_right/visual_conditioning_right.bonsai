@@ -1374,7 +1374,7 @@ def process(value):
         </Workflow>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
-        <Name>ListenForStop</Name>
+        <Name>Stop</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="osc:ReceiveMessage">
@@ -1396,6 +1396,31 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:First" />
             </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>SendStop</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="StringProperty">
+                      <Value>stop</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="osc:SendMessage">
+                    <osc:Connection>Emitter</osc:Connection>
+                    <osc:Address>/stop</osc:Address>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
@@ -1404,6 +1429,7 @@ def process(value):
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
