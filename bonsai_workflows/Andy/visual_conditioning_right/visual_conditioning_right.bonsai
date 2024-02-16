@@ -589,7 +589,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>5672.282</Phase>
+                    <Phase>18048.17</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>0</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -1019,7 +1019,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT6.8S</rx:DueTime>
+                <rx:DueTime>PT11.7S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1179,7 +1179,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.5S</rx:DueTime>
+                <rx:DueTime>PT0.9S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1248,7 +1248,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Delay">
-                <rx:DueTime>PT1.5S</rx:DueTime>
+                <rx:DueTime>PT1.3S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
