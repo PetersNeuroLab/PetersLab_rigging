@@ -265,9 +265,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -553,7 +553,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>687.5494</Phase>
+                    <Phase>1948.05652</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>0</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -627,7 +627,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                       <dsp:Frequency>1000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>0</dsp:Amplitude>
+                      <dsp:Amplitude>290</dsp:Amplitude>
                       <dsp:Offset>0</dsp:Offset>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
@@ -1044,7 +1044,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT2.2S</rx:DueTime>
+                <rx:DueTime>PT2.5S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1204,7 +1204,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.7S</rx:DueTime>
+                <rx:DueTime>PT0.9S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1236,6 +1236,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
                 <Value>290</Value>
               </Combinator>
             </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>AudioAmplitude</Name>
+            </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>Wheel</Name>
             </Expression>
@@ -1243,9 +1246,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Combinator xsi:type="rx:Merge" />
             </Expression>
             <Expression xsi:type="rx:Accumulate" />
-            <Expression xsi:type="MulticastSubject">
-              <Name>AudioAmplitude</Name>
-            </Expression>
             <Expression xsi:type="MulticastSubject">
               <Name>AudioAmplitudeDummy</Name>
             </Expression>
@@ -1304,7 +1304,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>0</Value>
+                <Value>200</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -1336,9 +1336,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="3" Label="Source1" />
-            <Edge From="2" To="3" Label="Source2" />
-            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="4" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
