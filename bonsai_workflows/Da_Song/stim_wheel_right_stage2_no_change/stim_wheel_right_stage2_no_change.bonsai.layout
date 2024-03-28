@@ -20,7 +20,7 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>711</Width>
+        <Width>980</Width>
         <Height>718</Height>
       </Size>
       <WindowState>Normal</WindowState>
@@ -307,8 +307,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>131</X>
-      <Y>681</Y>
+      <X>65</X>
+      <Y>803</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -491,8 +491,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>126</X>
-      <Y>767</Y>
+      <X>62</X>
+      <Y>866</Y>
     </Location>
     <Size>
       <Width>336</Width>

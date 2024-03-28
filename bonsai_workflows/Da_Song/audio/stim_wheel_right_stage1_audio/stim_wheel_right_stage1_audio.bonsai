@@ -68,21 +68,29 @@
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>QuiescenceThreshold</Name>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>20</Value>
-              </Combinator>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="FloatProperty">
+                  <Value>20</Value>
+                </Combinator>
+              </Builder>
             </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>StimSize</Name>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="rx:BehaviorSubject">
+                <Name>StimSize</Name>
+              </Builder>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>0.1</Value>
-              </Combinator>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="Combinator">
+                <Combinator xsi:type="FloatProperty">
+                  <Value>0.1</Value>
+                </Combinator>
+              </Builder>
             </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>StimSpatialFreq</Name>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="rx:BehaviorSubject">
+                <Name>StimSpatialFreq</Name>
+              </Builder>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="Value" DisplayName="RewardAmount" />
@@ -106,6 +114,17 @@
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>AudioFrequency</Name>
             </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="AudioAmplitude_set" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>270</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>AudioAmplitude_set</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -121,6 +140,8 @@
             <Edge From="16" To="17" Label="Source1" />
             <Edge From="18" To="19" Label="Source1" />
             <Edge From="19" To="20" Label="Source1" />
+            <Edge From="21" To="22" Label="Source1" />
+            <Edge From="22" To="23" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -274,8 +295,8 @@
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawQuad.bonsai">
                     <ExtentX>0.3</ExtentX>
                     <ExtentY>0.3</ExtentY>
-                    <LocationX>1.15</LocationX>
-                    <LocationY>-0.85</LocationY>
+                    <LocationX>1.18</LocationX>
+                    <LocationY>-0.95</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
                     <ColorR>1</ColorR>
@@ -507,98 +528,130 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>StimContrast</Name>
             </Expression>
-            <Expression xsi:type="GroupWorkflow">
-              <Name>CreateStim</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>Draw</Name>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="FloatProperty">
-                      <Value>0</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="LocationX" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>StimSize</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="ExtentX" />
-                      <Property Name="ExtentY" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>StimSpatialFreq</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="SpatialFrequency" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
-                    <rx:Name>TrialStimPhase</rx:Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Phase" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="FloatProperty">
-                      <Value>0</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Contrast" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>0</LocationX>
-                    <LocationY>0</LocationY>
-                    <Layer>0</Layer>
-                    <Angle>0</Angle>
-                    <SpatialFrequency>0.1</SpatialFrequency>
-                    <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>13063.4375</Phase>
-                    <SquareWave>false</SquareWave>
-                    <Contrast>0</Contrast>
-                    <DutyCycle xsi:nil="true" />
-                    <Radius>1</Radius>
-                    <Aperture>0</Aperture>
-                    <Opacity>1</Opacity>
-                    <ExtentX>20</ExtentX>
-                    <ExtentY>20</ExtentY>
-                  </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>StimContrast</Name>
-                  </Expression>
-                  <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
-                    <rx:Name>StimX</rx:Name>
-                  </Expression>
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="11" Label="Source1" />
-                  <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="11" Label="Source2" />
-                  <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="4" To="11" Label="Source3" />
-                  <Edge From="5" To="6" Label="Source1" />
-                  <Edge From="6" To="11" Label="Source4" />
-                  <Edge From="7" To="8" Label="Source1" />
-                  <Edge From="8" To="11" Label="Source5" />
-                  <Edge From="9" To="10" Label="Source1" />
-                  <Edge From="10" To="11" Label="Source6" />
-                  <Edge From="11" To="12" Label="Source1" />
-                </Edges>
-              </Workflow>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="GroupWorkflow">
+                <Name>CreateStim</Name>
+                <Workflow>
+                  <Nodes>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="SubscribeSubject">
+                        <Name>Draw</Name>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="Combinator">
+                        <Combinator xsi:type="FloatProperty">
+                          <Value>0</Value>
+                        </Combinator>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="PropertyMapping">
+                        <PropertyMappings>
+                          <Property Name="LocationX" />
+                        </PropertyMappings>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="SubscribeSubject">
+                        <Name>StimSize</Name>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="PropertyMapping">
+                        <PropertyMappings>
+                          <Property Name="ExtentX" />
+                          <Property Name="ExtentY" />
+                        </PropertyMappings>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="SubscribeSubject">
+                        <Name>StimSpatialFreq</Name>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="PropertyMapping">
+                        <PropertyMappings>
+                          <Property Name="SpatialFrequency" />
+                        </PropertyMappings>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+                        <rx:Name>TrialStimPhase</rx:Name>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="PropertyMapping">
+                        <PropertyMappings>
+                          <Property Name="Phase" />
+                        </PropertyMappings>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="Combinator">
+                        <Combinator xsi:type="FloatProperty">
+                          <Value>0</Value>
+                        </Combinator>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="PropertyMapping">
+                        <PropertyMappings>
+                          <Property Name="Contrast" />
+                        </PropertyMappings>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
+                        <LocationX>0</LocationX>
+                        <LocationY>0</LocationY>
+                        <Layer>0</Layer>
+                        <Angle>0</Angle>
+                        <SpatialFrequency>0.1</SpatialFrequency>
+                        <TemporalFrequency>0</TemporalFrequency>
+                        <Phase>20511.8887</Phase>
+                        <SquareWave>false</SquareWave>
+                        <Contrast>0</Contrast>
+                        <DutyCycle xsi:nil="true" />
+                        <Radius>1</Radius>
+                        <Aperture>0</Aperture>
+                        <Opacity>1</Opacity>
+                        <ExtentX>20</ExtentX>
+                        <ExtentY>20</ExtentY>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="WorkflowOutput" />
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="SubscribeSubject">
+                        <Name>StimContrast</Name>
+                      </Builder>
+                    </Expression>
+                    <Expression xsi:type="Disable">
+                      <Builder xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+                        <rx:Name>StimX</rx:Name>
+                      </Builder>
+                    </Expression>
+                  </Nodes>
+                  <Edges>
+                    <Edge From="0" To="11" Label="Source1" />
+                    <Edge From="1" To="2" Label="Source1" />
+                    <Edge From="2" To="11" Label="Source2" />
+                    <Edge From="3" To="4" Label="Source1" />
+                    <Edge From="4" To="11" Label="Source3" />
+                    <Edge From="5" To="6" Label="Source1" />
+                    <Edge From="6" To="11" Label="Source4" />
+                    <Edge From="7" To="8" Label="Source1" />
+                    <Edge From="8" To="11" Label="Source5" />
+                    <Edge From="9" To="10" Label="Source1" />
+                    <Edge From="10" To="11" Label="Source6" />
+                    <Edge From="11" To="12" Label="Source1" />
+                  </Edges>
+                </Workflow>
+              </Builder>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="osc:CreateUdpClient">
@@ -663,7 +716,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
-                    <Name>AudioAmplitude</Name>
+                    <Name>AudioAmplitudeDummy</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
@@ -671,7 +724,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
-                    <Name>AudioAmplitudeDummy</Name>
+                    <Name>AudioAmplitude</Name>
                   </Expression>
                 </Nodes>
                 <Edges>
@@ -944,8 +997,10 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="p1:Sample" />
                   </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>TrialStimPhase</Name>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="MulticastSubject">
+                      <Name>TrialStimPhase</Name>
+                    </Builder>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
@@ -1063,7 +1118,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT2.1S</rx:DueTime>
+                <rx:DueTime>PT1S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1223,7 +1278,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.9S</rx:DueTime>
+                <rx:DueTime>PT0.5S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1250,11 +1305,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>270</Value>
-              </Combinator>
-            </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>Wheel</Name>
             </Expression>
@@ -1262,6 +1312,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Operand xsi:type="FloatProperty">
                 <Value>3</Value>
               </Operand>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>AudioAmplitude_set</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Merge" />
@@ -1273,8 +1326,10 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="MulticastSubject">
               <Name>AudioAmplitudeDummy</Name>
             </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>StimX</Name>
+            <Expression xsi:type="Disable">
+              <Builder xsi:type="MulticastSubject">
+                <Name>StimX</Name>
+              </Builder>
             </Expression>
             <Expression xsi:type="rx:Sink">
               <Name>StimOn</Name>
@@ -1359,10 +1414,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="4" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="4" Label="Source2" />
+            <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
@@ -1688,7 +1742,7 @@ it.Item4 as Timestamp
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>StimSize</Name>
+                    <Name>AudioFrequency</Name>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>MakeString</scr:Name>
@@ -1696,13 +1750,13 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
                     <MemberName>Name</MemberName>
-                    <Value>StimSize</Value>
+                    <Value>AudioFrequency</Value>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>StimSpatialFreq</Name>
+                    <Name>AudioAmplitude_set</Name>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>MakeString</scr:Name>
@@ -1710,7 +1764,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
                     <MemberName>Name</MemberName>
-                    <Value>StimSpatialFreq</Value>
+                    <Value>AudioAmplitude_set</Value>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
@@ -1917,19 +1971,27 @@ it.Item4 as Timestamp
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>TrialStimPhase</Name>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="SubscribeSubject">
+                      <Name>TrialStimPhase</Name>
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="scr:ExpressionTransform">
-                    <scr:Name>MakeString</scr:Name>
-                    <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                    <MemberName>Name</MemberName>
-                    <Value>TrialStimPhase</Value>
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>TrialStimPhase</Value>
+                    </Builder>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  <Expression xsi:type="Disable">
+                    <Builder xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Builder>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>ManualReward</Name>
