@@ -255,8 +255,8 @@
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawQuad.bonsai">
                     <ExtentX>0.3</ExtentX>
                     <ExtentY>0.3</ExtentY>
-                    <LocationX>1.15</LocationX>
-                    <LocationY>-0.85</LocationY>
+                    <LocationX>1.18</LocationX>
+                    <LocationY>-0.95</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
                     <ColorR>0</ColorR>
