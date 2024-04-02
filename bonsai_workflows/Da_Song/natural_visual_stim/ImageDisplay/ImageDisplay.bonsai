@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.1"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -58,9 +58,9 @@
               <Name>StimDuration</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>11</Count>
               <RangeMin>1</RangeMin>
               <RangeMax>2</RangeMax>
+              <Count>11</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -136,13 +136,13 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width xsi:nil="true" />
               <Height xsi:nil="true" />
               <RotationZ>0</RotationZ>
               <RotationY>0</RotationY>
               <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
               <Width>20</Width>
