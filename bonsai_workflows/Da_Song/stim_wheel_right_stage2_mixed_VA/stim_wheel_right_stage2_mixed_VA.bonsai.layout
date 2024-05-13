@@ -20,8 +20,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1071</Width>
-        <Height>607</Height>
+        <Width>1506</Width>
+        <Height>895</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -406,8 +406,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1071</Width>
-        <Height>607</Height>
+        <Width>1506</Width>
+        <Height>895</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -760,8 +760,8 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>597</X>
-        <Y>522</Y>
+        <X>2069</X>
+        <Y>516</Y>
       </Location>
       <Size>
         <Width>779</Width>
@@ -784,12 +784,12 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>196</X>
-        <Y>524</Y>
+        <X>200</X>
+        <Y>545</Y>
       </Location>
       <Size>
-        <Width>316</Width>
-        <Height>239</Height>
+        <Width>1345</Width>
+        <Height>447</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -808,8 +808,8 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>390</X>
-        <Y>589</Y>
+        <X>2856</X>
+        <Y>547</Y>
       </Location>
       <Size>
         <Width>902</Width>
@@ -832,12 +832,12 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>156</X>
-        <Y>156</Y>
+        <X>161</X>
+        <Y>89</Y>
       </Location>
       <Size>
-        <Width>316</Width>
-        <Height>239</Height>
+        <Width>1400</Width>
+        <Height>435</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -854,7 +854,7 @@
     </Size>
     <WindowState>Normal</WindowState>
   </DialogSettings>
-  <DialogSettings>
+  <DialogSettings xsi:type="WorkflowEditorSettings">
     <Visible>false</Visible>
     <Location>
       <X>0</X>
@@ -865,6 +865,18 @@
       <Height>0</Height>
     </Size>
     <WindowState>Normal</WindowState>
+    <EditorDialogSettings>
+      <Visible>false</Visible>
+      <Location>
+        <X>1972</X>
+        <Y>52</Y>
+      </Location>
+      <Size>
+        <Width>316</Width>
+        <Height>239</Height>
+      </Size>
+      <WindowState>Normal</WindowState>
+    </EditorDialogSettings>
   </DialogSettings>
   <DialogSettings xsi:type="WorkflowEditorSettings">
     <Visible>false</Visible>
@@ -932,8 +944,8 @@
         <Y>78</Y>
       </Location>
       <Size>
-        <Width>316</Width>
-        <Height>239</Height>
+        <Width>881</Width>
+        <Height>466</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -1036,8 +1048,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1071</Width>
-        <Height>607</Height>
+        <Width>1506</Width>
+        <Height>895</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>

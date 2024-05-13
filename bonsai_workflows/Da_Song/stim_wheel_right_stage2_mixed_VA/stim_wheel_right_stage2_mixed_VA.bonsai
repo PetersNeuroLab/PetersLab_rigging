@@ -1661,7 +1661,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
         </Workflow>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Merge" />
+        <Combinator xsi:type="rx:Amb" />
       </Expression>
       <Expression xsi:type="rx:Condition">
         <Name>Hit</Name>
