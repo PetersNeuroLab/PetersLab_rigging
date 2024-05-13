@@ -307,9 +307,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -585,15 +585,15 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>-0.703125</LocationX>
+                    <LocationX>90</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>4640.958</Phase>
+                    <Phase>4698.254</Phase>
                     <SquareWave>false</SquareWave>
-                    <Contrast>0</Contrast>
+                    <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
@@ -645,7 +645,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                       <dsp:Frequency>8000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>-2.109375</dsp:Amplitude>
+                      <dsp:Amplitude>0</dsp:Amplitude>
                       <dsp:Offset>0</dsp:Offset>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
@@ -1125,7 +1125,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT4.2S</rx:DueTime>
+                <rx:DueTime>PT6.2S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1285,7 +1285,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1.6S</rx:DueTime>
+                <rx:DueTime>PT1.8S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -2468,9 +2468,6 @@ def process(value):
             <Edge From="4" To="5" Label="Source1" />
           </Edges>
         </Workflow>
-      </Expression>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>TrialQuiescence</Name>
       </Expression>
     </Nodes>
     <Edges>
