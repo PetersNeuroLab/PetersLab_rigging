@@ -145,6 +145,7 @@ function get_bonsai_message(obj, ~, bonsai_server_fig)
         disp('Read something')
         disp(getlastmessage)
         % close Bonsai
+        pause(4); % Pause to allow Bonsai to cleanly finish
         system('taskkill /F /IM Bonsai.EXE');
         system('taskkill /F /IM OpenConsole.EXE');
         % send done to exp control
