@@ -5,6 +5,8 @@ Code for running rigs
 `plab.rig.(GUI)`: 
 - `exp_control`: master start/stop controller across GUIs, must be opened first
 - `timelite`: NIDAQ input/output (configured locally for each rig in `plab.local_rig.timelite_config`)
+  - Requires:
+    - Data acquisition toolbox
 - `bonsai_server`: server to listen for and start Bonsai workflows
 - `mousecam`: mouse camera
 - `widefield`: widefield camera
