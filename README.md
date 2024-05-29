@@ -9,6 +9,9 @@ Code for running rigs
     - Data acquisition toolbox
     - Data Acquisition Toolbox Support Package for National Instruments NI-DAQmx Devices
 - `bonsai_server`: server to listen for and start Bonsai workflows
+  - Bonsai packages required:
+    - Bonsai - Osc Library
+    - BonVision
 - `mousecam`: mouse camera
 - `widefield`: widefield camera
   - Requires:
