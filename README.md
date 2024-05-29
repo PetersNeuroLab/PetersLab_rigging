@@ -7,6 +7,7 @@ Code for running rigs
 - `timelite`: NIDAQ input/output (configured locally for each rig in `plab.local_rig.timelite_config`)
   - Requires:
     - Data acquisition toolbox
+    - Data Acquisition Toolbox Support Package for National Instruments NI-DAQmx Devices
 - `bonsai_server`: server to listen for and start Bonsai workflows
 - `mousecam`: mouse camera
 - `widefield`: widefield camera
