@@ -34,8 +34,8 @@
               <Property Name="Count" DisplayName="#ITIVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <RangeMin>4</RangeMin>
-              <RangeMax>7</RangeMax>
+              <RangeMin>1</RangeMin>
+              <RangeMax>3</RangeMax>
               <Count>31</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
@@ -49,7 +49,7 @@
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
               <RangeMin>0.5</RangeMin>
-              <RangeMax>2</RangeMax>
+              <RangeMax>1</RangeMax>
               <Count>16</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
@@ -548,7 +548,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>5443.099</Phase>
+                    <Phase>11688.3389</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>0</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -973,7 +973,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT4.9S</rx:DueTime>
+                <rx:DueTime>PT3S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1133,7 +1133,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1.5S</rx:DueTime>
+                <rx:DueTime>PT0.567S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
