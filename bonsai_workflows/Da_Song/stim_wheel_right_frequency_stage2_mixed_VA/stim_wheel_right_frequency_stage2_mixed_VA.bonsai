@@ -110,15 +110,15 @@
               <rx:BufferSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="AudioFrequency" />
+              <Property Name="Value" DisplayName="AudioFrequency_set" />
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>8000</Value>
+                <Value>12000</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
-              <Name>AudioFrequency</Name>
+              <Name>AudioFrequency_set</Name>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="Value" DisplayName="AudioAmplitude_set" />
@@ -585,13 +585,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>180</LocationX>
+                    <LocationX>-0.703125</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>14266.6494</Phase>
+                    <Phase>6531.71875</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>0</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -624,7 +624,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>AudioAmplitude</Name>
+                    <Name>AudioAmplitude_set</Name>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
                     <PropertyMappings>
@@ -642,10 +642,10 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="dsp:FunctionGenerator">
                       <dsp:BufferLength>441</dsp:BufferLength>
-                      <dsp:Frequency>8000</dsp:Frequency>
+                      <dsp:Frequency>0</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>-2.109375</dsp:Amplitude>
+                      <dsp:Amplitude>470</dsp:Amplitude>
                       <dsp:Offset>0</dsp:Offset>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
@@ -671,7 +671,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
-                    <Name>AudioAmplitude</Name>
+                    <Name>AudioFrequency</Name>
                   </Expression>
                 </Nodes>
                 <Edges>
@@ -1125,7 +1125,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT5.9S</rx:DueTime>
+                <rx:DueTime>PT4.7S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1285,7 +1285,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.6S</rx:DueTime>
+                <rx:DueTime>PT1.1S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1521,7 +1521,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>AudioAmplitude_set</Name>
+              <Name>AudioFrequency_set</Name>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
@@ -1530,7 +1530,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>270</Value>
+                <Value>12000</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
@@ -1538,7 +1538,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Multiply">
               <Operand xsi:type="FloatProperty">
-                <Value>3</Value>
+                <Value>30</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1546,7 +1546,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="rx:Accumulate" />
             <Expression xsi:type="MulticastSubject">
-              <Name>AudioAmplitude</Name>
+              <Name>AudioFrequency</Name>
             </Expression>
             <Expression xsi:type="MulticastSubject">
               <Name>AudioAmplitudeDummy</Name>
@@ -1589,7 +1589,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="GreaterThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>605</Value>
+                <Value>16000</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -1613,7 +1613,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>200</Value>
+                <Value>8000</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -1710,7 +1710,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>AudioAmplitude</Name>
+                    <Name>AudioFrequency</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>AudioAmplitudeDummy</Name>
@@ -1814,7 +1814,7 @@ def process(value):
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>AudioAmplitude</Name>
+                    <Name>AudioFrequency</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>AudioAmplitudeDummy</Name>
@@ -1925,7 +1925,7 @@ it.Item4 as Timestamp
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="io:CsvWriter">
-              <io:FileName>C:\LocalData\Test\2024-05-14\test\bonsai_events.csv</io:FileName>
+              <io:FileName>C:\Users\peterslab\Desktop\bonsai_events.csv</io:FileName>
               <io:Append>false</io:Append>
               <io:Overwrite>true</io:Overwrite>
               <io:Suffix>None</io:Suffix>
