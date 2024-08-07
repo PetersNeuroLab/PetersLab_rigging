@@ -12,6 +12,7 @@ $move_log_path = "\\qnap-ap001.dpag.ox.ac.uk\APlab\Archive\move_to_archive_log\m
 $raw_wf_format = 'widefield_*_data.bin'
 
 # Find all raw widefield files
+Write-Output("Finding raw widefield files to move...")
 $raw_wf_files = Get-ChildItem -Path $data_path -Filter $raw_wf_format -Recurse | Where-Object { $_.FullName -like "*\widefield\*" }
 
 # Select files by relative date (2 weeks before today)
