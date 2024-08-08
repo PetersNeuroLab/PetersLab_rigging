@@ -4,7 +4,7 @@ $archive_path = '\\qnap-ap001.dpag.ox.ac.uk\APlab\Archive\to_archive'
 
 # Create move log file
 $datestring = (Get-Date).ToString("yyyy-MM-dd")
-$move_log_path = "\\qnap-ap001.dpag.ox.ac.uk\APlab\Archive\move_to_archive_log\move_log_$datestring.csv"
+$move_log_path = "\\qnap-ap001.dpag.ox.ac.uk\APlab\Archive\logs\move_to_archive_log\move_log_$datestring.csv"
 
 # Set widefield file formats
 # ('widefield_(rec time)_data.bin is from plab.rig.widefield)
@@ -12,7 +12,7 @@ $move_log_path = "\\qnap-ap001.dpag.ox.ac.uk\APlab\Archive\move_to_archive_log\m
 $raw_wf_format = 'widefield_*_data.bin'
 
 # Find all raw widefield files
-Write-Output("Finding raw widefield files to move...")
+Write-Output("Looking for raw widefield files on server to archive...")
 $raw_wf_files = Get-ChildItem -Path $data_path -Filter $raw_wf_format -Recurse | Where-Object { $_.FullName -like "*\widefield\*" }
 
 # Select files by relative date (2 weeks before today)
