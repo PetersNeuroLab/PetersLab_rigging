@@ -2,10 +2,6 @@
 $archivePath = "\\qnap-ap001.dpag.ox.ac.uk\APlab\Archive\to_archive"
 $tapeDrive = "T"
 
-# Set path for log
-$datestring = (Get-Date).ToString("yyyy-MM-dd")
-$logFilename = "\\qnap-ap001.dpag.ox.ac.uk\APlab\Archive\logs\move_to_archive_log\move_log_$datestring"
-
 # Create (temporary) file with list of items to move
 # (because TeraCopy scripting doesn't support wildcards)
 $archiveList = [System.IO.Path]::GetTempFileName()
@@ -33,7 +29,7 @@ $freeBytes = [double][regex]::Match($freeBytesLine_noCommas, "\d+").Value
 # Check free space is enough for transfer
 if ($freeBytes -ge $totalSizeBytes) {
     # Enough free space: move with TeraCopy
-    & "C:\Program Files\TeraCopy\TeraCopy.exe" Move *$archiveList ($tapeDrive + ":\") /OverwriteAll /Verify /NoClose
+    & "C:\Program Files\TeraCopy\TeraCopy.exe" Move *$archiveList ($tapeDrive + ":\") /OverwriteAll /Verify /Close
 
 } else {
     # Not enough free space: 
