@@ -42,5 +42,32 @@ if ($freeBytes -ge $totalSizeBytes) {
     # 2) eject tape   
     & "C:\Program Files\LTFS\LtfsCmdEject.exe" $tapeDrive
 
+    # 2) email notification to replace the tape
+
+    # Define email parameters
+    $smtpServer = "smtp.gmail.com"
+    $smtpPort = 587
+    $senderEmail = "peters.lab.notifier@gmail.com"
+    $senderPassword = "nxtk sphu lxdq inqs" # (this is an app password)
+    $recipientEmail = "peters.andrew.j@gmail.com"
+    $subject = "Replace tape"
+    $body = "The current tape is full and has been ejected, replace the tape."
+
+    # Create a secure string for the password
+    $securePassword = ConvertTo-SecureString $senderPassword -AsPlainText -Force
+
+    # Create the credential object
+    $credential = New-Object System.Management.Automation.PSCredential ($senderEmail, $securePassword)
+
+    # Send the email
+    Send-MailMessage -From $senderEmail `
+                    -To $recipientEmail `
+                    -Subject $subject `
+                    -Body $body `
+                    -SmtpServer $smtpServer `
+                    -Port $smtpPort `
+                    -UseSsl `
+                    -Credential $credential
+
 }
 
