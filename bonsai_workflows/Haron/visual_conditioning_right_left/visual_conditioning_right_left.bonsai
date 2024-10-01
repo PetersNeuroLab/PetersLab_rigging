@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.5"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -12,7 +12,7 @@
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:p1="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
-                 xmlns:p2="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
+                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -34,9 +34,9 @@
               <Property Name="Count" DisplayName="#ITIVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>41</Count>
               <RangeMin>8</RangeMin>
               <RangeMax>12</RangeMax>
+              <Count>41</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -48,9 +48,9 @@
               <Property Name="Count" DisplayName="#QuiescenceVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>6</Count>
               <RangeMin>0.5</RangeMin>
               <RangeMax>1</RangeMax>
+              <Count>6</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>QuiescenceTimes</Name>
@@ -111,9 +111,9 @@
               <Property Name="RangeMax" DisplayName="TaskType1" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>2</Count>
               <RangeMin>0</RangeMin>
               <RangeMax>1</RangeMax>
+              <Count>2</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>TaskType</Name>
@@ -144,9 +144,9 @@
               <Property Name="Count" DisplayName="#StimTimeVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>6</Count>
               <RangeMin>1</RangeMin>
               <RangeMax>1.5</RangeMax>
+              <Count>6</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>StimTimes</Name>
@@ -235,13 +235,13 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width xsi:nil="true" />
               <Height xsi:nil="true" />
               <RotationZ>0</RotationZ>
               <RotationY>0</RotationY>
               <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
               <Width>20</Width>
@@ -615,18 +615,18 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <LocationX>90</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
-                    <ExtentX>20</ExtentX>
-                    <ExtentY>20</ExtentY>
+                    <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
                     <Phase>18048.17</Phase>
-                    <Angle>0</Angle>
                     <SquareWave>false</SquareWave>
                     <Contrast>0</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
                     <Opacity>1</Opacity>
+                    <ExtentX>20</ExtentX>
+                    <ExtentY>20</ExtentY>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
@@ -664,6 +664,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
               <rx:Name>ManualReward</rx:Name>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+              <rx:Name>TrialType</rx:Name>
             </Expression>
           </Nodes>
           <Edges>
@@ -1019,41 +1022,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="rx:Sink">
-              <Name>PickTrialOutcome</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:CreateContinuousUniform">
-                      <p1:Lower>0</p1:Lower>
-                      <p1:Upper>1</p1:Upper>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:Sample" />
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>RewardProb</Name>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:WithLatestFrom" />
-                  </Expression>
-                  <Expression xsi:type="LessThan" />
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>TrialOutcome</Name>
-                  </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="3" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source2" />
-                  <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="5" To="6" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
@@ -1062,7 +1030,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -1269,7 +1236,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
         <Workflow>
           <Nodes>
             <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="TrialType" />
+              <Property Name="Value" DisplayName="BranchType" />
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
@@ -1394,32 +1361,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="rx:Condition">
-        <Name>RewardedTrial</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>TrialOutcome</Name>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="Value" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="BooleanProperty">
-                <Value>true</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-          </Edges>
-        </Workflow>
-      </Expression>
       <Expression xsi:type="rx:SelectMany">
         <Name>Reward/StimOff</Name>
         <Workflow>
@@ -1434,17 +1375,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="WorkflowInput">
                     <Name>Source1</Name>
                   </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>TrialOutcome</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Value" />
-                    </PropertyMappings>
-                  </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="BooleanProperty">
-                      <Value>false</Value>
+                      <Value>true</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
@@ -1453,11 +1386,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
                 <Edges>
-                  <Edge From="0" To="3" Label="Source1" />
+                  <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source2" />
-                  <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="4" To="5" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1494,11 +1425,11 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>OpenValve</Name>
                   </Expression>
-                  <Expression xsi:type="p2:PythonTransform">
-                    <p2:Name>MakeString</p2:Name>
-                    <p2:Script>@returns(str)
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Name>MakeString</ipy:Name>
+                    <ipy:Script>@returns(str)
 def process(value):
-  return str.format("{0}", value)</p2:Script>
+  return str.format("{0}", value)</ipy:Script>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="io:SerialStringWrite">
@@ -1526,118 +1457,11 @@ def process(value):
         </Workflow>
       </Expression>
       <Expression xsi:type="rx:Condition">
-        <Name>UnrewardedTrial</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>TrialOutcome</Name>
-            </Expression>
-            <Expression xsi:type="BitwiseNot" />
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="Value" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="BooleanProperty">
-                <Value>false</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="rx:SelectMany">
-        <Name>NoReward/StimOff</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="rx:Sink">
-              <Name>OutcomeTimestamp</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="WorkflowInput">
-                    <Name>Source1</Name>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>TrialOutcome</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Value" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="BooleanProperty">
-                      <Value>true</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>Outcome</Name>
-                  </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="3" Label="Source1" />
-                  <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source2" />
-                  <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="4" To="5" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
-            <Expression xsi:type="rx:Sink">
-              <Name>StimOff</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="IntProperty">
-                      <Value>0</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>StimOn</Name>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>StimOpacity</Name>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>PhotodiodeSquare</Name>
-                  </Expression>
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Merge" />
-      </Expression>
-      <Expression xsi:type="rx:Condition">
         <Name>LeftScreen</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="TrialType" />
+              <Property Name="Value" DisplayName="BranchType" />
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
@@ -2456,13 +2280,13 @@ it.Item4 as Timestamp
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
-                  <Expression xsi:type="p2:PythonTransform">
-                    <p2:Script>import os
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Script>import os
 
 @returns(str)
 def process(value):
   return os.path.join(value.Item1,value.Item2)
-</p2:Script>
+</ipy:Script>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>CsvFile</Name>
@@ -2481,13 +2305,13 @@ def process(value):
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
-                  <Expression xsi:type="p2:PythonTransform">
-                    <p2:Script>import os
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Script>import os
 
 @returns(str)
 def process(value):
   return os.path.join(value.Item1,value.Item2)
-</p2:Script>
+</ipy:Script>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>BinFile</Name>
@@ -2552,26 +2376,21 @@ def process(value):
       <Edge From="7" To="8" Label="Source1" />
       <Edge From="8" To="9" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
-      <Edge From="9" To="18" Label="Source1" />
+      <Edge From="9" To="14" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
       <Edge From="11" To="12" Label="Source1" />
       <Edge From="12" To="13" Label="Source1" />
-      <Edge From="12" To="15" Label="Source1" />
-      <Edge From="13" To="14" Label="Source1" />
-      <Edge From="14" To="17" Label="Source1" />
+      <Edge From="13" To="18" Label="Source1" />
+      <Edge From="14" To="15" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
-      <Edge From="16" To="17" Label="Source2" />
-      <Edge From="17" To="22" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="18" Label="Source2" />
       <Edge From="18" To="19" Label="Source1" />
       <Edge From="19" To="20" Label="Source1" />
       <Edge From="20" To="21" Label="Source1" />
-      <Edge From="21" To="22" Label="Source2" />
+      <Edge From="21" To="22" Label="Source1" />
       <Edge From="22" To="23" Label="Source1" />
-      <Edge From="23" To="24" Label="Source1" />
       <Edge From="24" To="25" Label="Source1" />
-      <Edge From="25" To="26" Label="Source1" />
-      <Edge From="26" To="27" Label="Source1" />
-      <Edge From="28" To="29" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
