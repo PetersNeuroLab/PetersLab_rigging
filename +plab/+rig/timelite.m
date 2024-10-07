@@ -2,7 +2,7 @@ function timelite
 % Light-weight NI-DAQ acquisition GUI (lite version of Timeline)
 %
 % FOR RIG-SPECIFIC DAQ SETUP: 
-% Make local custom version of <plab.timelite_config>
+% Make local custom version of <plab.local_rig.timelite_config>
 %
 % Requires: 
 % data acquisition toolbox

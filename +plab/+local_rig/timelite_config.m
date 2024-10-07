@@ -63,9 +63,15 @@ ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai6','Volt
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'violet_light';
 
-ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai7','Voltage');
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai14','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'blue_light';
+
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai7','Voltage');
+ch.TerminalConfig = 'SingleEnded';
+ch.Name = 'lick_spout';
+
+
 
 %% Configure digital outputs
 
