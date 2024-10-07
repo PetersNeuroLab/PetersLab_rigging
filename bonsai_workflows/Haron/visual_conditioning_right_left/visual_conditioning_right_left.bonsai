@@ -34,8 +34,8 @@
               <Property Name="Count" DisplayName="#ITIVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <RangeMin>8</RangeMin>
-              <RangeMax>12</RangeMax>
+              <RangeMin>6</RangeMin>
+              <RangeMax>10</RangeMax>
               <Count>41</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
@@ -99,7 +99,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>150</Value>
+                <Value>300</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
