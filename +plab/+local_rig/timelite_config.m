@@ -59,6 +59,10 @@ ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai5','Volt
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'reward_valve';
 
+ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai11','Voltage');
+ch.TerminalConfig = 'SingleEnded';
+ch.Name = 'dummy_valve';
+
 ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai6','Voltage');
 ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'violet_light';
