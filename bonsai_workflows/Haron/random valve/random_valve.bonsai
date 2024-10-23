@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.5"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -10,37 +10,33 @@
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="io:CreateSerialPort">
-            <io:Name>myArduino</io:Name>
-            <io:PortName>COM6</io:PortName>
-            <io:BaudRate>250000</io:BaudRate>
-            <io:Parity>None</io:Parity>
-            <io:ParityReplace>63</io:ParityReplace>
-            <io:DataBits>8</io:DataBits>
-            <io:StopBits>One</io:StopBits>
-            <io:Handshake>None</io:Handshake>
-            <io:DiscardNull>false</io:DiscardNull>
-            <io:DtrEnable>true</io:DtrEnable>
-            <io:RtsEnable>false</io:RtsEnable>
-            <io:ReadBufferSize>4096</io:ReadBufferSize>
-            <io:WriteBufferSize>2048</io:WriteBufferSize>
-            <io:ReceivedBytesThreshold>1</io:ReceivedBytesThreshold>
-          </Combinator>
-        </Builder>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="io:CreateSerialPort">
+          <io:Name>myArduino</io:Name>
+          <io:PortName>COM6</io:PortName>
+          <io:BaudRate>250000</io:BaudRate>
+          <io:Parity>None</io:Parity>
+          <io:ParityReplace>63</io:ParityReplace>
+          <io:DataBits>8</io:DataBits>
+          <io:StopBits>One</io:StopBits>
+          <io:Handshake>None</io:Handshake>
+          <io:DiscardNull>false</io:DiscardNull>
+          <io:DtrEnable>true</io:DtrEnable>
+          <io:RtsEnable>false</io:RtsEnable>
+          <io:ReadBufferSize>4096</io:ReadBufferSize>
+          <io:WriteBufferSize>2048</io:WriteBufferSize>
+          <io:ReceivedBytesThreshold>1</io:ReceivedBytesThreshold>
+        </Combinator>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="io:SerialStringRead">
-            <io:PortName>myArduino</io:PortName>
-            <io:NewLine>\r\n</io:NewLine>
-          </Combinator>
-        </Builder>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="io:SerialStringRead">
+          <io:PortName>myArduino</io:PortName>
+          <io:NewLine>\r\n</io:NewLine>
+        </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="FloatProperty">
-          <Value>0</Value>
+          <Value>6</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="rx:BehaviorSubject">
@@ -62,7 +58,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="DoubleProperty">
-          <Value>5</Value>
+          <Value>2.5</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="rx:BehaviorSubject">
@@ -105,7 +101,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:CreateExponential">
-                <p1:Rate>0.2</p1:Rate>
+                <p1:Rate>0.4</p1:Rate>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -154,8 +150,11 @@
         <Name>ValveITI</Name>
         <Workflow>
           <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>TrialITI</Name>
+              <Name>OpenValveITI</Name>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Name>MakeTimespan</scr:Name>
@@ -168,32 +167,9 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT7.815S</rx:DueTime>
+                <rx:DueTime>PT5.191S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="rx:Sink">
-              <Name>ITIStartTimestamp</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="BooleanProperty">
-                      <Value>true</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>ITIStart</Name>
-                  </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="2" Label="Source1" />
-                </Edges>
-              </Workflow>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:SubscribeWhen" />
@@ -201,13 +177,12 @@
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="5" Label="Source2" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="6" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source2" />
-            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -234,7 +209,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>43.48</Value>
+                <Value>54.17</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
@@ -251,8 +226,13 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>260</Value>
+                <Value>325</Value>
               </Combinator>
+            </Expression>
+            <Expression xsi:type="Multiply">
+              <Operand xsi:type="IntProperty">
+                <Value>-1</Value>
+              </Operand>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="io:SerialStringWrite">
@@ -274,8 +254,12 @@
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
           </Edges>
         </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:First" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Repeat" />
@@ -292,6 +276,7 @@
       <Edge From="14" To="15" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
       <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="18" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
