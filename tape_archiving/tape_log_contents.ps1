@@ -1,7 +1,8 @@
 ﻿$todayDate = Get-Date -Format "yyyy-MM-dd"
 
 $tapePath = 'T:\'
-$outputFile = "\\qnap-ap001.dpag.ox.ac.uk\Archive\logs\tape_contents\tape_contents_$($todayDate).csv"
+$outputFile = "\\qnap-ap001.dpag.ox.ac.uk\APlab\Archive\tape_contents\tape_contents_$($todayDate).csv"
+                
 
 Write-Output "Writing tape contents log: $outputFile"
 

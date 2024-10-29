@@ -27,7 +27,7 @@ $freeBytesLine_noCommas = $freeBytesLine -replace ",", ""
 $freeBytes = [double][regex]::Match($freeBytesLine_noCommas, "\d+").Value
 
 # Check free space is enough for transfer
-if ($freeBytes -ge $totalSizeBytes) {
+if ($freeBytes -ge $archiveFilesSize) {
     # Enough free space: move with TeraCopy
     & "C:\Program Files\TeraCopy\TeraCopy.exe" Move *$archiveList ($tapeDrive + ":\") /OverwriteAll /Verify /Close
 
