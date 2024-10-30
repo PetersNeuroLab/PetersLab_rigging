@@ -16,8 +16,8 @@
 
 #define encoder0PinA 3        // sensor A of rotary encoder
 #define encoder0PinB 7        // sensor B of rotary encoder
-#define lickPin 8             // lick detector
-#define RewardValvePin 2      // digital pin for reward valve
+#define lickPin 2             // lick detector
+#define RewardValvePin 5      // digital pin for reward valve
 #define DummyValvePin 12      // digital pin for dummy valve
 
 
