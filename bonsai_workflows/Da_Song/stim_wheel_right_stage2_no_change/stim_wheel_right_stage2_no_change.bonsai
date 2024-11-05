@@ -264,9 +264,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -540,6 +540,16 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
                     <PropertyMappings>
+                      <Property Name="Opacity" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>1</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
                       <Property Name="Contrast" />
                     </PropertyMappings>
                   </Expression>
@@ -550,9 +560,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>7505.747</Phase>
+                    <Phase>11459.1563</Phase>
                     <SquareWave>false</SquareWave>
-                    <Contrast>0</Contrast>
+                    <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
@@ -566,18 +576,20 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   </Expression>
                 </Nodes>
                 <Edges>
-                  <Edge From="0" To="11" Label="Source1" />
+                  <Edge From="0" To="13" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="11" Label="Source2" />
+                  <Edge From="2" To="13" Label="Source2" />
                   <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="4" To="11" Label="Source3" />
+                  <Edge From="4" To="13" Label="Source3" />
                   <Edge From="5" To="6" Label="Source1" />
-                  <Edge From="6" To="11" Label="Source4" />
+                  <Edge From="6" To="13" Label="Source4" />
                   <Edge From="7" To="8" Label="Source1" />
-                  <Edge From="8" To="11" Label="Source5" />
+                  <Edge From="8" To="13" Label="Source5" />
                   <Edge From="9" To="10" Label="Source1" />
-                  <Edge From="10" To="11" Label="Source6" />
+                  <Edge From="10" To="13" Label="Source6" />
                   <Edge From="11" To="12" Label="Source1" />
+                  <Edge From="12" To="13" Label="Source7" />
+                  <Edge From="13" To="14" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -978,7 +990,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT5.5S</rx:DueTime>
+                <rx:DueTime>PT6.8S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1138,7 +1150,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1.6S</rx:DueTime>
+                <rx:DueTime>PT1.7S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
