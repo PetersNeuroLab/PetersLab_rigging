@@ -1190,6 +1190,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
+                    <Name>StimOn</Name>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
                     <Name>StimContrast</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
@@ -1207,7 +1210,8 @@ ticks: ticks/revolution for model rotary encoder</Description>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>

@@ -47,7 +47,7 @@
               <Property Name="Count" DisplayName="#QuiescenceVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <RangeMin>0.5</RangeMin>
+              <RangeMin>1</RangeMin>
               <RangeMax>2</RangeMax>
               <Count>16</Count>
             </Expression>
