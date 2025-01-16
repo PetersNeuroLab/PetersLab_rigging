@@ -16,6 +16,7 @@
 #define encoder0PinB 7        // sensor B of rotary encoder
 #define RewardValvePin 2           // digital pin for reward valve
 #define DummyValvePin 12           // digital pin for dummy valve
+#define SpeakerMotor 4           // digital pin for reward valve
 
 
 // variables for rotary encoder
@@ -47,6 +48,7 @@ void setup() {
 
   pinMode(RewardValvePin, OUTPUT);     // reward valve
   pinMode(DummyValvePin, OUTPUT);     // dummy valve
+  pinMode(SpeakerMotor, OUTPUT);     // dummy valve
 
   // interrupts for rotary encoder
   attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoderA, FALLING);
@@ -111,6 +113,7 @@ void GetBonsaiInput() { // part of code taken from http://forum.arduino.cc/index
         dummyNewData = true;
         ValveTimeOn = -BonsaiValveTime;
       }
+     
     }
   }
 }

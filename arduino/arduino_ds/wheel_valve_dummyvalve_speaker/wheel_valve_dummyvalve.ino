@@ -1,10 +1,8 @@
 
  /*
-  1) Read rotary encoder (Kubler 05.2400.1122.1024)
-    On an interrupt pin: for each wheel click, send "+1" for CW and "-1" for CCW
-
-  2) Read lick detector
-    On interrupt pin: for each lick, send "0"
+  1) Read rotary encoder
+    On an interrupt pin: for each wheel click, send +1 for CW and -1 for CCW
+    Model: Kubler 05.2400.1122.1024
 
   2) Reward valve: on recieving positive integer from Bonsai, open REWARD valve for that length time
 
@@ -16,13 +14,12 @@
 
 #define encoder0PinA 3        // sensor A of rotary encoder
 #define encoder0PinB 7        // sensor B of rotary encoder
-#define lickPin 2             // lick detector
-#define RewardValvePin 5      // digital pin for reward valve
-#define DummyValvePin 12      // digital pin for dummy valve
+#define RewardValvePin 2           // digital pin for reward valve
+#define DummyValvePin 12           // digital pin for dummy valve
 
 
 // variables for rotary encoder
-volatile signed int wheelDirection = 0;    // variable for counting ticks of rotary encoder
+volatile signed int encoder0Pos = 0;    // variable for counting ticks of rotary encoder
 
 // variables for pinch valve of reward system
 const byte numChars = 6;
@@ -45,20 +42,14 @@ uint32_t DummyStartTime = 0;      // variable to store temporary timestamps of p
 
 void setup() {
 
-  // INPUTS
   pinMode(encoder0PinA, INPUT);   // rotary encoder sensor A
   pinMode(encoder0PinB, INPUT);   // rotary encoder sensor B
-  pinMode(lickPin, INPUT);        // lick sensor
 
-  // OUTPUTS
   pinMode(RewardValvePin, OUTPUT);     // reward valve
   pinMode(DummyValvePin, OUTPUT);     // dummy valve
 
-  // interrupt for rotary encoder
-  attachInterrupt(digitalPinToInterrupt(encoder0PinA), wheelMoved, FALLING);
-
-  // interrupt for lick detector
-  attachInterrupt(digitalPinToInterrupt(lickPin), lickDetected, RISING);
+  // interrupts for rotary encoder
+  attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoderA, FALLING);
 
   Serial.begin (250000);
   Serial.setTimeout(5);
@@ -76,21 +67,15 @@ void loop() {
 
 }
 
-// Wheel moved: on encoder A change, check encoder B state and send 1=CW / -1=CCW accordingly
-void wheelMoved() {
+// Interrupt on A low to high transition
+void doEncoderA() {
     if (digitalRead(encoder0PinB)==LOW) {
-      wheelDirection = 1;
+      encoder0Pos = 1;
     }
     else {
-      wheelDirection = -1;
+      encoder0Pos = -1;
     }
-    Serial.print(wheelDirection);
-    Serial.print("\n");
-}
-
-// Lick detected: on lick, send 0
-void lickDetected() {
-    Serial.print(0);
+    Serial.print(encoder0Pos);//
     Serial.print("\n");
 }
 
@@ -118,11 +103,11 @@ void GetBonsaiInput() { // part of code taken from http://forum.arduino.cc/index
 
       BonsaiValveTime = atoi(receivedChars);
 
-      if (BonsaiValveTime > 0) {
+      if (BonsaiValveTime > 1) {
         rewardNewData = true;
         ValveTimeOn = BonsaiValveTime;
       }
-      else if (BonsaiValveTime < 0) {
+      else if (BonsaiValveTime < -1) {
         dummyNewData = true;
         ValveTimeOn = -BonsaiValveTime;
       }

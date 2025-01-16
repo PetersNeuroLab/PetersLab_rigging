@@ -29,7 +29,7 @@ void setup() {
   DFOC_alignSensor(Motor_PP, Sensor_DIR);
 
     
-  pinMode(trigger, INPUT_PULLUP);
+  pinMode(trigger, INPUT);
     
    
 
