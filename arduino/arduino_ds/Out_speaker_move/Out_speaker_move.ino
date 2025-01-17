@@ -10,7 +10,6 @@
 int Sensor_DIR = 1;  //传感器方向
 int Motor_PP = 7;     //电机极对数
 
-#define trigger 4
 
 // #define encoder0PinA 4        // sensor A of rotary encoder
 // #define encoder0PinB 15        // sensor B of rotary encoder
@@ -29,7 +28,6 @@ void setup() {
   DFOC_alignSensor(Motor_PP, Sensor_DIR);
 
     
-  pinMode(trigger, INPUT_PULLUP);
     
    
 
@@ -79,19 +77,3 @@ void loop() {
   serialReceiveUserCommand();
 }
 
-
-
-// // Wheel moved: on encoder A change, check encoder B state and send 1=CW / -1=CCW accordingly
-// void wheelMoved() {
-//     if (digitalRead(encoder0PinB)==LOW) {
-//       wheelDirection = 1;
-      
-//     }
-//     else {
-//       wheelDirection = -1;
-//     }
-//     CountAngel +=wheelDirection;
-
-//     // Serial.print(wheelDirection);
-//     // Serial.print("\n");
-// }

@@ -8,8 +8,14 @@
 #include "DengFOC.h"
 
 int Sensor_DIR = 1;  //传感器方向
-int Motor_PP = 7;     //电机极对数
-#define trigger 4
+int Motor_PP = 7;    //电机极对数
+
+#define encoder0PinA 4   // sensor A of rotary encoder
+#define encoder0PinB 15  // sensor B of rotary encoder
+#define StimStart 17     // sensor B of rotary encoder
+
+// variables for rotary encoder
+volatile signed int encoder0Pos = 0;  // variable for counting ticks of rotary encoder
 
 void setup() {
   Serial.begin(115200);
@@ -19,11 +25,23 @@ void setup() {
   DFOC_Vbus(12.6);  //设定驱动器供电电压
   DFOC_alignSensor(Motor_PP, Sensor_DIR);
 
-    pinMode(trigger, INPUT_PULLUP);
+  pinMode(encoder0PinA, INPUT);  // rotary encoder sensor A
+  pinMode(encoder0PinB, INPUT);  // rotary encoder sensor B
+  pinMode(StimStart, INPUT);     // rotary encoder sensor B
 
+  // interrupts for rotary encoder
+  attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoderA, FALLING);
+
+  DFOC_M0_SET_ANGLE_PID(1, 0, 0, 100000, 30);
+  DFOC_M0_SET_VEL_PID(0.02, 1, 0, 100000, 0.2);
+  DFOC_M0_SET_CURRENT_PID(5, 200, 0, 100000);
+
+  delay(500);
 }
-
+bool state = false;
+int angle = 0;
 int count = 0;
+
 void loop() {
   runFOC();
 
@@ -38,14 +56,20 @@ void loop() {
   // DFOC_M0_setVelocity(serial_motor_target());
 
   //位置-速度-力（加入电流环后）
-  DFOC_M0_SET_ANGLE_PID(1, 0, 0, 100000, 30);
-  DFOC_M0_SET_VEL_PID(0.02, 1, 0, 100000, 0.2);
-  DFOC_M0_SET_CURRENT_PID(5, 200, 0, 100000);
-  
-    int TriggerState = digitalRead(trigger); // 读取引脚状态
-if(TriggerState==LOW){
-  DFOC_M0_set_Velocity_Angle(serial_motor_target());}
-  else{  DFOC_M0_set_Velocity_Angle(0);}
+  // DFOC_M0_SET_ANGLE_PID(1, 0, 0, 100000, 30);
+  // DFOC_M0_SET_VEL_PID(0.02, 1, 0, 100000, 0.2);
+  // DFOC_M0_SET_CURRENT_PID(5, 200, 0, 100000);
+
+  int TriggerState = digitalRead(StimStart);  // 读取引脚状态
+  if (TriggerState == HIGH) {
+    state = true;
+    DFOC_M0_set_Velocity_Angle(0.05 * angle);
+  } else {
+        state = false;
+        angle=0;
+    DFOC_M0_set_Velocity_Angle(0);
+    
+  }
 
 
 
@@ -54,11 +78,28 @@ if(TriggerState==LOW){
   // DFOC_M0_setTorque(serial_motor_target());
 
   count++;
-  if (count > 30) {
+  if (count > 500) {
     count = 0;
     //Serial.printf("%f\n", DFOC_M0_Current());
-    Serial.printf("%f,%f,%d\n", DFOC_M0_Current(), DFOC_M0_Velocity(),TriggerState);
+    Serial.printf("%d\n", angle);
   }
-  //接收串口
-  serialReceiveUserCommand();
+  // 接收串口
+  // serialReceiveUserCommand();
+  
+}
+
+// Interrupt on A low to high transition
+void doEncoderA() {
+  if (digitalRead(encoder0PinB) == LOW) {
+    encoder0Pos = 1;
+    if (state) {
+      angle = angle + encoder0Pos;
+    }
+
+  } else {
+    encoder0Pos = -1;
+    if (state) {
+      angle = angle + encoder0Pos;
+    }
+  }
 }

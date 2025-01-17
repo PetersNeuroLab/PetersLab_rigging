@@ -1,5 +1,5 @@
 
- /*
+/*
   1) Read rotary encoder
     On an interrupt pin: for each wheel click, send +1 for CW and -1 for CCW
     Model: Kubler 05.2400.1122.1024
@@ -12,47 +12,54 @@
   
 */
 
-#define encoder0PinA 3        // sensor A of rotary encoder
-#define encoder0PinB 7        // sensor B of rotary encoder
-#define RewardValvePin 2           // digital pin for reward valve
-#define DummyValvePin 12           // digital pin for dummy valve
+#define encoder0PinA 3    // sensor A of rotary encoder
+#define encoder0PinB 7    // sensor B of rotary encoder
+#define RewardValvePin 2  // digital pin for reward valve
+#define DummyValvePin 12  // digital pin for dummy valve
+#define StimStart 8       // digital pin for reward valve
 
 
 // variables for rotary encoder
-volatile signed int encoder0Pos = 0;    // variable for counting ticks of rotary encoder
+volatile signed int encoder0Pos = 0;  // variable for counting ticks of rotary encoder
 
 // variables for pinch valve of reward system
 const byte numChars = 6;
-char receivedChars[numChars];   // an array to store the received data
-int BonsaiValveTime = 0; 
-int ValveTimeOn = 0; 
+char receivedChars[numChars];  // an array to store the received data
+int BonsaiValveTime = 0;
+int ValveTimeOn = 0;
 
-// (reward valve)         
+// (reward valve)
 boolean rewardNewData = false;
 int ValveClockRunning = 0;
 boolean TimerFinished = false;
-uint32_t StartTime = 0;      // variable to store temporary timestamps of previous iteration of the while loop
+uint32_t StartTime = 0;  // variable to store temporary timestamps of previous iteration of the while loop
 
-// (dummy valve)            
+// (dummy valve)
 boolean dummyNewData = false;
 int DummyValveClockRunning = 0;
 boolean DummyTimerFinished = false;
-uint32_t DummyStartTime = 0;      // variable to store temporary timestamps of previous iteration of the while loop
+uint32_t DummyStartTime = 0;  // variable to store temporary timestamps of previous iteration of the while loop
 
 
 void setup() {
 
-  pinMode(encoder0PinA, INPUT);   // rotary encoder sensor A
-  pinMode(encoder0PinB, INPUT);   // rotary encoder sensor B
+  pinMode(encoder0PinA, INPUT);  // rotary encoder sensor A
+  pinMode(encoder0PinB, INPUT);  // rotary encoder sensor B
 
-  pinMode(RewardValvePin, OUTPUT);     // reward valve
-  pinMode(DummyValvePin, OUTPUT);     // dummy valve
+  pinMode(RewardValvePin, OUTPUT);  // reward valve
+  pinMode(DummyValvePin, OUTPUT);   // dummy valve
+  pinMode(StimStart, OUTPUT);  
+       // reward valve
+  digitalWrite(StimStart, LOW);
 
   // interrupts for rotary encoder
   attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoderA, FALLING);
 
-  Serial.begin (250000);
+  Serial.begin(250000);
   Serial.setTimeout(5);
+
+
+
 
   delay(500);
 }
@@ -64,25 +71,23 @@ void loop() {
   OpenDummyValve();
 
   delay(1);
-
 }
 
 // Interrupt on A low to high transition
 void doEncoderA() {
-    if (digitalRead(encoder0PinB)==LOW) {
-      encoder0Pos = 1;
-    }
-    else {
-      encoder0Pos = -1;
-    }
-    Serial.print(encoder0Pos);//
-    Serial.print("\n");
+  if (digitalRead(encoder0PinB) == LOW) {
+    encoder0Pos = 1;
+  } else {
+    encoder0Pos = -1;
+  }
+  Serial.println(encoder0Pos);  //
+  // Serial.print("\n");
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 // Read inputs from Bonsai. It is an integer specifing the amount of time in ms the pintch valve stays open
-void GetBonsaiInput() { // part of code taken from http://forum.arduino.cc/index.php?topic=396450.0
+void GetBonsaiInput() {  // part of code taken from http://forum.arduino.cc/index.php?topic=396450.0
   static byte ndx = 0;
   char endMarker = '\r';
   char rc;
@@ -96,20 +101,28 @@ void GetBonsaiInput() { // part of code taken from http://forum.arduino.cc/index
       if (ndx >= numChars) {
         ndx = numChars - 1;
       }
-    }
-    else {
-      receivedChars[ndx] = '\0'; // terminate the string
+    } else {
+      receivedChars[ndx] = '\0';  // terminate the string
       ndx = 0;
 
       BonsaiValveTime = atoi(receivedChars);
 
-      if (BonsaiValveTime > 1) {
+      if (BonsaiValveTime > 2) {
         rewardNewData = true;
         ValveTimeOn = BonsaiValveTime;
-      }
-      else if (BonsaiValveTime < -1) {
+      } else if (BonsaiValveTime < -2) {
         dummyNewData = true;
         ValveTimeOn = -BonsaiValveTime;
+      }
+
+      // 如果接收到的数据是 1 或 -1，发送给 ESP32
+      if (BonsaiValveTime ==1 ) {
+        digitalWrite(StimStart, HIGH);  //V4电机使能
+      }
+
+       // 如果接收到的数据是 1 或 -1，发送给 ESP32
+      if (BonsaiValveTime ==-1)  {
+        digitalWrite(StimStart, LOW);  //V4电机使能
       }
     }
   }
@@ -128,12 +141,11 @@ void OpenRewardValve() {
   if (ValveClockRunning == 1) {
     // start checking the time and keep the valve open as long as you wish irrespective of what happens to Serial.read()
     if ((millis() - StartTime) <= (uint32_t)ValveTimeOn) {
-      digitalWrite(RewardValvePin, HIGH); // open valve
+      digitalWrite(RewardValvePin, HIGH);  // open valve
       TimerFinished = false;
       ValveClockRunning = 1;
-    }
-    else {
-      digitalWrite(RewardValvePin, LOW); // close valve
+    } else {
+      digitalWrite(RewardValvePin, LOW);  // close valve
       TimerFinished = true;
       ValveClockRunning = 0;
     }
@@ -153,12 +165,11 @@ void OpenDummyValve() {
   if (DummyValveClockRunning == 1) {
     // start checking the time and keep the valve open as long as you wish irrespective of what happens to Serial.read()
     if ((millis() - DummyStartTime) <= (uint32_t)ValveTimeOn) {
-      digitalWrite(DummyValvePin, HIGH); // open valve
+      digitalWrite(DummyValvePin, HIGH);  // open valve
       DummyTimerFinished = false;
       DummyValveClockRunning = 1;
-    }
-    else {
-      digitalWrite(DummyValvePin, LOW); // close valve
+    } else {
+      digitalWrite(DummyValvePin, LOW);  // close valve
       DummyTimerFinished = true;
       DummyValveClockRunning = 0;
     }
