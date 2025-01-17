@@ -29,7 +29,7 @@ void setup() {
   DFOC_alignSensor(Motor_PP, Sensor_DIR);
 
     
-  pinMode(trigger, INPUT);
+  pinMode(trigger, INPUT_PULLUP);
     
    
 
@@ -61,20 +61,16 @@ void loop() {
 
   int TriggerState = digitalRead(trigger); // 读取引脚状态
 
-  if (TriggerState == LOW) {
+ 
   DFOC_M0_set_Velocity_Angle(DFOC_M0_Angle());
 
-  CountAngel=0;
-    } else if(TriggerState == HIGH) {
-  DFOC_M0_set_Velocity_Angle(DFOC_M0_Angle());
-    } 
 
   //电流力矩
   // DFOC_M0_SET_CURRENT_PID(5,200,0,100000);
   // DFOC_M0_setTorque(serial_motor_target());
 
   count++;
-  if (count > 30) {
+  if (count > 100) {
     count = 0;
     //Serial.printf("%f\n", DFOC_M0_Current());
     Serial.printf("%f,%f,%d,%d\n", DFOC_M0_Current(), DFOC_M0_Velocity(),CountAngel,TriggerState);
