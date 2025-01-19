@@ -32,7 +32,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>20</Value>
+                <Value>60</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
