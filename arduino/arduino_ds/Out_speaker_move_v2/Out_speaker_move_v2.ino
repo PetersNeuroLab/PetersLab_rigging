@@ -32,8 +32,9 @@ void setup() {
   // interrupts for rotary encoder
   attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoderA, FALLING);
 
-  DFOC_M0_SET_ANGLE_PID(1, 0, 0, 100000, 30);
-  DFOC_M0_SET_VEL_PID(0.02, 1, 0, 100000, 0.2);
+  DFOC_M0_SET_ANGLE_PID(1, 0, 0, 100000, 50);
+  // 5th:force
+  DFOC_M0_SET_VEL_PID(0.02, 0, 0, 100000, 1);
   DFOC_M0_SET_CURRENT_PID(5, 200, 0, 100000);
 
   delay(500);
@@ -41,12 +42,12 @@ void setup() {
 bool state = false;
 int angle = 0;
 int count = 0;
-
+float curr_angle=0;
 void loop() {
   runFOC();
 
   // // 力位（加入电流环后）
-  // DFOC_M0_SET_ANGLE_PID(0.5,0,0.003,100000,0.1);
+  // DFOC_M0_SET_ANGLE_PID(0.5,0,0.003,100000,0.8);
   // DFOC_M0_SET_CURRENT_PID(1.25,50,0,100000);
   // DFOC_M0_set_Force_Angle(serial_motor_target());
 
@@ -63,7 +64,11 @@ void loop() {
   int TriggerState = digitalRead(StimStart);  // 读取引脚状态
   if (TriggerState == HIGH) {
     state = true;
-    DFOC_M0_set_Velocity_Angle(0.05 * angle);
+    float input=0.018 * angle;
+    curr_angle = (input < -1.57) ? -1.57 : ((input > 0.785) ? 0.785 : input);
+
+    // curr_angle=(0.020 * angle>-1.57)? 0.020 * angle:-1.57;
+    DFOC_M0_set_Velocity_Angle(curr_angle);
   } else {
         state = false;
         angle=0;
@@ -77,27 +82,27 @@ void loop() {
   // DFOC_M0_SET_CURRENT_PID(5,200,0,100000);
   // DFOC_M0_setTorque(serial_motor_target());
 
-  count++;
-  if (count > 500) {
-    count = 0;
-    //Serial.printf("%f\n", DFOC_M0_Current());
-    Serial.printf("%d\n", angle);
-  }
-  // 接收串口
-  // serialReceiveUserCommand();
+  // count++;
+  // if (count > 500) {
+  //   count = 0;
+  //   //Serial.printf("%f\n", DFOC_M0_Current());
+  //   Serial.printf("%f\n", curr_angle);
+  // }
+
+
   
 }
 
 // Interrupt on A low to high transition
 void doEncoderA() {
   if (digitalRead(encoder0PinB) == LOW) {
-    encoder0Pos = 1;
+    encoder0Pos = -1;
     if (state) {
       angle = angle + encoder0Pos;
     }
 
   } else {
-    encoder0Pos = -1;
+    encoder0Pos = 1;
     if (state) {
       angle = angle + encoder0Pos;
     }
