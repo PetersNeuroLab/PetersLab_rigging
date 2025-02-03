@@ -317,9 +317,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -509,19 +509,19 @@
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>90</LocationX>
+                    <LocationX>0</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>12032.1133</Phase>
+                    <Phase>1604.28186</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
-                    <Opacity>0</Opacity>
+                    <Opacity>1</Opacity>
                     <ExtentX>20</ExtentX>
                     <ExtentY>20</ExtentY>
                   </Expression>
@@ -873,8 +873,8 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="p1:CreateContinuousUniform">
-                      <p1:Lower>0.2</p1:Lower>
-                      <p1:Upper>0.5</p1:Upper>
+                      <p1:Lower>4</p1:Lower>
+                      <p1:Upper>7</p1:Upper>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -989,7 +989,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="p1:CreateContinuousUniform">
                       <p1:Lower>1</p1:Lower>
-                      <p1:Upper>1</p1:Upper>
+                      <p1:Upper>2</p1:Upper>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -1038,7 +1038,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT0.341S</rx:DueTime>
+                <rx:DueTime>PT5.119S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1162,7 +1162,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1.7S</rx:DueTime>
+                <rx:DueTime>PT1.9S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1257,7 +1257,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT1S</rx:DueTime>
+                <rx:DueTime>PT1.943S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -2426,7 +2426,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>100</Value>
+                <Value>54.17</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -2440,7 +2440,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>600</Value>
+                <Value>325</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
