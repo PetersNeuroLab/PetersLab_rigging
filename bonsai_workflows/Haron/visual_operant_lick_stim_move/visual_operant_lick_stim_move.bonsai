@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.5"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -8,10 +8,10 @@
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
+                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:p1="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
-                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -59,7 +59,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="DoubleProperty">
-                <Value>0.2</Value>
+                <Value>4</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -70,55 +70,11 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="DoubleProperty">
-                <Value>0.5</Value>
+                <Value>7</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>ITIMax</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="StimOffMax" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="DoubleProperty">
-                <Value>0.5</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>StimOffMax</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="StimOffMin" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="DoubleProperty">
-                <Value>0.2</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>StimOffMin</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="InteractiveDelayMax" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="DoubleProperty">
-                <Value>0.5</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>InteractiveDelayMax</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="InteractiveDelayMin" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="DoubleProperty">
-                <Value>0.2</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>InteractiveDelayMin</Name>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="RangeMin" DisplayName="QuiescenceMin" />
@@ -126,9 +82,9 @@
               <Property Name="Count" DisplayName="#QuiescenceVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>16</Count>
               <RangeMin>0.5</RangeMin>
-              <RangeMax>0.5</RangeMax>
+              <RangeMax>2</RangeMax>
+              <Count>16</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>QuiescenceTimes</Name>
@@ -150,7 +106,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="DoubleProperty">
-                <Value>1</Value>
+                <Value>2</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -166,6 +122,22 @@
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>StimMoveTime</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>0.01</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>StimMoveTimeResolution</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="DoubleProperty">
+                <Value>90</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>StimStartingX</Name>
             </Expression>
           </Nodes>
           <Edges>
@@ -187,13 +159,7 @@
             <Edge From="24" To="25" Label="Source1" />
             <Edge From="25" To="26" Label="Source1" />
             <Edge From="27" To="28" Label="Source1" />
-            <Edge From="28" To="29" Label="Source1" />
-            <Edge From="30" To="31" Label="Source1" />
-            <Edge From="31" To="32" Label="Source1" />
-            <Edge From="33" To="34" Label="Source1" />
-            <Edge From="34" To="35" Label="Source1" />
-            <Edge From="36" To="37" Label="Source1" />
-            <Edge From="37" To="38" Label="Source1" />
+            <Edge From="29" To="30" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -212,7 +178,7 @@
                 <gl:CursorVisible>false</gl:CursorVisible>
                 <gl:Location xsi:nil="true" />
                 <gl:WindowBorder>Hidden</gl:WindowBorder>
-                <gl:WindowState>Maximized</gl:WindowState>
+                <gl:WindowState>Normal</gl:WindowState>
                 <gl:DisplayDevice>Second</gl:DisplayDevice>
                 <gl:TargetRenderFrequency>60</gl:TargetRenderFrequency>
                 <gl:TargetUpdateFrequency xsi:nil="true" />
@@ -255,13 +221,13 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width xsi:nil="true" />
               <Height xsi:nil="true" />
               <RotationZ>0</RotationZ>
               <RotationY>0</RotationY>
               <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
               <Width>20</Width>
@@ -351,9 +317,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -543,21 +509,21 @@
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>-8.214606</LocationX>
+                    <LocationX>90</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
-                    <ExtentX>20</ExtentX>
-                    <ExtentY>20</ExtentY>
+                    <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>10657.0146</Phase>
-                    <Angle>0</Angle>
+                    <Phase>12032.1133</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
-                    <Opacity>0</Opacity>
+                    <Opacity>1</Opacity>
+                    <ExtentX>20</ExtentX>
+                    <ExtentY>20</ExtentY>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
@@ -768,671 +734,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
         </Builder>
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="GroupWorkflow">
-          <Name>UpdateTrialNumber</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="SubscribeSubject">
-                <Name>TrialNumber</Name>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:Take">
-                  <rx:Count>1</rx:Count>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="Add">
-                <Operand xsi:type="IntProperty">
-                  <Value>1</Value>
-                </Operand>
-              </Expression>
-              <Expression xsi:type="rx:SelectMany">
-                <Name>FirstTrialDelay</Name>
-                <Description>Delay first trial to give time for parameters to initialize</Description>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="rx:Condition">
-                      <Name>IsTrial1</Name>
-                      <Workflow>
-                        <Nodes>
-                          <Expression xsi:type="WorkflowInput">
-                            <Name>Source1</Name>
-                          </Expression>
-                          <Expression xsi:type="Equal">
-                            <Operand xsi:type="IntProperty">
-                              <Value>1</Value>
-                            </Operand>
-                          </Expression>
-                          <Expression xsi:type="WorkflowOutput" />
-                        </Nodes>
-                        <Edges>
-                          <Edge From="0" To="1" Label="Source1" />
-                          <Edge From="1" To="2" Label="Source1" />
-                        </Edges>
-                      </Workflow>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Delay">
-                        <rx:DueTime>PT2S</rx:DueTime>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="rx:Condition">
-                      <Name>IsTrial&gt;1</Name>
-                      <Workflow>
-                        <Nodes>
-                          <Expression xsi:type="WorkflowInput">
-                            <Name>Source1</Name>
-                          </Expression>
-                          <Expression xsi:type="GreaterThan">
-                            <Operand xsi:type="IntProperty">
-                              <Value>1</Value>
-                            </Operand>
-                          </Expression>
-                          <Expression xsi:type="WorkflowOutput" />
-                        </Nodes>
-                        <Edges>
-                          <Edge From="0" To="1" Label="Source1" />
-                          <Edge From="1" To="2" Label="Source1" />
-                        </Edges>
-                      </Workflow>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Merge" />
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="0" To="3" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="4" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source2" />
-                    <Edge From="4" To="5" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="MulticastSubject">
-                <Name>TrialNumber</Name>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:First" />
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="BooleanProperty">
-                  <Value>true</Value>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="MulticastSubject">
-                <Name>TrialStart</Name>
-              </Expression>
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="3" Label="Source1" />
-              <Edge From="3" To="4" Label="Source1" />
-              <Edge From="4" To="5" Label="Source1" />
-              <Edge From="5" To="6" Label="Source1" />
-              <Edge From="5" To="7" Label="Source1" />
-              <Edge From="7" To="8" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>PickTrialParams</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>PickTrialITI</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>ITIMin</Name>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="Lower" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>ITIMax</Name>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="Upper" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:CreateContinuousUniform">
-                        <p1:Lower>4</p1:Lower>
-                        <p1:Upper>7</p1:Upper>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:Sample" />
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>TrialITI</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="4" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source2" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source1" />
-                    <Edge From="6" To="7" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>PickTrialInteractiveDelay</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>InteractiveDelayMin</Name>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="Lower" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>InteractiveDelayMax</Name>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="Upper" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:CreateContinuousUniform">
-                        <p1:Lower>1.5</p1:Lower>
-                        <p1:Upper>2.5</p1:Upper>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:Sample" />
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>TrialInteractiveDelay</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="4" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source2" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source1" />
-                    <Edge From="6" To="7" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>PickTrialStimPhase</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="num:CreateRandom">
-                        <num:Seed xsi:nil="true" />
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:CreateDiscreteUniform">
-                        <p1:Lower>0</p1:Lower>
-                        <p1:Upper>360</p1:Upper>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:Sample" />
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>TrialStimPhase</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>PickStimOffTime</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimOffMin</Name>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="Lower" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimOffMax</Name>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="Upper" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:CreateContinuousUniform">
-                        <p1:Lower>1</p1:Lower>
-                        <p1:Upper>2</p1:Upper>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:Sample" />
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>TrialStimOffDelay</Name>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="4" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source2" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>PickTrialQuiescence</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="GroupWorkflow">
-                      <Name>PickTrialQuiescence</Name>
-                      <Workflow>
-                        <Nodes>
-                          <Expression xsi:type="SubscribeSubject">
-                            <Name>QuiescenceTimes</Name>
-                          </Expression>
-                          <Expression xsi:type="Combinator">
-                            <Combinator xsi:type="num:Permutation" />
-                          </Expression>
-                          <Expression xsi:type="Combinator">
-                            <Combinator xsi:type="rx:Take">
-                              <rx:Count>1</rx:Count>
-                            </Combinator>
-                          </Expression>
-                          <Expression xsi:type="WorkflowOutput" />
-                        </Nodes>
-                        <Edges>
-                          <Edge From="0" To="1" Label="Source1" />
-                          <Edge From="1" To="2" Label="Source1" />
-                          <Edge From="2" To="3" Label="Source1" />
-                        </Edges>
-                      </Workflow>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>TrialQuiescence</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>PickStimStaticTime</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimStaticMin</Name>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="Lower" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimStaticMax</Name>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="Upper" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:CreateContinuousUniform">
-                        <p1:Lower>1.5</p1:Lower>
-                        <p1:Upper>2.5</p1:Upper>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="p1:Sample" />
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>TrialStimStaticTime</Name>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="4" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source2" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="3" Label="Source1" />
-              <Edge From="3" To="4" Label="Source1" />
-              <Edge From="4" To="5" Label="Source1" />
-              <Edge From="5" To="6" Label="Source1" />
-              <Edge From="6" To="7" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>ITI</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="SubscribeSubject">
-                <Name>TrialITI</Name>
-              </Expression>
-              <Expression xsi:type="scr:ExpressionTransform">
-                <scr:Name>MakeTimespan</scr:Name>
-                <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-              </Expression>
-              <Expression xsi:type="PropertyMapping">
-                <PropertyMappings>
-                  <Property Name="DueTime" />
-                </PropertyMappings>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:Timer">
-                  <rx:DueTime>PT6.228S</rx:DueTime>
-                  <rx:Period>PT0S</rx:Period>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>ITIStartTimestamp</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="BooleanProperty">
-                        <Value>true</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>ITIStart</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:SubscribeWhen" />
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="3" Label="Source1" />
-              <Edge From="3" To="6" Label="Source1" />
-              <Edge From="4" To="5" Label="Source1" />
-              <Edge From="5" To="6" Label="Source2" />
-              <Edge From="6" To="7" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>QuiescenceTimer</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>QuiescenceStartTimestamp</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="BooleanProperty">
-                        <Value>true</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>QuiescenceStart</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:SelectMany">
-                <Name>RunQuiescenceTimer</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>LickSpout</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:SubscribeWhen" />
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>QuiescenceReset</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Repeat" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="FloatProperty">
-                        <Value>0</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Merge" />
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="2" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source2" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                    <Edge From="4" To="6" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source2" />
-                    <Edge From="6" To="7" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="SubscribeSubject">
-                <Name>TrialQuiescence</Name>
-              </Expression>
-              <Expression xsi:type="scr:ExpressionTransform">
-                <scr:Name>MakeTimespan</scr:Name>
-                <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-              </Expression>
-              <Expression xsi:type="PropertyMapping">
-                <PropertyMappings>
-                  <Property Name="DueTime" />
-                </PropertyMappings>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:Throttle">
-                  <rx:DueTime>PT1.7S</rx:DueTime>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:First" />
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="6" Label="Source1" />
-              <Edge From="3" To="4" Label="Source1" />
-              <Edge From="4" To="5" Label="Source1" />
-              <Edge From="5" To="6" Label="Source2" />
-              <Edge From="6" To="7" Label="Source1" />
-              <Edge From="7" To="8" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>StimOn</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>Stim</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="IntProperty">
-                        <Value>1</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>StimOn</Name>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>StimOpacity</Name>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>PhotodiodeSquare</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>InteractiveDelay</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="SubscribeSubject">
-                <Name>TrialInteractiveDelay</Name>
-              </Expression>
-              <Expression xsi:type="scr:ExpressionTransform">
-                <scr:Name>MakeTimespan</scr:Name>
-                <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-              </Expression>
-              <Expression xsi:type="PropertyMapping">
-                <PropertyMappings>
-                  <Property Name="DueTime" />
-                </PropertyMappings>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:Timer">
-                  <rx:DueTime>PT1.938S</rx:DueTime>
-                  <rx:Period>PT0S</rx:Period>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:SubscribeWhen" />
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>InteractiveStartTimestamp</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="BooleanProperty">
-                        <Value>true</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>InteractiveStart</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="3" Label="Source1" />
-              <Edge From="3" To="5" Label="Source1" />
-              <Edge From="4" To="5" Label="Source2" />
-              <Edge From="5" To="6" Label="Source1" />
-              <Edge From="6" To="7" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
         <Builder xsi:type="rx:SelectMany">
           <Name>Reward</Name>
           <Workflow>
@@ -1518,929 +819,6 @@ def process(value):
               <Edge From="3" To="4" Label="Source1" />
               <Edge From="4" To="5" Label="Source1" />
               <Edge From="5" To="6" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>StimOff</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="SubscribeSubject">
-                <Name>TrialStimOffDelay</Name>
-              </Expression>
-              <Expression xsi:type="scr:ExpressionTransform">
-                <scr:Name>MakeTimespan</scr:Name>
-                <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-              </Expression>
-              <Expression xsi:type="PropertyMapping">
-                <PropertyMappings>
-                  <Property Name="DueTime" />
-                </PropertyMappings>
-              </Expression>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:Delay">
-                  <rx:DueTime>PT1.811S</rx:DueTime>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>StimOff</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="IntProperty">
-                        <Value>0</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>StimOn</Name>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>StimOpacity</Name>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>PhotodiodeSquare</Name>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="4" Label="Source1" />
-              <Edge From="3" To="4" Label="Source2" />
-              <Edge From="4" To="5" Label="Source1" />
-              <Edge From="5" To="6" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="GroupWorkflow">
-          <Name>Repeat</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:First" />
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:Repeat" />
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="3" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="rx:Last" />
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>EndDelay</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="ExternalizedMapping">
-                <Property Name="DueTime" />
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:Timer">
-                  <rx:DueTime>PT5S</rx:DueTime>
-                  <rx:Period>PT0S</rx:Period>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:SubscribeWhen" />
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="BooleanProperty">
-                  <Value>true</Value>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="3" Label="Source1" />
-              <Edge From="2" To="3" Label="Source2" />
-              <Edge From="3" To="4" Label="Source1" />
-              <Edge From="4" To="5" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="GroupWorkflow">
-          <Name>Stop</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="osc:ReceiveMessage">
-                <osc:Address>/stop</osc:Address>
-                <osc:TypeTag>s</osc:TypeTag>
-                <osc:Connection>Receiver</osc:Connection>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="BooleanProperty">
-                  <Value>false</Value>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:Amb" />
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:First" />
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>SendStop</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="StringProperty">
-                        <Value>stop</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="osc:SendMessage">
-                      <osc:Connection>Emitter</osc:Connection>
-                      <osc:Address>/stop</osc:Address>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="3" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="3" Label="Source2" />
-              <Edge From="3" To="4" Label="Source1" />
-              <Edge From="4" To="5" Label="Source1" />
-              <Edge From="5" To="6" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="WorkflowOutput" />
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>Reward</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Expression>
-              <Expression xsi:type="SubscribeSubject">
-                <Name>LickSpout</Name>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:First" />
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:SubscribeWhen" />
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>OutcomeTimestamp</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="BooleanProperty">
-                        <Value>true</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>Outcome</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>GiveReward</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>OpenValve</Name>
-                    </Expression>
-                    <Expression xsi:type="ipy:PythonTransform">
-                      <ipy:Name>MakeString</ipy:Name>
-                      <ipy:Script>@returns(str)
-def process(value):
-  return str.format("{0}", value)</ipy:Script>
-                    </Expression>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:SubscribeWhen" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="io:SerialStringWrite">
-                        <io:PortName>myArduino</io:PortName>
-                        <io:NewLine>\r</io:NewLine>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="3" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source2" />
-                    <Edge From="3" To="4" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="3" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="3" Label="Source2" />
-              <Edge From="3" To="4" Label="Source1" />
-              <Edge From="4" To="5" Label="Source1" />
-              <Edge From="5" To="6" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="ExternalizedMapping">
-          <Property Name="SavePath" />
-        </Builder>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="GroupWorkflow">
-          <Name>Saver</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Tuple(sys:Int32,sys:String,sys:String,sys:DateTimeOffset)">
-                <rx:Name>WriteData</rx:Name>
-              </Expression>
-              <Expression xsi:type="scr:ExpressionTransform">
-                <scr:Name>SaveFormat</scr:Name>
-                <scr:Expression>new(
-it.Item1 as Trial, 
-it.Item2 as Event,
-it.Item3 as Value,
-it.Item4 as Timestamp
-)
-</scr:Expression>
-              </Expression>
-              <Expression xsi:type="SubscribeSubject">
-                <Name>CsvFile</Name>
-              </Expression>
-              <Expression xsi:type="PropertyMapping">
-                <PropertyMappings>
-                  <Property Name="FileName" />
-                </PropertyMappings>
-              </Expression>
-              <Expression xsi:type="io:CsvWriter">
-                <io:FileName>C:\Users\peterslab\Desktop\bonsai_events.csv</io:FileName>
-                <io:Append>false</io:Append>
-                <io:Overwrite>true</io:Overwrite>
-                <io:Suffix>None</io:Suffix>
-                <io:IncludeHeader>true</io:IncludeHeader>
-              </Expression>
-              <Expression xsi:type="GroupWorkflow">
-                <Name>SaveParameters</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimSize</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>StimSize</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimSpatialFreq</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>StimSpatialFreq</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>WheelGain</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>WheelGain</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>RewardAmount</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>RewardAmount</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>ITIMin</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>ITIMin</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>ITIMax</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>ITIMax</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimOffMax</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>StimOffMax</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimOffMin</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>StimOffMin</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>InteractiveDelayMax</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>InteractiveDelayMax</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>InteractiveDelayMin</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>InteractiveDelayMin</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>QuiescenceTimes</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>QuiescenceTimes</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Merge" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="IntProperty">
-                        <Value>0</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Timestamp" />
-                    </Expression>
-                    <Expression xsi:type="MemberSelector">
-                      <Selector>Value.Item2,Value.Item1.Item2,Value.Item1.Item1,Timestamp</Selector>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>WriteData</Name>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="3" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source2" />
-                    <Edge From="3" To="44" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="7" Label="Source1" />
-                    <Edge From="6" To="7" Label="Source2" />
-                    <Edge From="7" To="44" Label="Source2" />
-                    <Edge From="8" To="9" Label="Source1" />
-                    <Edge From="9" To="11" Label="Source1" />
-                    <Edge From="10" To="11" Label="Source2" />
-                    <Edge From="11" To="44" Label="Source3" />
-                    <Edge From="12" To="13" Label="Source1" />
-                    <Edge From="13" To="15" Label="Source1" />
-                    <Edge From="14" To="15" Label="Source2" />
-                    <Edge From="15" To="44" Label="Source4" />
-                    <Edge From="16" To="17" Label="Source1" />
-                    <Edge From="17" To="19" Label="Source1" />
-                    <Edge From="18" To="19" Label="Source2" />
-                    <Edge From="19" To="44" Label="Source5" />
-                    <Edge From="20" To="21" Label="Source1" />
-                    <Edge From="21" To="23" Label="Source1" />
-                    <Edge From="22" To="23" Label="Source2" />
-                    <Edge From="23" To="44" Label="Source6" />
-                    <Edge From="24" To="25" Label="Source1" />
-                    <Edge From="25" To="27" Label="Source1" />
-                    <Edge From="26" To="27" Label="Source2" />
-                    <Edge From="27" To="44" Label="Source7" />
-                    <Edge From="28" To="29" Label="Source1" />
-                    <Edge From="29" To="31" Label="Source1" />
-                    <Edge From="30" To="31" Label="Source2" />
-                    <Edge From="31" To="44" Label="Source8" />
-                    <Edge From="32" To="33" Label="Source1" />
-                    <Edge From="33" To="35" Label="Source1" />
-                    <Edge From="34" To="35" Label="Source2" />
-                    <Edge From="35" To="44" Label="Source9" />
-                    <Edge From="36" To="37" Label="Source1" />
-                    <Edge From="37" To="39" Label="Source1" />
-                    <Edge From="38" To="39" Label="Source2" />
-                    <Edge From="39" To="44" Label="Source10" />
-                    <Edge From="40" To="41" Label="Source1" />
-                    <Edge From="41" To="43" Label="Source1" />
-                    <Edge From="42" To="43" Label="Source2" />
-                    <Edge From="43" To="44" Label="Source11" />
-                    <Edge From="44" To="46" Label="Source1" />
-                    <Edge From="45" To="46" Label="Source2" />
-                    <Edge From="46" To="47" Label="Source1" />
-                    <Edge From="47" To="48" Label="Source1" />
-                    <Edge From="48" To="49" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="GroupWorkflow">
-                <Name>SaveVariables</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialITI</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>TrialITI</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimOn</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>StimOn</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>Outcome</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>Outcome</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialStart</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>TrialStart</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>ITIStart</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>ITIStart</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialStimPhase</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>TrialStimPhase</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>ManualReward</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>ManualReward</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialStimOffDelay</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>TrialStimOffDelay</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialInteractiveDelay</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>TrialInteractiveDelay</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>InteractiveStart</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>InteractiveStart</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialQuiescence</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>TrialQuiescence</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>QuiescenceReset</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>QuiescenceReset</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>QuiescenceStart</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeString</scr:Name>
-                      <scr:Expression>Convert.ToString(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
-                      <MemberName>Name</MemberName>
-                      <Value>QuiescenceStart</Value>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Merge" />
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialNumber</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:WithLatestFrom" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Timestamp" />
-                    </Expression>
-                    <Expression xsi:type="MemberSelector">
-                      <Selector>Value.Item2,Value.Item1.Item2,Value.Item1.Item1,Timestamp</Selector>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>WriteData</Name>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="3" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source2" />
-                    <Edge From="3" To="52" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="7" Label="Source1" />
-                    <Edge From="6" To="7" Label="Source2" />
-                    <Edge From="7" To="52" Label="Source2" />
-                    <Edge From="8" To="9" Label="Source1" />
-                    <Edge From="9" To="11" Label="Source1" />
-                    <Edge From="10" To="11" Label="Source2" />
-                    <Edge From="11" To="52" Label="Source3" />
-                    <Edge From="12" To="13" Label="Source1" />
-                    <Edge From="13" To="15" Label="Source1" />
-                    <Edge From="14" To="15" Label="Source2" />
-                    <Edge From="15" To="52" Label="Source4" />
-                    <Edge From="16" To="17" Label="Source1" />
-                    <Edge From="17" To="19" Label="Source1" />
-                    <Edge From="18" To="19" Label="Source2" />
-                    <Edge From="19" To="52" Label="Source5" />
-                    <Edge From="20" To="21" Label="Source1" />
-                    <Edge From="21" To="23" Label="Source1" />
-                    <Edge From="22" To="23" Label="Source2" />
-                    <Edge From="23" To="52" Label="Source6" />
-                    <Edge From="24" To="25" Label="Source1" />
-                    <Edge From="25" To="27" Label="Source1" />
-                    <Edge From="26" To="27" Label="Source2" />
-                    <Edge From="27" To="52" Label="Source7" />
-                    <Edge From="28" To="29" Label="Source1" />
-                    <Edge From="29" To="31" Label="Source1" />
-                    <Edge From="30" To="31" Label="Source2" />
-                    <Edge From="31" To="52" Label="Source8" />
-                    <Edge From="32" To="33" Label="Source1" />
-                    <Edge From="33" To="35" Label="Source1" />
-                    <Edge From="34" To="35" Label="Source2" />
-                    <Edge From="35" To="52" Label="Source9" />
-                    <Edge From="36" To="37" Label="Source1" />
-                    <Edge From="37" To="39" Label="Source1" />
-                    <Edge From="38" To="39" Label="Source2" />
-                    <Edge From="39" To="52" Label="Source10" />
-                    <Edge From="40" To="41" Label="Source1" />
-                    <Edge From="41" To="43" Label="Source1" />
-                    <Edge From="42" To="43" Label="Source2" />
-                    <Edge From="43" To="52" Label="Source11" />
-                    <Edge From="44" To="45" Label="Source1" />
-                    <Edge From="45" To="47" Label="Source1" />
-                    <Edge From="46" To="47" Label="Source2" />
-                    <Edge From="47" To="52" Label="Source12" />
-                    <Edge From="48" To="49" Label="Source1" />
-                    <Edge From="49" To="51" Label="Source1" />
-                    <Edge From="50" To="51" Label="Source2" />
-                    <Edge From="51" To="52" Label="Source13" />
-                    <Edge From="52" To="54" Label="Source1" />
-                    <Edge From="53" To="54" Label="Source2" />
-                    <Edge From="54" To="55" Label="Source1" />
-                    <Edge From="55" To="56" Label="Source1" />
-                    <Edge From="56" To="57" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="ExternalizedMapping">
-                <Property Name="SavePath" />
-                <Property Name="CsvName" />
-                <Property Name="BinName" />
-              </Expression>
-              <Expression xsi:type="GroupWorkflow">
-                <Name>SaveInfo</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="ExternalizedMapping">
-                      <Property Name="Value" DisplayName="SavePath" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="StringProperty">
-                        <Value>C:\Users\peterslab\Desktop</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="rx:BehaviorSubject">
-                      <Name>SavePath</Name>
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>SavePath</Name>
-                    </Expression>
-                    <Expression xsi:type="ExternalizedMapping">
-                      <Property Name="Value" DisplayName="CsvName" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="StringProperty">
-                        <Value>bonsai_events.csv</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Zip" />
-                    </Expression>
-                    <Expression xsi:type="ipy:PythonTransform">
-                      <ipy:Script>import os
-
-@returns(str)
-def process(value):
-  return os.path.join(value.Item1,value.Item2)
-</ipy:Script>
-                    </Expression>
-                    <Expression xsi:type="rx:BehaviorSubject">
-                      <Name>CsvFile</Name>
-                    </Expression>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>SavePath</Name>
-                    </Expression>
-                    <Expression xsi:type="ExternalizedMapping">
-                      <Property Name="Value" DisplayName="BinName" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="StringProperty">
-                        <Value>NoiseLocations.bin</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Zip" />
-                    </Expression>
-                    <Expression xsi:type="ipy:PythonTransform">
-                      <ipy:Script>import os
-
-@returns(str)
-def process(value):
-  return os.path.join(value.Item1,value.Item2)
-</ipy:Script>
-                    </Expression>
-                    <Expression xsi:type="rx:BehaviorSubject">
-                      <Name>BinFile</Name>
-                    </Expression>
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="3" To="6" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source2" />
-                    <Edge From="6" To="7" Label="Source1" />
-                    <Edge From="7" To="8" Label="Source1" />
-                    <Edge From="9" To="12" Label="Source1" />
-                    <Edge From="10" To="11" Label="Source1" />
-                    <Edge From="11" To="12" Label="Source2" />
-                    <Edge From="12" To="13" Label="Source1" />
-                    <Edge From="13" To="14" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="4" Label="Source1" />
-              <Edge From="2" To="3" Label="Source1" />
-              <Edge From="3" To="4" Label="Source2" />
-              <Edge From="7" To="8" Label="Source1" />
             </Edges>
           </Workflow>
         </Builder>
@@ -2758,51 +1136,6 @@ def process(value):
               </Workflow>
             </Expression>
             <Expression xsi:type="rx:Sink">
-              <Name>PickTrialInteractiveDelay</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>InteractiveDelayMin</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Lower" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>InteractiveDelayMax</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Upper" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:CreateContinuousUniform">
-                      <p1:Lower>0.2</p1:Lower>
-                      <p1:Upper>0.5</p1:Upper>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:Sample" />
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>TrialInteractiveDelay</Name>
-                  </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="4" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="3" To="4" Label="Source2" />
-                  <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="5" To="6" Label="Source1" />
-                  <Edge From="6" To="7" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
-            <Expression xsi:type="rx:Sink">
               <Name>PickTrialStimPhase</Name>
               <Workflow>
                 <Nodes>
@@ -2830,49 +1163,6 @@ def process(value):
                   <Edge From="1" To="2" Label="Source1" />
                   <Edge From="2" To="3" Label="Source1" />
                   <Edge From="3" To="4" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
-            <Expression xsi:type="rx:Sink">
-              <Name>PickStimOffTime</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>StimOffMin</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Lower" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>StimOffMax</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Upper" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:CreateContinuousUniform">
-                      <p1:Lower>0.2</p1:Lower>
-                      <p1:Upper>0.5</p1:Upper>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:Sample" />
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>TrialStimOffDelay</Name>
-                  </Expression>
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="4" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="3" To="4" Label="Source2" />
-                  <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="5" To="6" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -2966,8 +1256,6 @@ def process(value):
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -2989,7 +1277,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT0.438S</rx:DueTime>
+                <rx:DueTime>PT0.341S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -3236,46 +1524,12 @@ def process(value):
         <Name>StimMovement</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="FloatProperty">
-                  <Value>0</Value>
-                </Combinator>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="MulticastSubject">
-                <Name>StimX</Name>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Equal">
-                <Operand xsi:type="WorkflowProperty" TypeArguments="sys:Int64">
-                  <Value>0</Value>
-                </Operand>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="BooleanProperty">
-                  <Value>true</Value>
-                </Combinator>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="WorkflowOutput" />
-            </Expression>
             <Expression xsi:type="GroupWorkflow">
               <Name>StimMoveTimeSeries</Name>
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>TimeRes</Name>
+                    <Name>StimMoveTimeResolution</Name>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>MakeTimespan</scr:Name>
@@ -3288,7 +1542,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Timer">
-                      <rx:DueTime>PT0.1S</rx:DueTime>
+                      <rx:DueTime>PT0.01S</rx:DueTime>
                       <rx:Period>PT0S</rx:Period>
                     </Combinator>
                   </Expression>
@@ -3309,6 +1563,25 @@ def process(value):
                     <Combinator xsi:type="rx:CombineLatest" />
                   </Expression>
                   <Expression xsi:type="Divide" />
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>StimStartingX</Name>
+                  </Expression>
+                  <Expression xsi:type="Multiply">
+                    <Operand xsi:type="DoubleProperty">
+                      <Value>-1</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:CombineLatest" />
+                  </Expression>
+                  <Expression xsi:type="Multiply" />
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>StimStartingX</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:CombineLatest" />
+                  </Expression>
+                  <Expression xsi:type="Add" />
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
                 <Edges>
@@ -3322,22 +1595,48 @@ def process(value):
                   <Edge From="7" To="9" Label="Source1" />
                   <Edge From="8" To="9" Label="Source2" />
                   <Edge From="9" To="10" Label="Source1" />
-                  <Edge From="10" To="11" Label="Source1" />
+                  <Edge From="10" To="13" Label="Source1" />
+                  <Edge From="11" To="12" Label="Source1" />
+                  <Edge From="12" To="13" Label="Source2" />
+                  <Edge From="13" To="14" Label="Source1" />
+                  <Edge From="14" To="16" Label="Source1" />
+                  <Edge From="15" To="16" Label="Source2" />
+                  <Edge From="16" To="17" Label="Source1" />
+                  <Edge From="17" To="18" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="Multiply">
-              <Operand xsi:type="DoubleProperty">
-                <Value>-90</Value>
-              </Operand>
-            </Expression>
-            <Expression xsi:type="Add">
-              <Operand xsi:type="DoubleProperty">
-                <Value>90</Value>
-              </Operand>
-            </Expression>
             <Expression xsi:type="MulticastSubject">
               <Name>StimX</Name>
+            </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>PhotodiodeOff</Name>
+              <Description>Turn photodiode to black while stimulus is moving</Description>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:First" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="IntProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>PhotodiodeSquare</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                </Edges>
+              </Workflow>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
               <Operand xsi:type="DoubleProperty">
@@ -3358,6 +1657,59 @@ def process(value):
                 </Edges>
               </Workflow>
             </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>CenterStim</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="DoubleProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>StimX</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="rx:Sink">
+              <Name>PhotodiodeOn</Name>
+              <Description>Turn photodiode white while stim is in the center</Description>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:First" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="IntProperty">
+                      <Value>1</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>PhotodiodeSquare</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="BooleanProperty">
                 <Value>true</Value>
@@ -3367,116 +1719,6 @@ def process(value):
               <Combinator xsi:type="rx:First" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="SubscribeSubject">
-                <Name>StimMoveTime</Name>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="scr:ExpressionTransform">
-                <scr:Name>MakeTimespan</scr:Name>
-                <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="PropertyMapping">
-                <PropertyMappings>
-                  <Property Name="DueTime" />
-                </PropertyMappings>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="gl:Timer">
-                  <gl:DueTime>PT1S</gl:DueTime>
-                </Combinator>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="FloatProperty">
-                  <Value>-1</Value>
-                </Combinator>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="SubscribeSubject">
-                <Name>StimMoveTime</Name>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="scr:ExpressionTransform">
-                <scr:Name>MakeTimespan</scr:Name>
-                <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="PropertyMapping">
-                <PropertyMappings>
-                  <Property Name="DueTime" />
-                </PropertyMappings>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="gl:Timer">
-                  <gl:DueTime>PT1S</gl:DueTime>
-                </Combinator>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="WorkflowInput">
-                <Name>Source1</Name>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="rx:SubscribeWhen" />
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="rx:Timestamp" />
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="MemberSelector">
-                <Selector>Timestamp.TimeOfDay.TotalSeconds</Selector>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="rx:Timestamp" />
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="MemberSelector">
-                <Selector>Timestamp.TimeOfDay.TotalSeconds</Selector>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="rx:CombineLatest" />
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Subtract" />
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="Combinator">
-                <Combinator xsi:type="rx:Delay">
-                  <rx:DueTime>PT5S</rx:DueTime>
-                </Combinator>
-              </Builder>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="DoubleProperty">
-                <Value>0.1</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>TimeRes</Name>
-            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -3484,32 +1726,10 @@ def process(value):
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source1" />
-            <Edge From="12" To="13" Label="Source1" />
-            <Edge From="13" To="14" Label="Source1" />
-            <Edge From="15" To="16" Label="Source1" />
-            <Edge From="16" To="17" Label="Source1" />
-            <Edge From="17" To="18" Label="Source1" />
-            <Edge From="18" To="19" Label="Source1" />
-            <Edge From="20" To="21" Label="Source1" />
-            <Edge From="21" To="22" Label="Source1" />
-            <Edge From="22" To="23" Label="Source1" />
-            <Edge From="23" To="25" Label="Source1" />
-            <Edge From="24" To="25" Label="Source2" />
-            <Edge From="24" To="28" Label="Source1" />
-            <Edge From="25" To="26" Label="Source1" />
-            <Edge From="26" To="27" Label="Source1" />
-            <Edge From="27" To="30" Label="Source1" />
-            <Edge From="28" To="29" Label="Source1" />
-            <Edge From="29" To="30" Label="Source2" />
-            <Edge From="30" To="31" Label="Source1" />
-            <Edge From="31" To="32" Label="Source1" />
-            <Edge From="33" To="34" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -3607,25 +1827,8 @@ def process(value):
         <Name>StimOff</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>TrialStimOffDelay</Name>
-            </Expression>
-            <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Name>MakeTimespan</scr:Name>
-              <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="DueTime" />
-              </PropertyMappings>
-            </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Delay">
-                <rx:DueTime>PT0.242S</rx:DueTime>
-              </Combinator>
             </Expression>
             <Expression xsi:type="rx:Sink">
               <Name>StimOff</Name>
@@ -3662,10 +1865,6 @@ def process(value):
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
-            <Edge From="2" To="4" Label="Source1" />
-            <Edge From="3" To="4" Label="Source2" />
-            <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -3790,11 +1989,642 @@ def process(value):
         </Workflow>
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="ExternalizedMapping">
+          <Property Name="SavePath" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="GroupWorkflow">
+          <Name>Saver</Name>
+          <Workflow>
+            <Nodes>
+              <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Tuple(sys:Int32,sys:String,sys:String,sys:DateTimeOffset)">
+                <rx:Name>WriteData</rx:Name>
+              </Expression>
+              <Expression xsi:type="scr:ExpressionTransform">
+                <scr:Name>SaveFormat</scr:Name>
+                <scr:Expression>new(
+it.Item1 as Trial, 
+it.Item2 as Event,
+it.Item3 as Value,
+it.Item4 as Timestamp
+)
+</scr:Expression>
+              </Expression>
+              <Expression xsi:type="SubscribeSubject">
+                <Name>CsvFile</Name>
+              </Expression>
+              <Expression xsi:type="PropertyMapping">
+                <PropertyMappings>
+                  <Property Name="FileName" />
+                </PropertyMappings>
+              </Expression>
+              <Expression xsi:type="io:CsvWriter">
+                <io:FileName>C:\Users\peterslab\Desktop\bonsai_events.csv</io:FileName>
+                <io:Append>false</io:Append>
+                <io:Overwrite>true</io:Overwrite>
+                <io:Suffix>None</io:Suffix>
+                <io:IncludeHeader>true</io:IncludeHeader>
+              </Expression>
+              <Expression xsi:type="GroupWorkflow">
+                <Name>SaveParameters</Name>
+                <Workflow>
+                  <Nodes>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>StimSize</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>StimSize</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>StimSpatialFreq</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>StimSpatialFreq</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>WheelGain</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>WheelGain</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>RewardAmount</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>RewardAmount</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>ITIMin</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>ITIMin</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>ITIMax</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>ITIMax</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>QuiescenceTimes</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>QuiescenceTimes</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="IntProperty">
+                        <Value>0</Value>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>StimStaticMin</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>StimStaticMin</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>StimStaticMax</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>StimStaticMax</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>StimMoveTime</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>StimMoveTime</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>StimMoveTimeResolution</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>StimMoveTimeResolution</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>StimStartingX</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>StimStartingX</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:Merge" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:Timestamp" />
+                    </Expression>
+                    <Expression xsi:type="MemberSelector">
+                      <Selector>Value.Item2,Value.Item1.Item2,Value.Item1.Item1,Timestamp</Selector>
+                    </Expression>
+                    <Expression xsi:type="MulticastSubject">
+                      <Name>WriteData</Name>
+                    </Expression>
+                  </Nodes>
+                  <Edges>
+                    <Edge From="0" To="1" Label="Source1" />
+                    <Edge From="1" To="3" Label="Source1" />
+                    <Edge From="2" To="3" Label="Source2" />
+                    <Edge From="3" To="49" Label="Source1" />
+                    <Edge From="4" To="5" Label="Source1" />
+                    <Edge From="5" To="7" Label="Source1" />
+                    <Edge From="6" To="7" Label="Source2" />
+                    <Edge From="7" To="49" Label="Source2" />
+                    <Edge From="8" To="9" Label="Source1" />
+                    <Edge From="9" To="11" Label="Source1" />
+                    <Edge From="10" To="11" Label="Source2" />
+                    <Edge From="11" To="49" Label="Source3" />
+                    <Edge From="12" To="13" Label="Source1" />
+                    <Edge From="13" To="15" Label="Source1" />
+                    <Edge From="14" To="15" Label="Source2" />
+                    <Edge From="15" To="49" Label="Source4" />
+                    <Edge From="16" To="17" Label="Source1" />
+                    <Edge From="17" To="19" Label="Source1" />
+                    <Edge From="18" To="19" Label="Source2" />
+                    <Edge From="19" To="49" Label="Source5" />
+                    <Edge From="20" To="21" Label="Source1" />
+                    <Edge From="21" To="23" Label="Source1" />
+                    <Edge From="22" To="23" Label="Source2" />
+                    <Edge From="23" To="49" Label="Source6" />
+                    <Edge From="24" To="25" Label="Source1" />
+                    <Edge From="25" To="27" Label="Source1" />
+                    <Edge From="26" To="27" Label="Source2" />
+                    <Edge From="27" To="49" Label="Source7" />
+                    <Edge From="28" To="50" Label="Source2" />
+                    <Edge From="29" To="30" Label="Source1" />
+                    <Edge From="30" To="32" Label="Source1" />
+                    <Edge From="31" To="32" Label="Source2" />
+                    <Edge From="32" To="49" Label="Source8" />
+                    <Edge From="33" To="34" Label="Source1" />
+                    <Edge From="34" To="36" Label="Source1" />
+                    <Edge From="35" To="36" Label="Source2" />
+                    <Edge From="36" To="49" Label="Source9" />
+                    <Edge From="37" To="38" Label="Source1" />
+                    <Edge From="38" To="40" Label="Source1" />
+                    <Edge From="39" To="40" Label="Source2" />
+                    <Edge From="40" To="49" Label="Source10" />
+                    <Edge From="41" To="42" Label="Source1" />
+                    <Edge From="42" To="44" Label="Source1" />
+                    <Edge From="43" To="44" Label="Source2" />
+                    <Edge From="44" To="49" Label="Source11" />
+                    <Edge From="45" To="46" Label="Source1" />
+                    <Edge From="46" To="48" Label="Source1" />
+                    <Edge From="47" To="48" Label="Source2" />
+                    <Edge From="48" To="49" Label="Source12" />
+                    <Edge From="49" To="50" Label="Source1" />
+                    <Edge From="50" To="51" Label="Source1" />
+                    <Edge From="51" To="52" Label="Source1" />
+                    <Edge From="52" To="53" Label="Source1" />
+                  </Edges>
+                </Workflow>
+              </Expression>
+              <Expression xsi:type="GroupWorkflow">
+                <Name>SaveVariables</Name>
+                <Workflow>
+                  <Nodes>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>TrialITI</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>TrialITI</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>StimOn</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>StimOn</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>Outcome</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>Outcome</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>TrialStart</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>TrialStart</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>ITIStart</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>ITIStart</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>TrialStimPhase</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>TrialStimPhase</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>ManualReward</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>ManualReward</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>TrialStimOffDelay</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>TrialStimOffDelay</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>TrialQuiescence</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>TrialQuiescence</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>QuiescenceReset</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>QuiescenceReset</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>QuiescenceStart</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>QuiescenceStart</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>TrialNumber</Name>
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>TrialStimStaticTime</Name>
+                    </Expression>
+                    <Expression xsi:type="scr:ExpressionTransform">
+                      <scr:Name>MakeString</scr:Name>
+                      <scr:Expression>Convert.ToString(it)</scr:Expression>
+                    </Expression>
+                    <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                      <MemberName>Name</MemberName>
+                      <Value>TrialStimStaticTime</Value>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:Merge" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:WithLatestFrom" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:Timestamp" />
+                    </Expression>
+                    <Expression xsi:type="MemberSelector">
+                      <Selector>Value.Item2,Value.Item1.Item2,Value.Item1.Item1,Timestamp</Selector>
+                    </Expression>
+                    <Expression xsi:type="MulticastSubject">
+                      <Name>WriteData</Name>
+                    </Expression>
+                  </Nodes>
+                  <Edges>
+                    <Edge From="0" To="1" Label="Source1" />
+                    <Edge From="1" To="3" Label="Source1" />
+                    <Edge From="2" To="3" Label="Source2" />
+                    <Edge From="3" To="49" Label="Source1" />
+                    <Edge From="4" To="5" Label="Source1" />
+                    <Edge From="5" To="7" Label="Source1" />
+                    <Edge From="6" To="7" Label="Source2" />
+                    <Edge From="7" To="49" Label="Source2" />
+                    <Edge From="8" To="9" Label="Source1" />
+                    <Edge From="9" To="11" Label="Source1" />
+                    <Edge From="10" To="11" Label="Source2" />
+                    <Edge From="11" To="49" Label="Source3" />
+                    <Edge From="12" To="13" Label="Source1" />
+                    <Edge From="13" To="15" Label="Source1" />
+                    <Edge From="14" To="15" Label="Source2" />
+                    <Edge From="15" To="49" Label="Source4" />
+                    <Edge From="16" To="17" Label="Source1" />
+                    <Edge From="17" To="19" Label="Source1" />
+                    <Edge From="18" To="19" Label="Source2" />
+                    <Edge From="19" To="49" Label="Source5" />
+                    <Edge From="20" To="21" Label="Source1" />
+                    <Edge From="21" To="23" Label="Source1" />
+                    <Edge From="22" To="23" Label="Source2" />
+                    <Edge From="23" To="49" Label="Source6" />
+                    <Edge From="24" To="25" Label="Source1" />
+                    <Edge From="25" To="27" Label="Source1" />
+                    <Edge From="26" To="27" Label="Source2" />
+                    <Edge From="27" To="49" Label="Source7" />
+                    <Edge From="28" To="29" Label="Source1" />
+                    <Edge From="29" To="31" Label="Source1" />
+                    <Edge From="30" To="31" Label="Source2" />
+                    <Edge From="31" To="49" Label="Source8" />
+                    <Edge From="32" To="33" Label="Source1" />
+                    <Edge From="33" To="35" Label="Source1" />
+                    <Edge From="34" To="35" Label="Source2" />
+                    <Edge From="35" To="49" Label="Source9" />
+                    <Edge From="36" To="37" Label="Source1" />
+                    <Edge From="37" To="39" Label="Source1" />
+                    <Edge From="38" To="39" Label="Source2" />
+                    <Edge From="39" To="49" Label="Source10" />
+                    <Edge From="40" To="41" Label="Source1" />
+                    <Edge From="41" To="43" Label="Source1" />
+                    <Edge From="42" To="43" Label="Source2" />
+                    <Edge From="43" To="49" Label="Source11" />
+                    <Edge From="44" To="50" Label="Source2" />
+                    <Edge From="45" To="46" Label="Source1" />
+                    <Edge From="46" To="48" Label="Source1" />
+                    <Edge From="47" To="48" Label="Source2" />
+                    <Edge From="48" To="49" Label="Source12" />
+                    <Edge From="49" To="50" Label="Source1" />
+                    <Edge From="50" To="51" Label="Source1" />
+                    <Edge From="51" To="52" Label="Source1" />
+                    <Edge From="52" To="53" Label="Source1" />
+                  </Edges>
+                </Workflow>
+              </Expression>
+              <Expression xsi:type="ExternalizedMapping">
+                <Property Name="SavePath" />
+                <Property Name="CsvName" />
+                <Property Name="BinName" />
+              </Expression>
+              <Expression xsi:type="GroupWorkflow">
+                <Name>SaveInfo</Name>
+                <Workflow>
+                  <Nodes>
+                    <Expression xsi:type="ExternalizedMapping">
+                      <Property Name="Value" DisplayName="SavePath" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="StringProperty">
+                        <Value>C:\Users\peterslab\Desktop</Value>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="rx:BehaviorSubject">
+                      <Name>SavePath</Name>
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>SavePath</Name>
+                    </Expression>
+                    <Expression xsi:type="ExternalizedMapping">
+                      <Property Name="Value" DisplayName="CsvName" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="StringProperty">
+                        <Value>bonsai_events.csv</Value>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:Zip" />
+                    </Expression>
+                    <Expression xsi:type="ipy:PythonTransform">
+                      <ipy:Script>import os
+
+@returns(str)
+def process(value):
+  return os.path.join(value.Item1,value.Item2)
+</ipy:Script>
+                    </Expression>
+                    <Expression xsi:type="rx:BehaviorSubject">
+                      <Name>CsvFile</Name>
+                    </Expression>
+                    <Expression xsi:type="SubscribeSubject">
+                      <Name>SavePath</Name>
+                    </Expression>
+                    <Expression xsi:type="ExternalizedMapping">
+                      <Property Name="Value" DisplayName="BinName" />
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="StringProperty">
+                        <Value>NoiseLocations.bin</Value>
+                      </Combinator>
+                    </Expression>
+                    <Expression xsi:type="Combinator">
+                      <Combinator xsi:type="rx:Zip" />
+                    </Expression>
+                    <Expression xsi:type="ipy:PythonTransform">
+                      <ipy:Script>import os
+
+@returns(str)
+def process(value):
+  return os.path.join(value.Item1,value.Item2)
+</ipy:Script>
+                    </Expression>
+                    <Expression xsi:type="rx:BehaviorSubject">
+                      <Name>BinFile</Name>
+                    </Expression>
+                  </Nodes>
+                  <Edges>
+                    <Edge From="0" To="1" Label="Source1" />
+                    <Edge From="1" To="2" Label="Source1" />
+                    <Edge From="3" To="6" Label="Source1" />
+                    <Edge From="4" To="5" Label="Source1" />
+                    <Edge From="5" To="6" Label="Source2" />
+                    <Edge From="6" To="7" Label="Source1" />
+                    <Edge From="7" To="8" Label="Source1" />
+                    <Edge From="9" To="12" Label="Source1" />
+                    <Edge From="10" To="11" Label="Source1" />
+                    <Edge From="11" To="12" Label="Source2" />
+                    <Edge From="12" To="13" Label="Source1" />
+                    <Edge From="13" To="14" Label="Source1" />
+                  </Edges>
+                </Workflow>
+              </Expression>
+            </Nodes>
+            <Edges>
+              <Edge From="0" To="1" Label="Source1" />
+              <Edge From="1" To="4" Label="Source1" />
+              <Edge From="2" To="3" Label="Source1" />
+              <Edge From="3" To="4" Label="Source2" />
+              <Edge From="7" To="8" Label="Source1" />
+            </Edges>
+          </Workflow>
+        </Builder>
+      </Expression>
     </Nodes>
     <Edges>
-      <Edge From="5" To="6" Label="Source1" />
-      <Edge From="6" To="7" Label="Source1" />
-      <Edge From="7" To="8" Label="Source1" />
       <Edge From="8" To="9" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
@@ -3804,20 +2634,11 @@ def process(value):
       <Edge From="14" To="15" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
       <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="18" Label="Source1" />
+      <Edge From="18" To="19" Label="Source1" />
       <Edge From="19" To="20" Label="Source1" />
-      <Edge From="23" To="24" Label="Source1" />
-      <Edge From="24" To="25" Label="Source1" />
-      <Edge From="25" To="26" Label="Source1" />
-      <Edge From="26" To="27" Label="Source1" />
-      <Edge From="27" To="28" Label="Source1" />
-      <Edge From="28" To="29" Label="Source1" />
-      <Edge From="29" To="30" Label="Source1" />
-      <Edge From="30" To="31" Label="Source1" />
-      <Edge From="31" To="32" Label="Source1" />
-      <Edge From="32" To="33" Label="Source1" />
-      <Edge From="33" To="34" Label="Source1" />
-      <Edge From="34" To="35" Label="Source1" />
-      <Edge From="35" To="36" Label="Source1" />
+      <Edge From="20" To="21" Label="Source1" />
+      <Edge From="22" To="23" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
