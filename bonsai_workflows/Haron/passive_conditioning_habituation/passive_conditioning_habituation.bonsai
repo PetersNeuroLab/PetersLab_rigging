@@ -254,6 +254,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Boolean">
               <rx:Name>ManualReward</rx:Name>
             </Expression>
+            <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+              <rx:Name>Outcome</rx:Name>
+            </Expression>
           </Nodes>
           <Edges />
         </Workflow>
@@ -381,6 +384,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:First" />
+      </Expression>
+      <Expression xsi:type="MulticastSubject">
+        <Name>Outcome</Name>
       </Expression>
       <Expression xsi:type="rx:SelectMany">
         <Name>GiveReward</Name>
@@ -1001,6 +1007,33 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>TotalWater</Name>
+        <Description>Cumulative water given during task (just for human readout)</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>RewardAmount</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Outcome</Name>
+            </Expression>
+            <Expression xsi:type="rx:Accumulate" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:WithLatestFrom" />
+            </Expression>
+            <Expression xsi:type="Multiply" />
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="3" Label="Source2" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge From="4" To="5" Label="Source1" />
@@ -1011,7 +1044,8 @@ def process(value):
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
       <Edge From="11" To="12" Label="Source1" />
-      <Edge From="14" To="15" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
