@@ -544,7 +544,7 @@
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>11573.7471</Phase>
+                    <Phase>11058.085</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -1099,7 +1099,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT6.141S</rx:DueTime>
+                <rx:DueTime>PT4.363S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1320,7 +1320,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT1.363S</rx:DueTime>
+                <rx:DueTime>PT1.434S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1380,257 +1380,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="0" To="1" Label="Source1" />
           </Edges>
         </Workflow>
-      </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="rx:SelectMany">
-          <Name>StimMovement</Name>
-          <Workflow>
-            <Nodes>
-              <Expression xsi:type="GroupWorkflow">
-                <Name>StimMoveTimeSeries</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimMoveTimeResolution</Name>
-                    </Expression>
-                    <Expression xsi:type="scr:ExpressionTransform">
-                      <scr:Name>MakeTimespan</scr:Name>
-                      <scr:Expression>TimeSpan.FromSeconds(it)</scr:Expression>
-                    </Expression>
-                    <Expression xsi:type="PropertyMapping">
-                      <PropertyMappings>
-                        <Property Name="DueTime" />
-                      </PropertyMappings>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Timer">
-                        <rx:DueTime>PT0.01S</rx:DueTime>
-                        <rx:Period>PT0S</rx:Period>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Repeat" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:TimeInterval" />
-                    </Expression>
-                    <Expression xsi:type="MemberSelector">
-                      <Selector>Interval.TotalSeconds</Selector>
-                    </Expression>
-                    <Expression xsi:type="rx:Accumulate" />
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>StimMoveTime</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:CombineLatest" />
-                    </Expression>
-                    <Expression xsi:type="Divide" />
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialX</Name>
-                    </Expression>
-                    <Expression xsi:type="Multiply">
-                      <Operand xsi:type="DoubleProperty">
-                        <Value>-1</Value>
-                      </Operand>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:CombineLatest" />
-                    </Expression>
-                    <Expression xsi:type="Multiply" />
-                    <Expression xsi:type="SubscribeSubject">
-                      <Name>TrialX</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:CombineLatest" />
-                    </Expression>
-                    <Expression xsi:type="Add" />
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source1" />
-                    <Edge From="6" To="7" Label="Source1" />
-                    <Edge From="7" To="9" Label="Source1" />
-                    <Edge From="8" To="9" Label="Source2" />
-                    <Edge From="9" To="10" Label="Source1" />
-                    <Edge From="10" To="13" Label="Source1" />
-                    <Edge From="11" To="12" Label="Source1" />
-                    <Edge From="12" To="13" Label="Source2" />
-                    <Edge From="13" To="14" Label="Source1" />
-                    <Edge From="14" To="16" Label="Source1" />
-                    <Edge From="15" To="16" Label="Source2" />
-                    <Edge From="16" To="17" Label="Source1" />
-                    <Edge From="17" To="18" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="MulticastSubject">
-                <Name>StimX</Name>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>PhotodiodePulse</Name>
-                <Description>A photodiode pulse to mark when the stim moves</Description>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:First" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="IntProperty">
-                        <Value>0</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>PhotodiodeSquare</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:Delay">
-                        <rx:DueTime>PT0.2S</rx:DueTime>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="IntProperty">
-                        <Value>1</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>PhotodiodeSquare</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                    <Edge From="4" To="5" Label="Source1" />
-                    <Edge From="5" To="6" Label="Source1" />
-                    <Edge From="6" To="7" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="SubscribeSubject">
-                <Name>TrialX</Name>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="num:Sign" />
-              </Expression>
-              <Expression xsi:type="PropertyMapping">
-                <PropertyMappings>
-                  <Property Name="Value" />
-                </PropertyMappings>
-              </Expression>
-              <Expression xsi:type="Multiply">
-                <Operand xsi:type="DoubleProperty">
-                  <Value>1</Value>
-                </Operand>
-              </Expression>
-              <Expression xsi:type="LessThanOrEqual">
-                <Operand xsi:type="DoubleProperty">
-                  <Value>0</Value>
-                </Operand>
-              </Expression>
-              <Expression xsi:type="rx:Condition">
-                <Name>StimMovement</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>CenterStim</Name>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="DoubleProperty">
-                        <Value>0</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>StimX</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="rx:Sink">
-                <Name>PhotodiodeOff</Name>
-                <Description>Turn photodiode to black while stimulus is moving</Description>
-                <Workflow>
-                  <Nodes>
-                    <Expression xsi:type="WorkflowInput">
-                      <Name>Source1</Name>
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="rx:First" />
-                    </Expression>
-                    <Expression xsi:type="Combinator">
-                      <Combinator xsi:type="IntProperty">
-                        <Value>0</Value>
-                      </Combinator>
-                    </Expression>
-                    <Expression xsi:type="MulticastSubject">
-                      <Name>PhotodiodeSquare</Name>
-                    </Expression>
-                    <Expression xsi:type="WorkflowOutput" />
-                  </Nodes>
-                  <Edges>
-                    <Edge From="0" To="1" Label="Source1" />
-                    <Edge From="1" To="2" Label="Source1" />
-                    <Edge From="2" To="3" Label="Source1" />
-                    <Edge From="3" To="4" Label="Source1" />
-                  </Edges>
-                </Workflow>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="BooleanProperty">
-                  <Value>true</Value>
-                </Combinator>
-              </Expression>
-              <Expression xsi:type="Combinator">
-                <Combinator xsi:type="rx:First" />
-              </Expression>
-              <Expression xsi:type="WorkflowOutput" />
-            </Nodes>
-            <Edges>
-              <Edge From="0" To="1" Label="Source1" />
-              <Edge From="1" To="2" Label="Source1" />
-              <Edge From="2" To="6" Label="Source1" />
-              <Edge From="3" To="4" Label="Source1" />
-              <Edge From="4" To="5" Label="Source1" />
-              <Edge From="5" To="6" Label="Source2" />
-              <Edge From="6" To="7" Label="Source1" />
-              <Edge From="7" To="8" Label="Source1" />
-              <Edge From="8" To="9" Label="Source1" />
-              <Edge From="9" To="10" Label="Source1" />
-              <Edge From="10" To="11" Label="Source1" />
-              <Edge From="11" To="12" Label="Source1" />
-              <Edge From="12" To="13" Label="Source1" />
-            </Edges>
-          </Workflow>
-        </Builder>
       </Expression>
       <Expression xsi:type="rx:SelectMany">
         <Name>Reward</Name>
@@ -1717,6 +1466,35 @@ def process(value):
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="rx:Sink">
+        <Name>PhotodiodeOff</Name>
+        <Description>Turn photodiode to black while stimulus is moving</Description>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:First" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>PhotodiodeSquare</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -2670,7 +2448,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>54.17</Value>
+                <Value>100</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -2684,7 +2462,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>325</Value>
+                <Value>600</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
