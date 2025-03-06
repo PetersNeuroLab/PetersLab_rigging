@@ -167,7 +167,7 @@ live_plot_fig = figure('CloseRequestFcn',[],'color','w', ...
 gui_data.live_plot_fig = live_plot_fig;
 
 % Enable stop button
-set(gui_data.user_button_h,'String','STOP','BackgroundColor',[0.8,0,0]);
+set(gui_data.user_button_h,'String','MANUAL/EMERGENCY STOP','BackgroundColor',[0.8,0,0]);
 
 % Update gui data
 guidata(gui_fig,gui_data);
