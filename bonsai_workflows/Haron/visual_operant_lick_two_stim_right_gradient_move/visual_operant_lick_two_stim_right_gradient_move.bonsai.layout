@@ -533,16 +533,20 @@
     </EditorVisualizerLayout>
   </DialogSettings>
   <DialogSettings xsi:type="WorkflowEditorSettings">
-    <Visible>false</Visible>
+    <Visible>true</Visible>
     <Location>
-      <X>0</X>
-      <Y>0</Y>
+      <X>78</X>
+      <Y>78</Y>
     </Location>
     <Size>
-      <Width>0</Width>
-      <Height>0</Height>
+      <Width>336</Width>
+      <Height>65</Height>
     </Size>
     <WindowState>Normal</WindowState>
+    <VisualizerTypeName>Bonsai.Design.ObjectTextVisualizer</VisualizerTypeName>
+    <VisualizerSettings>
+      <ObjectTextVisualizer />
+    </VisualizerSettings>
     <EditorDialogSettings>
       <Visible>true</Visible>
       <Location>
@@ -1380,12 +1384,12 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>325</X>
-        <Y>350</Y>
+        <X>446</X>
+        <Y>367</Y>
       </Location>
       <Size>
         <Width>1208</Width>
-        <Height>640</Height>
+        <Height>632</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
