@@ -29,8 +29,8 @@ void Detents_Mode(void);
 //参数设置
 float kp_pos1 = 1;
 float kp_pos2 = 1;
-float anlge_range = 0;     //边界范围90°
-float anlge_trigger = 10;  //边界范围90°
+float anlge_range = 0;   // max limit 边界范围
+float anlge_trigger = 10;  // count if over this number
 
 float zero_angle = 0;  //零点位置
 // zero_electric_angle
@@ -51,12 +51,12 @@ void setup() {
   digitalWrite(encoder2, HIGH);  // 初始化 encoder2 为high电平
 }
 unsigned long lastTime = 0;  // 上次切换的时间
-float interval = 50;         // 高低电平切换的时间（50ms）
+float interval = 25;         // 高低电平切换的时间（50ms）
 // unsigned long real_interval = 0;  // 高低电平切换的时间（50ms）
 
 bool isLow = true;  // 当前引脚B的状态
 
-  int loopCounter = 0;  // 计数器
+int loopCounter = 0;  // 计数器
 
 void loop() {
   runFOC();
@@ -120,13 +120,13 @@ void loop() {
     }
   }
 
-//  loopCounter++;  // 每次循环计数器加1
-  
-//   // 如果计数器达到30，输出result并重置计数器
-//   if (loopCounter >= 100) {
-//   Serial.printf("%d,%d,%f\n", digitalRead(encoder1), digitalRead(encoder2), angle);
-//     loopCounter = 0;  // 重置计数器
-//   }
+  //  loopCounter++;  // 每次循环计数器加1
+
+  //       // 如果计数器达到30，输出result并重置计数器
+  //       if (loopCounter >= 100) {
+  //       Serial.printf("%d,%d,%f\n", digitalRead(encoder1), digitalRead(encoder2), angle);
+  //         loopCounter = 0;  // 重置计数器
+  //       }
 }
 
 
