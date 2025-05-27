@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.5"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -82,9 +82,9 @@
               <Property Name="Count" DisplayName="#QuiescenceVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>11</Count>
               <RangeMin>2</RangeMin>
               <RangeMax>3</RangeMax>
+              <Count>11</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>QuiescenceTimes</Name>
@@ -145,9 +145,9 @@
               <Property Name="Count" DisplayName="TrialXCount" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>2</Count>
               <RangeMin>-90</RangeMin>
               <RangeMax>90</RangeMax>
+              <Count>2</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>TrialXSpace</Name>
@@ -250,13 +250,13 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width xsi:nil="true" />
               <Height xsi:nil="true" />
               <RotationZ>0</RotationZ>
               <RotationY>0</RotationY>
               <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
               <Width>20</Width>
@@ -541,18 +541,18 @@
                     <LocationX>-90</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
-                    <ExtentX>20</ExtentX>
-                    <ExtentY>20</ExtentY>
+                    <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
                     <Phase>11058.085</Phase>
-                    <Angle>0</Angle>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
                     <Opacity>0</Opacity>
+                    <ExtentX>20</ExtentX>
+                    <ExtentY>20</ExtentY>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
