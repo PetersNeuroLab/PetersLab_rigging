@@ -21,6 +21,11 @@ LowPassFilter M0_Curr_Flt = LowPassFilter(0.05); // Tf = 5ms   //M0电流环
 PIDController vel_loop_M0 = PIDController{.P = 2, .I = 0, .D = 0, .ramp = 100000, .limit = voltage_power_supply / 2};
 PIDController angle_loop_M0 = PIDController{.P = 2, .I = 0, .D = 0, .ramp = 100000, .limit = 100};
 PIDController current_loop_M0 = PIDController{.P = 1.2, .I = 0, .D = 0, .ramp = 100000, .limit = 12.6};
+
+PIDController vel_loop_M1 = PIDController{.P = 2, .I = 0, .D = 0, .ramp = 100000, .limit = voltage_power_supply / 2};
+PIDController angle_loop_M1 = PIDController{.P = 2, .I = 0, .D = 0, .ramp = 100000, .limit = 100};
+PIDController current_loop_M1 = PIDController{.P = 1.2, .I = 0, .D = 0, .ramp = 100000, .limit = 12.6};
+
 // AS5600
 Sensor_AS5600 S0 = Sensor_AS5600(0);
 TwoWire S0_I2C = TwoWire(0);
@@ -57,6 +62,35 @@ void DFOC_M0_SET_CURRENT_PID(float P, float I, float D, float ramp) // M0电流�
   current_loop_M0.D = D;
   current_loop_M0.output_ramp = ramp;
 }
+
+
+
+
+void DFOC_M1_SET_VEL_PID(float P, float I, float D, float ramp, float limit) // M0角度环PID设置
+{
+  vel_loop_M1.P = P;
+  vel_loop_M1.I = I;
+  vel_loop_M1.D = D;
+  vel_loop_M1.output_ramp = ramp;
+  vel_loop_M1.limit = limit;
+}
+// 角度PID
+void DFOC_M1_SET_ANGLE_PID(float P, float I, float D, float ramp, float limit) // M0角度环PID设置
+{
+  angle_loop_M1.P = P;
+  angle_loop_M1.I = I;
+  angle_loop_M1.D = D;
+  angle_loop_M1.output_ramp = ramp;
+  angle_loop_M1.limit = limit;
+}
+void DFOC_M1_SET_CURRENT_PID(float P, float I, float D, float ramp) // M0电流环PID设置
+{
+  current_loop_M1.P = P;
+  current_loop_M1.I = I;
+  current_loop_M1.D = D;
+  current_loop_M1.output_ramp = ramp;
+}
+
 
 // M0速度PID接口
 float DFOC_M0_VEL_PID(float error) // M0速度环
@@ -248,8 +282,8 @@ float serial_motor_target()
 //================简易接口函数================
 void DFOC_M0_setTorque(float Target) // 电流力矩环
 {
-  // setTorque(current_loop_M0(Target - DFOC_M0_Current()), _electricalAngle());// 电流力矩环
-  setTorque(Target, _electricalAngle()); // 无电流环
+  setTorque(current_loop_M0(Target - DFOC_M0_Current()), _electricalAngle());// 电流力矩环
+  // setTorque(Target, _electricalAngle()); // 无电流环
 }
 
 void DFOC_M0_set_Velocity_Angle(float Target) // 角度-速度-力 位置闭环

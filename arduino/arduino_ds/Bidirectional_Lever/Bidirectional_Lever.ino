@@ -27,10 +27,10 @@ int Motor_PP = 7;    // 电机极对数
 void Detents_Mode(void);
 /********************************************/
 //参数设置
-float kp_pos1 = 1;
+float kp_pos1 = 1; 
 float kp_pos2 = 1;
-float anlge_range = 0;     //边界范围90°
-float anlge_trigger = 10;  //边界范围90°
+float anlge_range = 0;   // max limit 边界范围
+float anlge_trigger = 10;  // count if over this number
 
 float zero_angle = 0;  //零点位置
 // zero_electric_angle
@@ -42,30 +42,38 @@ void setup() {
 
   DFOC_Vbus(12.6);  // 设定驱动器供电电压
   DFOC_alignSensor(Motor_PP, Sensor_DIR);
-  zero_angle = DFOC_M0_Angle();  //将当前位置设置为零点
-  zero_angle = 3.14;             //将当前位置设置为零点
+  // zero_angle = DFOC_M0_Angle();  //将当前位置设置为零点
+  zero_angle = 3.14;  //将当前位置设置为零点
 
   pinMode(encoder1, OUTPUT);
   pinMode(encoder2, OUTPUT);
   digitalWrite(encoder1, HIGH);  // 初始化 encoder1 为high电平
   digitalWrite(encoder2, HIGH);  // 初始化 encoder2 为high电平
 }
-unsigned long lastTime = 0;   // 上次切换的时间
-unsigned long interval = 5;  // 高低电平切换的时间（50ms）
-bool isLow = true;            // 当前引脚B的状态
+unsigned long lastTime = 0;  // 上次切换的时间
+float interval = 25;         // 高低电平切换的时间（50ms）
+// unsigned long real_interval = 0;  // 高低电平切换的时间（50ms）
 
+bool isLow = true;  // 当前引脚B的状态
+
+int loopCounter = 0;  // 计数器
 
 void loop() {
   runFOC();
+
+
   float angle = DFOC_M0_Angle();
   float angle_range2 = anlge_range / 2;
   float limit_range = angle_range2 / 360.0f * _2PI;
   float L1 = zero_angle + limit_range;
   float L2 = zero_angle - limit_range;
-  float angle_trigger=anlge_trigger;
+  float angle_trigger = anlge_trigger;
   float limit_range2 = angle_trigger / 360.0f * _2PI;
   float L3 = zero_angle + limit_range2;
   float L4 = zero_angle - limit_range2;
+
+  float real_interval = interval - 40 * abs(zero_angle - angle);
+
   //angle_range 范围内
   if (angle > L2 && angle < L1) {
     if (MODE == 0)
@@ -75,13 +83,17 @@ void loop() {
   } else {  //angle_range 范围外
     if (angle < L2)
       DFOC_M0_setTorque(kp_pos1 * (L2 - angle));
+    // DFOC_M0_setTorque(kp_pos1 * -1);
+
     if (angle > L1)
       DFOC_M0_setTorque(kp_pos1 * (L1 - angle));
+    //  DFOC_M0_setTorque(kp_pos1 * 1);
+
     if (angle > L3) {
       digitalWrite(encoder2, HIGH);
       unsigned long currentTime = millis();
       // 如果距离上次切换超过50毫秒，则切换引脚B的电平
-      if (currentTime - lastTime >= interval) {
+      if (currentTime - lastTime >= real_interval) {
         if (isLow) {
           digitalWrite(encoder1, LOW);  // 设置引脚B为低电平
         } else {
@@ -90,12 +102,13 @@ void loop() {
         lastTime = currentTime;  // 更新最后一次切换的时间
         isLow = !isLow;          // 切换状态
       }
-    } 
+    }
     if (angle < L4) {
       digitalWrite(encoder2, LOW);
       unsigned long currentTime = millis();
       // 如果距离上次切换超过50毫秒，则切换引脚B的电平
-      if (currentTime - lastTime >= interval) {
+
+      if (currentTime - lastTime >= real_interval) {
         if (isLow) {
           digitalWrite(encoder1, LOW);  // 设置引脚B为低电平
         } else {
@@ -104,10 +117,16 @@ void loop() {
         lastTime = currentTime;  // 更新最后一次切换的时间
         isLow = !isLow;          // 切换状态
       }
-    } 
+    }
   }
-  // Serial.printf("%d,%d,%f\n", digitalRead(encoder1), digitalRead(encoder2),angle);
 
+   loopCounter++;  // 每次循环计数器加1
+
+        // 如果计数器达到30，输出result并重置计数器
+        if (loopCounter >= 100) {
+        Serial.printf("%d,%d,%f\n", digitalRead(encoder1), digitalRead(encoder2), angle);
+          loopCounter = 0;  // 重置计数器
+        }
 }
 
 

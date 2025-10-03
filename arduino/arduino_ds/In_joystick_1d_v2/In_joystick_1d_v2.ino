@@ -27,7 +27,7 @@ int Motor_PP = 7;    // 电机极对数
 void Detents_Mode(void);
 /********************************************/
 //参数设置
-float kp_pos1 = 1;
+float kp_pos1 = 1; 
 float kp_pos2 = 1;
 float anlge_range = 0;   // max limit 边界范围
 float anlge_trigger = 10;  // count if over this number
@@ -120,13 +120,13 @@ void loop() {
     }
   }
 
-  //  loopCounter++;  // 每次循环计数器加1
+   loopCounter++;  // 每次循环计数器加1
 
-  //       // 如果计数器达到30，输出result并重置计数器
-  //       if (loopCounter >= 100) {
-  //       Serial.printf("%d,%d,%f\n", digitalRead(encoder1), digitalRead(encoder2), angle);
-  //         loopCounter = 0;  // 重置计数器
-  //       }
+        // 如果计数器达到30，输出result并重置计数器
+        if (loopCounter >= 100) {
+        Serial.printf("%d,%d,%f\n", digitalRead(encoder1), digitalRead(encoder2), angle);
+          loopCounter = 0;  // 重置计数器
+        }
 }
 
 

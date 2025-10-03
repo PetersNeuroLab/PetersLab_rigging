@@ -248,8 +248,8 @@ float serial_motor_target()
 //================简易接口函数================
 void DFOC_M0_setTorque(float Target) // 电流力矩环
 {
-  // setTorque(current_loop_M0(Target - DFOC_M0_Current()), _electricalAngle());// 电流力矩环
-  setTorque(Target, _electricalAngle()); // 无电流环
+  setTorque(current_loop_M0(Target - DFOC_M0_Current()), _electricalAngle());// 电流力矩环
+  // setTorque(Target, _electricalAngle()); // 无电流环
 }
 
 void DFOC_M0_set_Velocity_Angle(float Target) // 角度-速度-力 位置闭环
