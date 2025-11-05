@@ -14,7 +14,7 @@ int Motor_PP = 7;    // 电机极对数
 /******************************************************/
 //0为阻尼模式
 //1为顺滑模式
-#define MODE 0
+#define MODE 1
 
 #define encoder1 4
 #define encoder2 15
@@ -92,11 +92,11 @@ void loop() {
   cumulativeDelta=0;
  }
 
-  // 更新lastEncoderValue以便下次比较
-  last_position = current_position;
-    // Serial.printf("%d,%d,%f,%f,%f\n",pinA,pinB,current_position,last_position,cumulativeDelta);
-    // Serial.printf("%f\n",cumulativeDelta);
-        Serial.printf("%d,%d\n", digitalRead(encoder1), digitalRead(encoder2));
+  // // 更新lastEncoderValue以便下次比较
+  // last_position = current_position;
+  //   // Serial.printf("%d,%d,%f,%f,%f\n",pinA,pinB,current_position,last_position,cumulativeDelta);
+  //   // Serial.printf("%f\n",cumulativeDelta);
+  //       Serial.printf("%d,%d\n", digitalRead(encoder1), digitalRead(encoder2));
 
 }
 
