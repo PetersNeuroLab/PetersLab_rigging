@@ -12,7 +12,7 @@ int Sensor_DIR = 1;   // 传感器方向，若电机运动不正常，将此值�
 int Motor_PP   = 7;   // 电机极对数
 
 // 0 为阻尼模式；1 为顺滑模式
-#define MODE 1
+#define MODE 0
 
 // A/B 两相输出引脚（可改）
 #define encoder1 4   // A 相
@@ -21,7 +21,7 @@ int Motor_PP   = 7;   // 电机极对数
 
 // 阻尼、顺滑模式增益
 float kp1 = 0.2f;   // 阻尼模式 P 值（建议 > 0）
-float kp2 = 0.04f; // 顺滑模式 P 值（建议与阻尼同号，见下方 Smooth_Mode 实现）
+float kp2 = 0.051f; // 顺滑模式 P 值（建议与阻尼同号，见下方 Smooth_Mode 实现）
 
 //================= 增量编码器仿真参数 =================//
 // 目标 CPR（每圈 A 相“黑白条”个数，四倍频后边沿数 = 4*CPR）
@@ -108,13 +108,13 @@ void loop() {
     }
   }
 
-  // // —— 建议：把串口打印限频，否则会打乱时序 —— //
-  // static uint32_t t = 0;
-  // if (millis() - t >= 50) {    // 每 50ms 打一次
-  //   t = millis();
-  //   // 查看 A/B 电平（可注释掉）
-  //   Serial.printf("%d,%d\n", digitalRead(encoder1), digitalRead(encoder2));
-  // }
+  // —— 建议：把串口打印限频，否则会打乱时序 —— //
+  static uint32_t t = 0;
+  if (millis() - t >= 50) {    // 每 50ms 打一次
+    t = millis();
+    // 查看 A/B 电平（可注释掉）
+    Serial.printf("%d,%d\n", digitalRead(encoder1), digitalRead(encoder2));
+  }
 }
 
 
@@ -127,5 +127,5 @@ void Damp_Mode() {
 // 顺滑模式：建议也用“正阻尼”，但增益更小（更“顺滑”）
 // 若你确实想要“推着走”的手感，可改成 +kp2，但注意那是正反馈（负阻尼），容易发飘。
 void Smooth_Mode() {  
-  DFOC_M0_setTorque(kp2 * DFOC_M0_Velocity());
+  DFOC_M0_setTorque(-kp2 * DFOC_M0_Velocity());
 }
