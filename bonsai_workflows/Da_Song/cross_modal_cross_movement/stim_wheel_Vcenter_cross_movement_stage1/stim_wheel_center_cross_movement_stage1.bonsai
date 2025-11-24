@@ -34,9 +34,9 @@
               <Property Name="Count" DisplayName="#ITIVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <RangeMin>4</RangeMin>
-              <RangeMax>7</RangeMax>
-              <Count>31</Count>
+              <RangeMin>1</RangeMin>
+              <RangeMax>3</RangeMax>
+              <Count>21</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -49,8 +49,8 @@
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
               <RangeMin>0.5</RangeMin>
-              <RangeMax>2</RangeMax>
-              <Count>16</Count>
+              <RangeMax>1</RangeMax>
+              <Count>6</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>QuiescenceTimes</Name>
@@ -69,11 +69,11 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>20</Value>
+                <Value>40</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
-              <Name>StimSize</Name>
+              <Name>Stim1Size</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
@@ -108,28 +108,6 @@
               <Name>TaskType</Name>
               <rx:BufferSize xsi:nil="true" />
             </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="AudioFrequency" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>8000</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>AudioFrequency</Name>
-            </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="AudioAmplitude_set" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>470</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="rx:BehaviorSubject">
-              <Name>AudioAmplitude_set</Name>
-            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -145,10 +123,6 @@
             <Edge From="16" To="17" Label="Source1" />
             <Edge From="18" To="19" Label="Source1" />
             <Edge From="19" To="20" Label="Source1" />
-            <Edge From="21" To="22" Label="Source1" />
-            <Edge From="22" To="23" Label="Source1" />
-            <Edge From="24" To="25" Label="Source1" />
-            <Edge From="25" To="26" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -306,9 +280,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -551,7 +525,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>StimSize</Name>
+                    <Name>Stim1Size</Name>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
                     <PropertyMappings>
@@ -594,21 +568,21 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>0</LocationX>
+                    <LocationX>200</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>10828.9023</Phase>
+                    <Phase>4640.958</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
-                    <Opacity>0</Opacity>
-                    <ExtentX>20</ExtentX>
-                    <ExtentY>20</ExtentY>
+                    <Opacity>1</Opacity>
+                    <ExtentX>40</ExtentX>
+                    <ExtentY>40</ExtentY>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                   <Expression xsi:type="SubscribeSubject">
@@ -628,7 +602,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Phase>0</Phase>
                     <ExtentX>40</ExtentX>
                     <ExtentY>40</ExtentY>
-                    <LocationX>200</LocationX>
+                    <LocationX>0</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
@@ -1095,7 +1069,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT6.7S</rx:DueTime>
+                <rx:DueTime>PT1.2S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1255,7 +1229,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1.2S</rx:DueTime>
+                <rx:DueTime>PT0.5S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1276,7 +1250,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
         </Workflow>
       </Expression>
       <Expression xsi:type="rx:Condition">
-        <Name>visual</Name>
+        <Name>LeftVisual</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="ExternalizedMapping">
@@ -1318,7 +1292,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
         </Workflow>
       </Expression>
       <Expression xsi:type="rx:SelectMany">
-        <Name>InteractiveStimVisual</Name>
+        <Name>LeftStim</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="SubscribeSubject">
@@ -1442,7 +1416,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
         </Workflow>
       </Expression>
       <Expression xsi:type="rx:Condition">
-        <Name>audio</Name>
+        <Name>RightVisual</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="ExternalizedMapping">
@@ -1484,7 +1458,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
         </Workflow>
       </Expression>
       <Expression xsi:type="rx:SelectMany">
-        <Name>InteractiveStimAudio</Name>
+        <Name>RightStim</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
@@ -1660,13 +1634,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>StimX1</Name>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
                     <Name>StimOn</Name>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
-                    <Name>StimContrast</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>PhotodiodeSquare</Name>
@@ -1677,15 +1645,17 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
+                    <Name>StimX1</Name>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
                     <Name>StimX2</Name>
                   </Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
                   <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1772,9 +1742,6 @@ def process(value):
                     <Name>StimOn</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>StimContrast</Name>
-                  </Expression>
-                  <Expression xsi:type="MulticastSubject">
                     <Name>PhotodiodeSquare</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -1785,11 +1752,14 @@ def process(value):
                   <Expression xsi:type="MulticastSubject">
                     <Name>StimX2</Name>
                   </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>StimX1</Name>
+                  </Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
                 </Edges>
               </Workflow>
@@ -1934,7 +1904,7 @@ it.Item4 as Timestamp
                     <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>StimSize</Name>
+                    <Name>Stim1Size</Name>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>MakeString</scr:Name>
