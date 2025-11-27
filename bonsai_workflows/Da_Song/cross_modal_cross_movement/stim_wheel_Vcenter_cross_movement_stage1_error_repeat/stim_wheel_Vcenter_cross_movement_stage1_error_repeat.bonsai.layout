@@ -77,8 +77,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>39</X>
-      <Y>741</Y>
+      <X>69</X>
+      <Y>681</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -309,8 +309,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>41</X>
-      <Y>937</Y>
+      <X>61</X>
+      <Y>895</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -325,8 +325,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>36</X>
-      <Y>872</Y>
+      <X>55</X>
+      <Y>829</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -341,8 +341,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>42</X>
-      <Y>811</Y>
+      <X>69</X>
+      <Y>759</Y>
     </Location>
     <Size>
       <Width>336</Width>
