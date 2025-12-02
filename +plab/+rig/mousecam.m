@@ -61,7 +61,7 @@ triggerconfig(video_object,'hardware');
 gui_fig = figure('MenuBar','none','Units','Normalized', ...
     'Position',[0.01,0.2,0.32,0.5],'color','w');
 
-% Preview image and embedded information text
+% Set up preview image and embedded information text
 im_axes = axes(gui_fig,'Position',[0,0.05,1,0.8]);
 im_preview = image(zeros(video_object.VideoResolution));
 
@@ -72,9 +72,6 @@ embedded_info_text = uicontrol('Style','text','String','Embedded header informat
 
 setappdata(im_preview,'UpdatePreviewWindowFcn',@preview_cam);
 setappdata(im_preview,'gui_fig',gui_fig);
-
-preview(video_object,im_preview);
-axis(im_axes);axis tight equal
 
 % Status text
 status_text_h = uicontrol('Parent',gui_fig,'Style','text', ...
@@ -123,6 +120,10 @@ gui_data.client_expcontroller = client_expcontroller;
 
 % Update GUI data
 guidata(gui_fig,gui_data);
+
+% Start video preview
+preview(video_object,im_preview);
+axis(im_axes);axis tight equal
 
 end
 
@@ -235,7 +236,7 @@ switch obj.Value
         obj.String = 'Autorecord on';
 
         update_status_text(gui_data.status_text_h,'Connecting to exp controller...');
-        gui_data.client_expcontroller = tcpclient("163.1.249.17",plab.locations.mousecam_port,'ConnectTimeout',2);
+        gui_data.client_expcontroller = tcpclient(plab.local_rig.config.local.client,plab.locations.mousecam_port,'ConnectTimeout',2);
         configureCallback(gui_data.client_expcontroller, "terminator", ...
             @(src,event,x) read_expcontroller_data(src,event,gui_fig));
         update_status_text(gui_data.status_text_h,'Listening for start');

@@ -44,6 +44,12 @@ classdef config
 
             % Return local rig info
             rig_info = rig_definitions(local_rig_index);
+
+            % If local rig is also client, tcpclient needs IP address
+            if strcmp(local_name,rig_info.client)
+                rig_info.client = local_address;
+            end
+            
         end
         
     end
