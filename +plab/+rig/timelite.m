@@ -40,7 +40,8 @@ try
     daqreset;
     warning('off','daq:Session:onDemandOnlyChannelsAdded');
     % Set up DAQ according to local config file
-    daq_device = plab.local_rig.timelite_config;
+    local_timelite_config = str2func(['plab.local_rig.timelite_config_',plab.local_rig.config.local.name]);
+    daq_device = local_timelite_config();
     daq_device.analog.ScansAvailableFcn = @(src,evt,x) daq_upload(src,evt,gui_fig);
 catch me
     % Error if DAQ could not be configured
@@ -50,7 +51,7 @@ end
 % Start listener for experiment controller
 update_status_text(status_text_h,'Connecting to experiment server');
 try
-client_expcontroller = tcpclient("163.1.249.17",plab.locations.timelite_port,'ConnectTimeout',2);
+client_expcontroller = tcpclient(plab.local_rig.config.local.client,plab.locations.timelite_port,'ConnectTimeout',2);
 configureCallback(client_expcontroller, "terminator", ...
     @(src,event,x) read_expcontroller_data(src,event,gui_fig));
 catch me

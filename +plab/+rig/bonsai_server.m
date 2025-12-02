@@ -22,7 +22,7 @@ bonsai_server_fig = ...
 communication_handles = struct;
 
 % Open TCP client for MC
-communication_handles.client_mc = tcpclient("163.1.249.17",plab.locations.bonsai_port);
+communication_handles.client_mc = tcpclient(plab.local_rig.config.local.client,plab.locations.bonsai_port);
 configureCallback(communication_handles.client_mc, "terminator", @(src, event, x) readData (src, event, bonsai_server_fig));
 
 % Open UDP connection for Bonsai

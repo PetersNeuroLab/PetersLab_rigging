@@ -99,7 +99,7 @@ align(controls_h,'fixed',20,'middle');
 % Start listener for experiment controller
 update_status_text(status_text_h,'Connecting to experiment server');
 try
-    client_expcontroller = tcpclient("163.1.249.17",plab.locations.mousecam_port,'ConnectTimeout',2);
+    client_expcontroller = tcpclient(plab.local_rig.config.local.client,plab.locations.mousecam_port,'ConnectTimeout',2);
     configureCallback(client_expcontroller, "terminator", ...
         @(src,event,x) read_expcontroller_data(src,event,gui_fig));
     update_status_text(status_text_h,'Listening for start');
