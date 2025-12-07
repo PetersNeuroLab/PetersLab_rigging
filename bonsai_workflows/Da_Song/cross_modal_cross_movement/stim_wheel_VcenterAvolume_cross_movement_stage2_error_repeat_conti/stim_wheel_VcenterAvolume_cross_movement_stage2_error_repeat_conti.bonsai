@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -101,13 +101,35 @@
               <Property Name="RangeMax" DisplayName="TaskType1" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <RangeMin>2</RangeMin>
+              <RangeMin>0</RangeMin>
               <RangeMax>3</RangeMax>
-              <Count>2</Count>
+              <Count>4</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>TaskType</Name>
               <rx:BufferSize xsi:nil="true" />
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="Error_repeat" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>1</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>Error_repeat</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="ContinuoousCorrect" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>2</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>ContinuoousCorrect</Name>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
               <Property Name="Value" DisplayName="Audio1" />
@@ -136,11 +158,22 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>12000</Value>
+                <Value>8000</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>Audio2</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="AudioFreq2_set" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>3</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>AudioFreq2_set</Name>
             </Expression>
           </Nodes>
           <Edges>
@@ -163,6 +196,12 @@
             <Edge From="25" To="26" Label="Source1" />
             <Edge From="27" To="28" Label="Source1" />
             <Edge From="28" To="29" Label="Source1" />
+            <Edge From="30" To="31" Label="Source1" />
+            <Edge From="31" To="32" Label="Source1" />
+            <Edge From="33" To="34" Label="Source1" />
+            <Edge From="34" To="35" Label="Source1" />
+            <Edge From="36" To="37" Label="Source1" />
+            <Edge From="37" To="38" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -320,9 +359,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -538,9 +577,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
               <rx:Name>StimOn</rx:Name>
             </Expression>
-            <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
-              <rx:Name>Outcome</rx:Name>
-            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
                 <Value>0</Value>
@@ -614,13 +650,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>17818.9883</Phase>
+                    <Phase>3953.40869</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
-                    <Opacity>0</Opacity>
+                    <Opacity>1</Opacity>
                     <ExtentX>40</ExtentX>
                     <ExtentY>40</ExtentY>
                   </Expression>
@@ -642,7 +678,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Phase>0</Phase>
                     <ExtentX>40</ExtentX>
                     <ExtentY>40</ExtentY>
-                    <LocationX>200</LocationX>
+                    <LocationX>0</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
@@ -691,6 +727,33 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
               <rx:Name>TrialType</rx:Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>225</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>StimX2</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>1</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>Outcome</Name>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+              <rx:Name>lastTrialType</rx:Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject">
+              <Name>CC</Name>
+            </Expression>
             <Expression xsi:type="GroupWorkflow">
               <Name>AudioStim</Name>
               <Workflow>
@@ -722,20 +785,34 @@ ticks: ticks/revolution for model rotary encoder</Description>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
                   </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>AudioFreq2</Name>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="Frequency" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:FunctionGenerator">
+                      <dsp:BufferLength>441</dsp:BufferLength>
+                      <dsp:Frequency>-0.1640625</dsp:Frequency>
+                      <dsp:Waveform>Sine</dsp:Waveform>
+                      <dsp:SampleRate>44100</dsp:SampleRate>
+                      <dsp:Amplitude>1</dsp:Amplitude>
+                      <dsp:Offset>0</dsp:Offset>
+                      <dsp:Phase>0</dsp:Phase>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Zip" />
+                  </Expression>
+                  <Expression xsi:type="Multiply" />
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="al:AudioPlayback">
-                      <al:SourceName />
                       <al:SampleRate>44100</al:SampleRate>
                       <al:State>Playing</al:State>
                     </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="FloatProperty">
-                      <Value>0</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="rx:BehaviorSubject">
-                    <Name>AudioAmplitudeDummy</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
@@ -753,23 +830,39 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>AudioFrequency</Name>
                   </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="rx:BehaviorSubject">
+                    <Name>AudioFreq2</Name>
+                  </Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="4" Label="Source1" />
                   <Edge From="2" To="3" Label="Source1" />
                   <Edge From="3" To="4" Label="Source2" />
-                  <Edge From="4" To="5" Label="Source1" />
+                  <Edge From="4" To="8" Label="Source2" />
+                  <Edge From="5" To="6" Label="Source1" />
                   <Edge From="6" To="7" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source1" />
                   <Edge From="8" To="9" Label="Source1" />
-                  <Edge From="10" To="11" Label="Source1" />
+                  <Edge From="9" To="10" Label="Source1" />
+                  <Edge From="11" To="12" Label="Source1" />
+                  <Edge From="13" To="14" Label="Source1" />
+                  <Edge From="15" To="16" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="18" To="19" Label="Source1" />
+            <Edge From="21" To="22" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -796,7 +889,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>54.17</Value>
+                <Value>50</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -810,7 +903,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>325</Value>
+                <Value>300</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -840,7 +933,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
-                      <Value>325</Value>
+                      <Value>300</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
@@ -891,7 +984,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
           </Edges>
         </Workflow>
       </Expression>
-<Expression xsi:type="GroupWorkflow">
+      <Expression xsi:type="GroupWorkflow">
         <Name>UpdateTrialNumber</Name>
         <Workflow>
           <Nodes>
@@ -1115,22 +1208,359 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Workflow>
                       <Nodes>
                         <Expression xsi:type="SubscribeSubject">
-                          <Name>TaskType</Name>
+                          <Name>Error_repeat</Name>
+                        </Expression>
+                        <Expression xsi:type="Equal">
+                          <Operand xsi:type="FloatProperty">
+                            <Value>1</Value>
+                          </Operand>
+                        </Expression>
+                        <Expression xsi:type="rx:Condition">
+                          <Name>RepeatError</Name>
+                          <Workflow>
+                            <Nodes>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                              <Expression xsi:type="WorkflowOutput" />
+                            </Nodes>
+                            <Edges>
+                              <Edge From="0" To="1" Label="Source1" />
+                            </Edges>
+                          </Workflow>
+                        </Expression>
+                        <Expression xsi:type="rx:SelectMany">
+                          <Name>Pick_type</Name>
+                          <Workflow>
+                            <Nodes>
+                              <Expression xsi:type="SubscribeSubject">
+                                <Name>Outcome</Name>
+                              </Expression>
+                              <Expression xsi:type="Equal">
+                                <Operand xsi:type="FloatProperty">
+                                  <Value>1</Value>
+                                </Operand>
+                              </Expression>
+                              <Expression xsi:type="rx:Condition">
+                                <Name>Correct</Name>
+                                <Workflow>
+                                  <Nodes>
+                                    <Expression xsi:type="WorkflowInput">
+                                      <Name>Source1</Name>
+                                    </Expression>
+                                    <Expression xsi:type="WorkflowOutput" />
+                                  </Nodes>
+                                  <Edges>
+                                    <Edge From="0" To="1" Label="Source1" />
+                                  </Edges>
+                                </Workflow>
+                              </Expression>
+                              <Expression xsi:type="rx:SelectMany">
+                                <Name>resample</Name>
+                                <Workflow>
+                                  <Nodes>
+                                    <Expression xsi:type="WorkflowInput">
+                                      <Name>Source1</Name>
+                                    </Expression>
+                                    <Expression xsi:type="SubscribeSubject">
+                                      <Name>CC</Name>
+                                    </Expression>
+                                    <Expression xsi:type="GreaterThan">
+                                      <Operand xsi:type="FloatProperty">
+                                        <Value>0</Value>
+                                      </Operand>
+                                    </Expression>
+                                    <Expression xsi:type="rx:Condition">
+                                      <Name>Correct</Name>
+                                      <Workflow>
+                                        <Nodes>
+                                          <Expression xsi:type="WorkflowInput">
+                                            <Name>Source1</Name>
+                                          </Expression>
+                                          <Expression xsi:type="WorkflowOutput" />
+                                        </Nodes>
+                                        <Edges>
+                                          <Edge From="0" To="1" Label="Source1" />
+                                        </Edges>
+                                      </Workflow>
+                                    </Expression>
+                                    <Expression xsi:type="rx:SelectMany">
+                                      <Name>repeat</Name>
+                                      <Workflow>
+                                        <Nodes>
+                                          <Expression xsi:type="SubscribeSubject">
+                                            <Name>lastTrialType</Name>
+                                          </Expression>
+                                          <Expression xsi:type="WorkflowOutput" />
+                                          <Expression xsi:type="WorkflowInput">
+                                            <Name>Source1</Name>
+                                          </Expression>
+                                        </Nodes>
+                                        <Edges>
+                                          <Edge From="0" To="1" Label="Source1" />
+                                        </Edges>
+                                      </Workflow>
+                                    </Expression>
+                                    <Expression xsi:type="Equal">
+                                      <Operand xsi:type="FloatProperty">
+                                        <Value>0</Value>
+                                      </Operand>
+                                    </Expression>
+                                    <Expression xsi:type="rx:Condition">
+                                      <Name>Error</Name>
+                                      <Workflow>
+                                        <Nodes>
+                                          <Expression xsi:type="WorkflowInput">
+                                            <Name>Source1</Name>
+                                          </Expression>
+                                          <Expression xsi:type="WorkflowOutput" />
+                                        </Nodes>
+                                        <Edges>
+                                          <Edge From="0" To="1" Label="Source1" />
+                                        </Edges>
+                                      </Workflow>
+                                    </Expression>
+                                    <Expression xsi:type="rx:SelectMany">
+                                      <Name>resample</Name>
+                                      <Workflow>
+                                        <Nodes>
+                                          <Expression xsi:type="SubscribeSubject">
+                                            <Name>TaskType</Name>
+                                          </Expression>
+                                          <Expression xsi:type="Combinator">
+                                            <Combinator xsi:type="num:Permutation" />
+                                          </Expression>
+                                          <Expression xsi:type="Combinator">
+                                            <Combinator xsi:type="rx:Take">
+                                              <rx:Count>1</rx:Count>
+                                            </Combinator>
+                                          </Expression>
+                                          <Expression xsi:type="WorkflowOutput" />
+                                          <Expression xsi:type="WorkflowInput">
+                                            <Name>Source1</Name>
+                                          </Expression>
+                                        </Nodes>
+                                        <Edges>
+                                          <Edge From="0" To="1" Label="Source1" />
+                                          <Edge From="1" To="2" Label="Source1" />
+                                          <Edge From="2" To="3" Label="Source1" />
+                                        </Edges>
+                                      </Workflow>
+                                    </Expression>
+                                    <Expression xsi:type="Combinator">
+                                      <Combinator xsi:type="rx:Amb" />
+                                    </Expression>
+                                    <Expression xsi:type="WorkflowOutput" />
+                                    <Expression xsi:type="Disable">
+                                      <Builder xsi:type="SubscribeSubject">
+                                        <Name>TaskType</Name>
+                                      </Builder>
+                                    </Expression>
+                                    <Expression xsi:type="Disable">
+                                      <Builder xsi:type="Combinator">
+                                        <Combinator xsi:type="num:Permutation" />
+                                      </Builder>
+                                    </Expression>
+                                    <Expression xsi:type="Disable">
+                                      <Builder xsi:type="Combinator">
+                                        <Combinator xsi:type="rx:Take">
+                                          <rx:Count>1</rx:Count>
+                                        </Combinator>
+                                      </Builder>
+                                    </Expression>
+                                    <Expression xsi:type="Disable">
+                                      <Builder xsi:type="WorkflowOutput" />
+                                    </Expression>
+                                  </Nodes>
+                                  <Edges>
+                                    <Edge From="1" To="2" Label="Source1" />
+                                    <Edge From="1" To="5" Label="Source1" />
+                                    <Edge From="2" To="3" Label="Source1" />
+                                    <Edge From="3" To="4" Label="Source1" />
+                                    <Edge From="4" To="8" Label="Source2" />
+                                    <Edge From="5" To="6" Label="Source1" />
+                                    <Edge From="6" To="7" Label="Source1" />
+                                    <Edge From="7" To="8" Label="Source1" />
+                                    <Edge From="8" To="9" Label="Source1" />
+                                    <Edge From="10" To="11" Label="Source1" />
+                                    <Edge From="11" To="12" Label="Source1" />
+                                    <Edge From="12" To="13" Label="Source1" />
+                                  </Edges>
+                                </Workflow>
+                              </Expression>
+                              <Expression xsi:type="Equal">
+                                <Operand xsi:type="FloatProperty">
+                                  <Value>0</Value>
+                                </Operand>
+                              </Expression>
+                              <Expression xsi:type="rx:Condition">
+                                <Name>Error</Name>
+                                <Workflow>
+                                  <Nodes>
+                                    <Expression xsi:type="WorkflowInput">
+                                      <Name>Source1</Name>
+                                    </Expression>
+                                    <Expression xsi:type="WorkflowOutput" />
+                                  </Nodes>
+                                  <Edges>
+                                    <Edge From="0" To="1" Label="Source1" />
+                                  </Edges>
+                                </Workflow>
+                              </Expression>
+                              <Expression xsi:type="rx:SelectMany">
+                                <Name>repeat</Name>
+                                <Workflow>
+                                  <Nodes>
+                                    <Expression xsi:type="SubscribeSubject">
+                                      <Name>lastTrialType</Name>
+                                    </Expression>
+                                    <Expression xsi:type="WorkflowOutput" />
+                                    <Expression xsi:type="WorkflowInput">
+                                      <Name>Source1</Name>
+                                    </Expression>
+                                  </Nodes>
+                                  <Edges>
+                                    <Edge From="0" To="1" Label="Source1" />
+                                  </Edges>
+                                </Workflow>
+                              </Expression>
+                              <Expression xsi:type="Combinator">
+                                <Combinator xsi:type="rx:Amb" />
+                              </Expression>
+                              <Expression xsi:type="WorkflowOutput" />
+                              <Expression xsi:type="SubscribeSubject">
+                                <Name>CC</Name>
+                              </Expression>
+                              <Expression xsi:type="SubscribeSubject">
+                                <Name>ContinuoousCorrect</Name>
+                              </Expression>
+                              <Expression xsi:type="PropertyMapping">
+                                <PropertyMappings>
+                                  <Property Name="Value" />
+                                </PropertyMappings>
+                              </Expression>
+                              <Expression xsi:type="GreaterThanOrEqual">
+                                <Operand xsi:type="FloatProperty">
+                                  <Value>2</Value>
+                                </Operand>
+                              </Expression>
+                              <Expression xsi:type="rx:Condition">
+                                <Name>Error</Name>
+                                <Workflow>
+                                  <Nodes>
+                                    <Expression xsi:type="WorkflowInput">
+                                      <Name>Source1</Name>
+                                    </Expression>
+                                    <Expression xsi:type="WorkflowOutput" />
+                                  </Nodes>
+                                  <Edges>
+                                    <Edge From="0" To="1" Label="Source1" />
+                                  </Edges>
+                                </Workflow>
+                              </Expression>
+                              <Expression xsi:type="rx:SelectMany">
+                                <Name>resample</Name>
+                                <Workflow>
+                                  <Nodes>
+                                    <Expression xsi:type="WorkflowInput">
+                                      <Name>Source1</Name>
+                                    </Expression>
+                                    <Expression xsi:type="Combinator">
+                                      <Combinator xsi:type="FloatProperty">
+                                        <Value>0</Value>
+                                      </Combinator>
+                                    </Expression>
+                                    <Expression xsi:type="MulticastSubject">
+                                      <Name>CC</Name>
+                                    </Expression>
+                                    <Expression xsi:type="WorkflowOutput" />
+                                  </Nodes>
+                                  <Edges>
+                                    <Edge From="1" To="2" Label="Source1" />
+                                    <Edge From="2" To="3" Label="Source1" />
+                                  </Edges>
+                                </Workflow>
+                              </Expression>
+                            </Nodes>
+                            <Edges>
+                              <Edge From="0" To="1" Label="Source1" />
+                              <Edge From="0" To="4" Label="Source1" />
+                              <Edge From="1" To="2" Label="Source1" />
+                              <Edge From="2" To="3" Label="Source1" />
+                              <Edge From="3" To="7" Label="Source1" />
+                              <Edge From="4" To="5" Label="Source1" />
+                              <Edge From="5" To="6" Label="Source1" />
+                              <Edge From="6" To="7" Label="Source2" />
+                              <Edge From="7" To="8" Label="Source1" />
+                              <Edge From="9" To="12" Label="Source1" />
+                              <Edge From="10" To="11" Label="Source1" />
+                              <Edge From="11" To="12" Label="Source2" />
+                              <Edge From="12" To="13" Label="Source1" />
+                              <Edge From="13" To="14" Label="Source1" />
+                            </Edges>
+                          </Workflow>
+                        </Expression>
+                        <Expression xsi:type="Equal">
+                          <Operand xsi:type="FloatProperty">
+                            <Value>0</Value>
+                          </Operand>
+                        </Expression>
+                        <Expression xsi:type="rx:Condition">
+                          <Name>NoRepeatError</Name>
+                          <Workflow>
+                            <Nodes>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                              <Expression xsi:type="WorkflowOutput" />
+                            </Nodes>
+                            <Edges>
+                              <Edge From="0" To="1" Label="Source1" />
+                            </Edges>
+                          </Workflow>
+                        </Expression>
+                        <Expression xsi:type="rx:SelectMany">
+                          <Name>Pick_type</Name>
+                          <Workflow>
+                            <Nodes>
+                              <Expression xsi:type="SubscribeSubject">
+                                <Name>TaskType</Name>
+                              </Expression>
+                              <Expression xsi:type="Combinator">
+                                <Combinator xsi:type="num:Permutation" />
+                              </Expression>
+                              <Expression xsi:type="Combinator">
+                                <Combinator xsi:type="rx:Take">
+                                  <rx:Count>1</rx:Count>
+                                </Combinator>
+                              </Expression>
+                              <Expression xsi:type="WorkflowOutput" />
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                            </Nodes>
+                            <Edges>
+                              <Edge From="0" To="1" Label="Source1" />
+                              <Edge From="1" To="2" Label="Source1" />
+                              <Edge From="2" To="3" Label="Source1" />
+                            </Edges>
+                          </Workflow>
                         </Expression>
                         <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="num:Permutation" />
-                        </Expression>
-                        <Expression xsi:type="Combinator">
-                          <Combinator xsi:type="rx:Take">
-                            <rx:Count>1</rx:Count>
-                          </Combinator>
+                          <Combinator xsi:type="rx:Amb" />
                         </Expression>
                         <Expression xsi:type="WorkflowOutput" />
                       </Nodes>
                       <Edges>
                         <Edge From="0" To="1" Label="Source1" />
+                        <Edge From="0" To="4" Label="Source1" />
                         <Edge From="1" To="2" Label="Source1" />
                         <Edge From="2" To="3" Label="Source1" />
+                        <Edge From="3" To="7" Label="Source1" />
+                        <Edge From="4" To="5" Label="Source1" />
+                        <Edge From="5" To="6" Label="Source1" />
+                        <Edge From="6" To="7" Label="Source2" />
+                        <Edge From="7" To="8" Label="Source1" />
                       </Edges>
                     </Workflow>
                   </Expression>
@@ -1174,7 +1604,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT4.1S</rx:DueTime>
+                <rx:DueTime>PT4.5S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1334,7 +1764,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.6S</rx:DueTime>
+                <rx:DueTime>PT2S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1446,7 +1876,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="GreaterThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>90</Value>
+                <Value>45</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -1499,6 +1929,14 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Combinator xsi:type="rx:First" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>lastTrialType</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="3" Label="Source2" />
@@ -1517,6 +1955,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="12" To="13" Label="Source2" />
             <Edge From="13" To="14" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -1646,7 +2085,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>-90</Value>
+                <Value>-45</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -1675,6 +2114,14 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Combinator xsi:type="rx:First" />
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>1</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>lastTrialType</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -1694,6 +2141,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="13" To="14" Label="Source2" />
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />
+            <Edge From="17" To="18" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -1747,7 +2195,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>AudioAmplitude_set</Name>
+              <Name>AudioFreq2_set</Name>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
@@ -1756,7 +2204,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>470</Value>
+                <Value>3</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
@@ -1764,7 +2212,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Multiply">
               <Operand xsi:type="FloatProperty">
-                <Value>3</Value>
+                <Value>0.2</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1772,15 +2220,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="rx:Accumulate" />
             <Expression xsi:type="MulticastSubject">
-              <Name>AudioAmplitude</Name>
-            </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>AudioAmplitudeDummy</Name>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="MulticastSubject">
-                <Name>StimX</Name>
-              </Builder>
+              <Name>AudioFreq2</Name>
             </Expression>
             <Expression xsi:type="rx:Sink">
               <Name>StimOn</Name>
@@ -1815,7 +2255,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="GreaterThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>800</Value>
+                <Value>9</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -1834,7 +2274,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="BooleanProperty">
-                <Value>false</Value>
+                <Value>true</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
@@ -1858,7 +2298,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="BooleanProperty">
-                <Value>true</Value>
+                <Value>false</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1874,6 +2314,12 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="MulticastSubject">
               <Name>AudioFrequency</Name>
             </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>AudioAmplitude_set</Name>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>AudioAmplitude</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="3" Label="Source1" />
@@ -1886,16 +2332,15 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
+            <Edge From="9" To="13" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
-            <Edge From="11" To="15" Label="Source1" />
-            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="12" To="16" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
-            <Edge From="14" To="18" Label="Source1" />
-            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="16" Label="Source2" />
             <Edge From="16" To="17" Label="Source1" />
-            <Edge From="17" To="18" Label="Source2" />
-            <Edge From="18" To="19" Label="Source1" />
+            <Edge From="17" To="18" Label="Source1" />
             <Edge From="19" To="20" Label="Source1" />
             <Edge From="21" To="22" Label="Source1" />
           </Edges>
@@ -1955,11 +2400,11 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Multiply">
               <Operand xsi:type="FloatProperty">
-                <Value>-3</Value>
+                <Value>-0.2</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>AudioAmplitude_set</Name>
+              <Name>AudioFreq2_set</Name>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
@@ -1968,7 +2413,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>470</Value>
+                <Value>3</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1976,15 +2421,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="rx:Accumulate" />
             <Expression xsi:type="MulticastSubject">
-              <Name>AudioAmplitude</Name>
-            </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>AudioAmplitudeDummy</Name>
-            </Expression>
-            <Expression xsi:type="Disable">
-              <Builder xsi:type="MulticastSubject">
-                <Name>StimX</Name>
-              </Builder>
+              <Name>AudioFreq2</Name>
             </Expression>
             <Expression xsi:type="rx:Sink">
               <Name>StimOn</Name>
@@ -2019,7 +2456,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="GreaterThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>800</Value>
+                <Value>9</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -2038,7 +2475,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="BooleanProperty">
-                <Value>false</Value>
+                <Value>true</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
@@ -2062,7 +2499,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="BooleanProperty">
-                <Value>true</Value>
+                <Value>false</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -2078,6 +2515,14 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="MulticastSubject">
               <Name>AudioFrequency</Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>470</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>AudioAmplitude</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="5" Label="Source1" />
@@ -2090,16 +2535,15 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
+            <Edge From="9" To="13" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
-            <Edge From="11" To="15" Label="Source1" />
-            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="12" To="16" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
-            <Edge From="14" To="18" Label="Source1" />
-            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="16" Label="Source2" />
             <Edge From="16" To="17" Label="Source1" />
-            <Edge From="17" To="18" Label="Source2" />
-            <Edge From="18" To="19" Label="Source1" />
+            <Edge From="17" To="18" Label="Source1" />
             <Edge From="19" To="20" Label="Source1" />
             <Edge From="21" To="22" Label="Source1" />
           </Edges>
@@ -2205,6 +2649,22 @@ def process(value):
               </Workflow>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="SubscribeSubject">
+              <Name>CC</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>1</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Add">
+              <Operand xsi:type="IntProperty">
+                <Value>1</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>CC</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -2212,6 +2672,9 @@ def process(value):
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -2286,12 +2749,21 @@ def process(value):
               </Workflow>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>CC</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -2485,9 +2957,19 @@ it.Item4 as Timestamp
                       <Value>0</Value>
                     </Combinator>
                   </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Error_repeat</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>MakeString</scr:Name>
+                    <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  </Expression>
                   <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
                     <MemberName>Name</MemberName>
-                    <Value>VisualTask</Value>
+                    <Value>ErrorRepeat</Value>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
@@ -2498,12 +2980,12 @@ it.Item4 as Timestamp
                     <scr:Name>MakeString</scr:Name>
                     <scr:Expression>Convert.ToString(it)</scr:Expression>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:WithLatestFrom" />
-                  </Expression>
                   <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
                     <MemberName>Name</MemberName>
-                    <Value>AuditoryTask</Value>
+                    <Value>GratingCircle_Left</Value>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
@@ -2513,6 +2995,56 @@ it.Item4 as Timestamp
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>MakeString</scr:Name>
                     <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                    <MemberName>Name</MemberName>
+                    <Value>CheckboardSquare_Right</Value>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                    <MemberName>Name</MemberName>
+                    <Value>ContinuoousCorrect</Value>
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>ContinuoousCorrect</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>MakeString</scr:Name>
+                    <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>2</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>MakeString</scr:Name>
+                    <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                    <MemberName>Name</MemberName>
+                    <Value>4KHz</Value>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>3</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>MakeString</scr:Name>
+                    <scr:Expression>Convert.ToString(it)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
+                    <MemberName>Name</MemberName>
+                    <Value>8KHz</Value>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
@@ -2537,44 +3069,60 @@ it.Item4 as Timestamp
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="3" Label="Source1" />
                   <Edge From="2" To="3" Label="Source2" />
-                  <Edge From="3" To="37" Label="Source1" />
+                  <Edge From="3" To="53" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
                   <Edge From="5" To="7" Label="Source1" />
                   <Edge From="6" To="7" Label="Source2" />
-                  <Edge From="7" To="37" Label="Source2" />
+                  <Edge From="7" To="53" Label="Source2" />
                   <Edge From="8" To="9" Label="Source1" />
                   <Edge From="9" To="11" Label="Source1" />
                   <Edge From="10" To="11" Label="Source2" />
-                  <Edge From="11" To="37" Label="Source3" />
+                  <Edge From="11" To="53" Label="Source3" />
                   <Edge From="12" To="13" Label="Source1" />
                   <Edge From="13" To="15" Label="Source1" />
                   <Edge From="14" To="15" Label="Source2" />
-                  <Edge From="15" To="37" Label="Source4" />
+                  <Edge From="15" To="53" Label="Source4" />
                   <Edge From="16" To="17" Label="Source1" />
                   <Edge From="17" To="19" Label="Source1" />
                   <Edge From="18" To="19" Label="Source2" />
-                  <Edge From="19" To="37" Label="Source5" />
+                  <Edge From="19" To="53" Label="Source5" />
                   <Edge From="20" To="21" Label="Source1" />
                   <Edge From="21" To="23" Label="Source1" />
                   <Edge From="22" To="23" Label="Source2" />
-                  <Edge From="23" To="37" Label="Source6" />
+                  <Edge From="23" To="53" Label="Source6" />
                   <Edge From="24" To="25" Label="Source1" />
                   <Edge From="25" To="27" Label="Source1" />
                   <Edge From="26" To="27" Label="Source2" />
-                  <Edge From="27" To="37" Label="Source7" />
-                  <Edge From="28" To="38" Label="Source2" />
-                  <Edge From="29" To="32" Label="Source2" />
-                  <Edge From="30" To="31" Label="Source1" />
-                  <Edge From="31" To="32" Label="Source1" />
-                  <Edge From="32" To="37" Label="Source8" />
-                  <Edge From="33" To="36" Label="Source2" />
-                  <Edge From="34" To="35" Label="Source1" />
-                  <Edge From="35" To="36" Label="Source1" />
-                  <Edge From="36" To="37" Label="Source9" />
+                  <Edge From="27" To="53" Label="Source7" />
+                  <Edge From="28" To="54" Label="Source2" />
+                  <Edge From="29" To="30" Label="Source1" />
+                  <Edge From="30" To="32" Label="Source1" />
+                  <Edge From="31" To="32" Label="Source2" />
+                  <Edge From="32" To="53" Label="Source8" />
+                  <Edge From="33" To="34" Label="Source1" />
+                  <Edge From="34" To="36" Label="Source1" />
+                  <Edge From="35" To="36" Label="Source2" />
+                  <Edge From="36" To="53" Label="Source9" />
                   <Edge From="37" To="38" Label="Source1" />
-                  <Edge From="38" To="39" Label="Source1" />
-                  <Edge From="39" To="40" Label="Source1" />
-                  <Edge From="40" To="41" Label="Source1" />
+                  <Edge From="38" To="40" Label="Source1" />
+                  <Edge From="39" To="40" Label="Source2" />
+                  <Edge From="40" To="53" Label="Source10" />
+                  <Edge From="41" To="44" Label="Source2" />
+                  <Edge From="42" To="43" Label="Source1" />
+                  <Edge From="43" To="44" Label="Source1" />
+                  <Edge From="44" To="53" Label="Source11" />
+                  <Edge From="45" To="46" Label="Source1" />
+                  <Edge From="46" To="48" Label="Source1" />
+                  <Edge From="47" To="48" Label="Source2" />
+                  <Edge From="48" To="53" Label="Source12" />
+                  <Edge From="49" To="50" Label="Source1" />
+                  <Edge From="50" To="52" Label="Source1" />
+                  <Edge From="51" To="52" Label="Source2" />
+                  <Edge From="52" To="53" Label="Source13" />
+                  <Edge From="53" To="54" Label="Source1" />
+                  <Edge From="54" To="55" Label="Source1" />
+                  <Edge From="55" To="56" Label="Source1" />
+                  <Edge From="56" To="57" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -2921,6 +3469,11 @@ def process(value):
               <Combinator xsi:type="rx:WithLatestFrom" />
             </Expression>
             <Expression xsi:type="Multiply" />
+            <Expression xsi:type="Add">
+              <Operand xsi:type="FloatProperty">
+                <Value>-6</Value>
+              </Operand>
+            </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
@@ -2929,11 +3482,18 @@ def process(value):
             <Edge From="2" To="3" Label="Source2" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
+        <Name>Outcome</Name>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
         <Name>TrialType</Name>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>CC</Name>
       </Expression>
     </Nodes>
     <Edges>
