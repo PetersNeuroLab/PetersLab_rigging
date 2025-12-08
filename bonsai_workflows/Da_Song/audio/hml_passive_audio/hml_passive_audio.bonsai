@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -356,7 +356,7 @@
           </Edges>
         </Workflow>
       </Expression>
-<Expression xsi:type="GroupWorkflow">
+      <Expression xsi:type="GroupWorkflow">
         <Name>UpdateTrialNumber</Name>
         <Workflow>
           <Nodes>
@@ -470,10 +470,13 @@
                 <p1:Count>3</p1:Count>
               </Combinator>
             </Expression>
-            <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:SubscribeWhen" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="Disable">
               <Builder xsi:type="Multiply">
                 <Operand xsi:type="FloatProperty">
@@ -484,7 +487,9 @@
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="1" To="3" Label="Source1" />
+            <Edge From="2" To="3" Label="Source2" />
+            <Edge From="3" To="4" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -575,7 +580,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:Timer">
-                      <gl:DueTime>PT1.4S</gl:DueTime>
+                      <gl:DueTime>PT1.6S</gl:DueTime>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -661,7 +666,7 @@
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="dsp:FunctionGenerator">
                       <dsp:BufferLength>44100</dsp:BufferLength>
-                      <dsp:Frequency>12000</dsp:Frequency>
+                      <dsp:Frequency>4000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
                       <dsp:Amplitude>270</dsp:Amplitude>
@@ -876,7 +881,7 @@ it.Item4 as Timestamp
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="io:CsvWriter">
-              <io:FileName>bonsai_events.csv</io:FileName>
+              <io:FileName>C:\Users\peterslab\Desktop\bonsai_events.csv</io:FileName>
               <io:Append>false</io:Append>
               <io:Overwrite>true</io:Overwrite>
               <io:Suffix>None</io:Suffix>
