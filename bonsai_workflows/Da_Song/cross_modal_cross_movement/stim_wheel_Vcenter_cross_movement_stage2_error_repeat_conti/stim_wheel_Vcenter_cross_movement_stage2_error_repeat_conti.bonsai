@@ -1721,7 +1721,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="GreaterThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>45</Value>
+                <Value>90</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -1930,7 +1930,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>-45</Value>
+                <Value>-90</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
