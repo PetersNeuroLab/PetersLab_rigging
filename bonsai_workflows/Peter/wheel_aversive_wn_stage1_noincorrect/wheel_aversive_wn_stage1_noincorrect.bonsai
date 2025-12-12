@@ -528,7 +528,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
-              <Name>StimContrast</Name>
+              <Name>StimOpacity</Name>
             </Expression>
             <Expression xsi:type="GroupWorkflow">
               <Name>CreateStim</Name>
@@ -571,7 +571,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>StimContrast</Name>
+                    <Name>StimOpacity</Name>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
                     <PropertyMappings>
@@ -595,7 +595,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>13579.1</Phase>
+                    <Phase>1031.324</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -1058,7 +1058,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT1.9S</rx:DueTime>
+                <rx:DueTime>PT1.8S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1218,7 +1218,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.7S</rx:DueTime>
+                <rx:DueTime>PT0.5S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1296,7 +1296,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Name>StimOn</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>StimContrast</Name>
+                    <Name>StimOpacity</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>PhotodiodeSquare</Name>
@@ -1351,7 +1351,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Delay">
-                <rx:DueTime>PT1.331S</rx:DueTime>
+                <rx:DueTime>PT1.219S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="GroupWorkflow">
@@ -1399,10 +1399,14 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:SubscribeWhen" />
                   </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
                   <Expression xsi:type="rx:Sink">
                     <Name>WNOn</Name>
                     <Workflow>
                       <Nodes>
+                        <Expression xsi:type="WorkflowInput">
+                          <Name>Source1</Name>
+                        </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="BooleanProperty">
                             <Value>true</Value>
@@ -1414,10 +1418,10 @@ ticks: ticks/revolution for model rotary encoder</Description>
                       </Nodes>
                       <Edges>
                         <Edge From="0" To="1" Label="Source1" />
+                        <Edge From="1" To="2" Label="Source1" />
                       </Edges>
                     </Workflow>
                   </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Sound</Name>
                   </Expression>
@@ -1439,8 +1443,8 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Edge From="5" To="6" Label="Source1" />
                   <Edge From="6" To="8" Label="Source1" />
                   <Edge From="7" To="8" Label="Source2" />
+                  <Edge From="7" To="10" Label="Source1" />
                   <Edge From="8" To="9" Label="Source1" />
-                  <Edge From="9" To="10" Label="Source1" />
                   <Edge From="11" To="12" Label="Source1" />
                 </Edges>
               </Workflow>
@@ -1467,7 +1471,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
         </Workflow>
       </Expression>
       <Expression xsi:type="rx:SelectMany">
-        <Name>Reward</Name>
+        <Name>TrialEnd</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
@@ -1476,15 +1480,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="MulticastSubject">
               <Name>Outcome</Name>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Delay">
-                <rx:DueTime>PT2S</rx:DueTime>
-              </Combinator>
-            </Expression>
             <Expression xsi:type="rx:Sink">
               <Name>StimOff</Name>
               <Workflow>
                 <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
                       <Value>0</Value>
@@ -1494,7 +1496,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Name>StimOn</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>StimContrast</Name>
+                    <Name>StimOpacity</Name>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>PhotodiodeSquare</Name>
@@ -1504,6 +1506,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
                   <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1513,7 +1516,6 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
