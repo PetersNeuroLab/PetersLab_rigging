@@ -12,19 +12,11 @@
 int Sensor_DIR =1;  // 传感器方向，若电机运动不正常，将此值取反
 int Motor_PP = 7;    // 电机极对数
 /******************************************************/
-//0为阻尼模式
-//1为顺滑模式
-#define MODE 1
-
-#define encoder1 4
-#define encoder2 15
-#define groundpin 14
-
 
 /******************************************************/
 //参数设置
-float kp1 = 0.2;//阻尼模式P值
-float kp2 = 0.051;//顺滑模式P值
+float kp1 = -10;//阻尼模式P值
+float kp2 = 10;//顺滑模式P值
 /******************************************************/
 void setup() {
   Serial.begin(115200);
@@ -34,76 +26,31 @@ void setup() {
   DFOC_Vbus(12.6);  // 设定驱动器供电电压
   DFOC_alignSensor(Motor_PP, Sensor_DIR);
 
-  pinMode(encoder1, OUTPUT);
-  pinMode(encoder2, OUTPUT);
- pinMode(groundpin, OUTPUT);
-
-  digitalWrite(encoder1, HIGH); // 初始化 encoder1 为high电平
-  digitalWrite(encoder2, HIGH); // 初始化 encoder2 为低电平
-  digitalWrite(groundpin, LOW); // 初始化 encoder2 为低电平
-
 
 }
 
-float last_position=0;
-float current_position=0;
-float cumulativeDelta = 0.0; // 累计变化量
+float current_vel=0;
 
-
-
-float angel=0.03488888;
 
 void loop() {
   runFOC();
-  if(MODE == 0)
-    Damp_Mode();
-  else if(MODE == 1)
-    Smooth_Mode();
-
-  current_position=DFOC_M0_Angle();
-  float delta = current_position - last_position;
-  cumulativeDelta += delta;
-
-
-
-   if ((cumulativeDelta > -1* angel && cumulativeDelta < -0.5* angel) || (cumulativeDelta > 0 && cumulativeDelta <0.5* angel))
-  {
-     
-      digitalWrite(encoder1, HIGH);
-          // cumulativeDelta = 0;  // 重置累计变化量
-          // halfThresholdExceeded = false;  // 重置半阈值标志
-        // Serial.printf("%d,%d,%f,%f,%f\n", digitalRead(encoder1), digitalRead(encoder2), current_position, last_position, cumulativeDelta);
-  } 
-  else{      digitalWrite(encoder1, LOW);
-}
-   
- if ((cumulativeDelta > -0.75* angel && cumulativeDelta < -0.25* angel) || (cumulativeDelta > 0.25*angel && cumulativeDelta < 0.75* angel))
-  {
-     
-      digitalWrite(encoder2, HIGH);
-          // cumulativeDelta = 0;  // 重置累计变化量
-          // halfThresholdExceeded = false;  // 重置半阈值标志
-        // Serial.printf("%d,%d,%f,%f,%f\n", digitalRead(encoder1), digitalRead(encoder2), current_position, last_position, cumulativeDelta);
-  } 
-  else{      digitalWrite(encoder2, LOW);
-}
-   
- if (cumulativeDelta > 1*angel  || cumulativeDelta < -1*angel ){
-  cumulativeDelta=0;
- }
-
-  // // 更新lastEncoderValue以便下次比较
-  // last_position = current_position;
-  //   // Serial.printf("%d,%d,%f,%f,%f\n",pinA,pinB,current_position,last_position,cumulativeDelta);
-  //   // Serial.printf("%f\n",cumulativeDelta);
-  //       Serial.printf("%d,%d\n", digitalRead(encoder1), digitalRead(encoder2));
-
+  current_vel=DFOC_M0_Velocity();
+  
+  // ======  ======
+  if (current_vel > 0)
+    Smooth_Mode();   // 正速度 → 顺滑模式
+  else if (current_vel < 0)
+    Damp_Mode();     // 负速度 → 阻尼模式
+  else
+    DFOC_M0_setTorque(0); // 停止时不输出力矩
+  // =========================================
+ 
 }
 
 void Damp_Mode() {  //阻尼模式
-    DFOC_M0_setTorque(kp1 * -1* DFOC_M0_Velocity());
+    DFOC_M0_setTorque(kp1 );
 }
 
 void Smooth_Mode() {  //顺滑模式
-   DFOC_M0_setTorque(kp2 * DFOC_M0_Velocity());
+   DFOC_M0_setTorque(kp2 );
 }
