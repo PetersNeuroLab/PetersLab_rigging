@@ -6,8 +6,8 @@ int Motor_PP   = 6;          // 电机极对数
 const int ENABLE_PIN = 12;   // 使能引脚
 
 // -------- 阻尼参数 --------
-float kp_damp    = 0.8f;     // 阻尼增益（正数）
-float maxTorque  = 9.0f;     // 力矩限幅（确认单位/范围后调整）
+float kp_damp    = 2.2f;     // 阻尼增益（正数）
+float maxTorque  = 5.5f;     // 力矩限幅（确认单位/范围后调整）
 bool  damp_on_cw = true;     // true = 顺时针阻尼；false = 逆时针阻尼
 // --------------------------
 
