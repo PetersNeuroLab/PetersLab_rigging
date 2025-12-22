@@ -359,9 +359,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -644,13 +644,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>200</LocationX>
+                    <LocationX>180</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>9110.029</Phase>
+                    <Phase>20168.1152</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
@@ -678,7 +678,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Phase>0</Phase>
                     <ExtentX>40</ExtentX>
                     <ExtentY>40</ExtentY>
-                    <LocationX>200</LocationX>
+                    <LocationX>225</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
@@ -777,10 +777,10 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="dsp:FunctionGenerator">
                       <dsp:BufferLength>441</dsp:BufferLength>
-                      <dsp:Frequency>12000</dsp:Frequency>
+                      <dsp:Frequency>4000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>0</dsp:Amplitude>
+                      <dsp:Amplitude>470</dsp:Amplitude>
                       <dsp:Offset>0</dsp:Offset>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
@@ -796,7 +796,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="dsp:FunctionGenerator">
                       <dsp:BufferLength>441</dsp:BufferLength>
-                      <dsp:Frequency>8.0078306198120117</dsp:Frequency>
+                      <dsp:Frequency>4</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
                       <dsp:Amplitude>1</dsp:Amplitude>
@@ -1604,7 +1604,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT6.4S</rx:DueTime>
+                <rx:DueTime>PT4.5S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1764,7 +1764,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.5S</rx:DueTime>
+                <rx:DueTime>PT1S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -2320,6 +2320,14 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="MulticastSubject">
               <Name>AudioAmplitude</Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>2</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>lastTrialType</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="3" Label="Source1" />
@@ -2343,6 +2351,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="17" To="18" Label="Source1" />
             <Edge From="19" To="20" Label="Source1" />
             <Edge From="21" To="22" Label="Source1" />
+            <Edge From="23" To="24" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -2523,6 +2532,14 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="MulticastSubject">
               <Name>AudioFrequency</Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>3</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>lastTrialType</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="5" Label="Source1" />
@@ -2546,6 +2563,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Edge From="17" To="18" Label="Source1" />
             <Edge From="19" To="20" Label="Source1" />
             <Edge From="21" To="22" Label="Source1" />
+            <Edge From="23" To="24" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
