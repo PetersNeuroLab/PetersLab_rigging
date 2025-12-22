@@ -3046,7 +3046,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
                     <MemberName>Name</MemberName>
-                    <Value>4KHz</Value>
+                    <Value>A4KHz</Value>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
@@ -3062,7 +3062,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
                     <MemberName>Name</MemberName>
-                    <Value>12KHz</Value>
+                    <Value>A12KHz</Value>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />

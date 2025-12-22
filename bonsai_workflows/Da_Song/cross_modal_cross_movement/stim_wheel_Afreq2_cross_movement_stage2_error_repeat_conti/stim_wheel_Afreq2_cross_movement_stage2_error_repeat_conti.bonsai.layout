@@ -542,8 +542,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>995</Width>
-        <Height>581</Height>
+        <Width>1028</Width>
+        <Height>608</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -626,8 +626,8 @@
             <Y>3</Y>
           </Location>
           <Size>
-            <Width>995</Width>
-            <Height>581</Height>
+            <Width>1028</Width>
+            <Height>608</Height>
           </Size>
           <WindowState>Normal</WindowState>
         </EditorDialogSettings>
