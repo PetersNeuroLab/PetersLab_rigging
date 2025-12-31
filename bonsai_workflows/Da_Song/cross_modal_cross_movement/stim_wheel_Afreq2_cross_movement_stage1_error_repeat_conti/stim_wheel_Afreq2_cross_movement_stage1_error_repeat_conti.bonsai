@@ -9,10 +9,10 @@
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
-                 xmlns:p1="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
+                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
-                 xmlns:p2="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
+                 xmlns:p1="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
                  xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
@@ -809,9 +809,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   </Expression>
                   <Expression xsi:type="Multiply" />
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:AudioPlayback">
-                      <p1:SampleRate>44100</p1:SampleRate>
-                      <p1:State>Playing</p1:State>
+                    <Combinator xsi:type="al:AudioPlayback">
+                      <al:SampleRate>44100</al:SampleRate>
+                      <al:State>Playing</al:State>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -1100,13 +1100,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:CreateDiscreteUniform">
-                      <p2:Lower>0</p2:Lower>
-                      <p2:Upper>360</p2:Upper>
+                    <Combinator xsi:type="p1:CreateDiscreteUniform">
+                      <p1:Lower>0</p1:Lower>
+                      <p1:Upper>360</p1:Upper>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:Sample" />
+                    <Combinator xsi:type="p1:Sample" />
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>TrialStimPhase</Name>
