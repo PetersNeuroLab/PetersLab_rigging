@@ -103,7 +103,7 @@
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
               <RangeMin>0</RangeMin>
               <RangeMax>3</RangeMax>
-              <Count>2</Count>
+              <Count>4</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>TaskType</Name>
@@ -631,7 +631,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>180</LocationX>
+                    <LocationX>0</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
@@ -643,7 +643,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
-                    <Opacity>0</Opacity>
+                    <Opacity>1</Opacity>
                     <ExtentX>40</ExtentX>
                     <ExtentY>40</ExtentY>
                   </Expression>
@@ -665,7 +665,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Phase>0</Phase>
                     <ExtentX>40</ExtentX>
                     <ExtentY>40</ExtentY>
-                    <LocationX>225</LocationX>
+                    <LocationX>200</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
@@ -756,10 +756,10 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="dsp:FunctionGenerator">
                       <dsp:BufferLength>441</dsp:BufferLength>
-                      <dsp:Frequency>4000</dsp:Frequency>
+                      <dsp:Frequency>12000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>470</dsp:Amplitude>
+                      <dsp:Amplitude>0</dsp:Amplitude>
                       <dsp:Offset>0</dsp:Offset>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
@@ -775,7 +775,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="dsp:FunctionGenerator">
                       <dsp:BufferLength>441</dsp:BufferLength>
-                      <dsp:Frequency>4</dsp:Frequency>
+                      <dsp:Frequency>8.0078306198120117</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
                       <dsp:Amplitude>1</dsp:Amplitude>
@@ -867,7 +867,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>54.17</Value>
+                <Value>50</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -881,7 +881,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>325</Value>
+                <Value>300</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -911,7 +911,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
-                      <Value>325</Value>
+                      <Value>300</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
@@ -1418,7 +1418,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT4.5S</rx:DueTime>
+                <rx:DueTime>PT5.2S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1578,7 +1578,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1S</rx:DueTime>
+                <rx:DueTime>PT0.8S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
