@@ -48,7 +48,7 @@ if ($freeBytes -ge $archiveFilesSize) {
     $smtpServer = "smtp.gmail.com"
     $smtpPort = 587
     $senderEmail = "peters.lab.notifier@gmail.com"
-    $senderPassword = "nxtk sphu lxdq inqs" # (this is an app password)
+    $senderPassword = "tlbc onfn fgqf wxfr" # (this is an app password)
     $recipientEmail = "peters.andrew.j@gmail.com"
     $subject = "Replace tape"
     $body = "The current tape is full and has been ejected, replace the tape."
