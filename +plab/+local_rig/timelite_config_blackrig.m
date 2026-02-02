@@ -19,6 +19,9 @@ use_daq_idx = 1;
 daqs_available = daqlist;
 daq_device = struct;
 
+
+
+
 % Set up DAQ analog input
 daq_device.analog = daq(daqs_available.VendorID(use_daq_idx));
 daq_device.analog.Rate = daq_sample_rate;
