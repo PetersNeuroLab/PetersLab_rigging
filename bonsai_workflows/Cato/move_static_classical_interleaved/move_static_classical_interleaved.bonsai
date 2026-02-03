@@ -5,7 +5,7 @@
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:p1="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
-                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
+                 xmlns:p2="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -754,11 +754,11 @@
                         <Expression xsi:type="SubscribeSubject">
                           <Name>OpenValve</Name>
                         </Expression>
-                        <Expression xsi:type="ipy:PythonTransform">
-                          <ipy:Name>MakeString</ipy:Name>
-                          <ipy:Script>@returns(str)
+                        <Expression xsi:type="p2:PythonTransform">
+                          <p2:Name>MakeString</p2:Name>
+                          <p2:Script>@returns(str)
 def process(value):
-  return str.format("{0}", value)</ipy:Script>
+  return str.format("{0}", value)</p2:Script>
                         </Expression>
                         <Expression xsi:type="WorkflowInput">
                           <Name>Source1</Name>
@@ -1371,11 +1371,11 @@ def process(value):
                         <Expression xsi:type="SubscribeSubject">
                           <Name>OpenValve</Name>
                         </Expression>
-                        <Expression xsi:type="ipy:PythonTransform">
-                          <ipy:Name>MakeString</ipy:Name>
-                          <ipy:Script>@returns(str)
+                        <Expression xsi:type="p2:PythonTransform">
+                          <p2:Name>MakeString</p2:Name>
+                          <p2:Script>@returns(str)
 def process(value):
-  return str.format("{0}", value)</ipy:Script>
+  return str.format("{0}", value)</p2:Script>
                         </Expression>
                         <Expression xsi:type="WorkflowInput">
                           <Name>Source1</Name>
@@ -1691,7 +1691,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="DoubleProperty">
-                <Value>4</Value>
+                <Value>0.5</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -1702,7 +1702,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="DoubleProperty">
-                <Value>7</Value>
+                <Value>1</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -3053,13 +3053,13 @@ it.Item4 as Timestamp
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
-                  <Expression xsi:type="ipy:PythonTransform">
-                    <ipy:Script>import os
+                  <Expression xsi:type="p2:PythonTransform">
+                    <p2:Script>import os
 
 @returns(str)
 def process(value):
   return os.path.join(value.Item1,value.Item2)
-</ipy:Script>
+</p2:Script>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>CsvFile</Name>
@@ -3078,13 +3078,13 @@ def process(value):
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
-                  <Expression xsi:type="ipy:PythonTransform">
-                    <ipy:Script>import os
+                  <Expression xsi:type="p2:PythonTransform">
+                    <p2:Script>import os
 
 @returns(str)
 def process(value):
   return os.path.join(value.Item1,value.Item2)
-</ipy:Script>
+</p2:Script>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>BinFile</Name>
