@@ -311,9 +311,9 @@
                     <LocationY>-0.85</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>1</ColorR>
-                    <ColorG>1</ColorG>
-                    <ColorB>1</ColorB>
+                    <ColorR>0</ColorR>
+                    <ColorG>0</ColorG>
+                    <ColorB>0</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -605,13 +605,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>15297.9727</Phase>
+                    <Phase>7333.86</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
-                    <Opacity>1</Opacity>
+                    <Opacity>0</Opacity>
                     <ExtentX>60</ExtentX>
                     <ExtentY>60</ExtentY>
                   </Expression>
@@ -1231,7 +1231,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.5S</rx:DueTime>
+                <rx:DueTime>PT0.7S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1673,7 +1673,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Add" />
                   <Expression xsi:type="scr:ExpressionTransform">
-                    <scr:Expression>Math.Max(it,-90)</scr:Expression>
+                    <scr:Expression>Math.Max(it,0)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
