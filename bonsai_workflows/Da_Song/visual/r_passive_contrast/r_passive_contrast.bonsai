@@ -448,6 +448,20 @@
                   <p1:GratingParameters>
                     <p1:X>90</p1:X>
                     <p1:Y>0</p1:Y>
+                    <p1:Contrast>0.75</p1:Contrast>
+                    <p1:TemporalFrequency>0</p1:TemporalFrequency>
+                    <p1:Orientation>0</p1:Orientation>
+                  </p1:GratingParameters>
+                  <p1:GratingParameters>
+                    <p1:X>90</p1:X>
+                    <p1:Y>0</p1:Y>
+                    <p1:Contrast>0.5</p1:Contrast>
+                    <p1:TemporalFrequency>0</p1:TemporalFrequency>
+                    <p1:Orientation>0</p1:Orientation>
+                  </p1:GratingParameters>
+                  <p1:GratingParameters>
+                    <p1:X>90</p1:X>
+                    <p1:Y>0</p1:Y>
                     <p1:Contrast>0.25</p1:Contrast>
                     <p1:TemporalFrequency>0</p1:TemporalFrequency>
                     <p1:Orientation>0</p1:Orientation>
@@ -462,21 +476,7 @@
                   <p1:GratingParameters>
                     <p1:X>90</p1:X>
                     <p1:Y>0</p1:Y>
-                    <p1:Contrast>0.01</p1:Contrast>
-                    <p1:TemporalFrequency>0</p1:TemporalFrequency>
-                    <p1:Orientation>0</p1:Orientation>
-                  </p1:GratingParameters>
-                  <p1:GratingParameters>
-                    <p1:X>90</p1:X>
-                    <p1:Y>0</p1:Y>
-                    <p1:Contrast>0.005</p1:Contrast>
-                    <p1:TemporalFrequency>0</p1:TemporalFrequency>
-                    <p1:Orientation>0</p1:Orientation>
-                  </p1:GratingParameters>
-                  <p1:GratingParameters>
-                    <p1:X>90</p1:X>
-                    <p1:Y>0</p1:Y>
-                    <p1:Contrast>0.5</p1:Contrast>
+                    <p1:Contrast>0.0625</p1:Contrast>
                     <p1:TemporalFrequency>0</p1:TemporalFrequency>
                     <p1:Orientation>0</p1:Orientation>
                   </p1:GratingParameters>
