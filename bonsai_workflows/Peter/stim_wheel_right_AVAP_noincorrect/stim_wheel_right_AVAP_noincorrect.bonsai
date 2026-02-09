@@ -1885,6 +1885,11 @@ def process(value):
             <Expression xsi:type="MulticastSubject">
               <Name>Outcome</Name>
             </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Delay">
+                <rx:DueTime>PT2S</rx:DueTime>
+              </Combinator>
+            </Expression>
             <Expression xsi:type="rx:Sink">
               <Name>StimOff</Name>
               <Workflow>
@@ -1921,6 +1926,7 @@ def process(value):
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
