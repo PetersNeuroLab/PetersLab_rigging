@@ -358,7 +358,7 @@
                       <gl:WrapT>Repeat</gl:WrapT>
                       <gl:MinFilter>Linear</gl:MinFilter>
                       <gl:MagFilter>Linear</gl:MagFilter>
-                      <gl:FileName>picture\ILSVRC2017_test_00005396_normalized.JPEG</gl:FileName>
+                      <gl:FileName>picture\ILSVRC2017_test_00005357_normalized_circle.jpeg</gl:FileName>
                       <gl:ColorType>Unchanged</gl:ColorType>
                       <gl:FlipMode>Vertical</gl:FlipMode>
                     </Combinator>
@@ -542,7 +542,7 @@
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="p1:CreateDiscreteUniform">
                       <p1:Lower>0</p1:Lower>
-                      <p1:Upper>9</p1:Upper>
+                      <p1:Upper>4</p1:Upper>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
@@ -558,7 +558,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="p1:SampleDistinct">
-                      <p1:Count>10</p1:Count>
+                      <p1:Count>5</p1:Count>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="WorkflowInput">
@@ -612,7 +612,7 @@
                         </Expression>
                         <Expression xsi:type="Index">
                           <Operand xsi:type="IntProperty">
-                            <Value>9</Value>
+                            <Value>0</Value>
                           </Operand>
                         </Expression>
                         <Expression xsi:type="Combinator">
@@ -827,7 +827,7 @@
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="gl:Timer">
-                            <gl:DueTime>PT1.7S</gl:DueTime>
+                            <gl:DueTime>PT1.1S</gl:DueTime>
                           </Combinator>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
@@ -1114,7 +1114,7 @@ it.Item4 as Timestamp
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="io:CsvWriter">
-              <io:FileName>C:\Users\petersa\Desktop\bonsai_events.csv</io:FileName>
+              <io:FileName>C:\Users\peterslab\Desktop\bonsai_events.csv</io:FileName>
               <io:Append>false</io:Append>
               <io:Overwrite>true</io:Overwrite>
               <io:Suffix>None</io:Suffix>
