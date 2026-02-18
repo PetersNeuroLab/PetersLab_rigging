@@ -119,7 +119,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>870</Value>
+                <Value>740</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -1313,7 +1313,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Multiply">
               <Operand xsi:type="FloatProperty">
-                <Value>3</Value>
+                <Value>6</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1359,7 +1359,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="GreaterThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>605</Value>
+                <Value>1010</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
