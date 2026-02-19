@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.1"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -35,9 +35,9 @@
               <Property Name="Count" DisplayName="#ITIVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>31</Count>
               <RangeMin>4</RangeMin>
               <RangeMax>7</RangeMax>
+              <Count>31</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -49,9 +49,9 @@
               <Property Name="Count" DisplayName="#QuiescenceVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>16</Count>
               <RangeMin>0.5</RangeMin>
               <RangeMax>2</RangeMax>
+              <Count>16</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>QuiescenceTimes</Name>
@@ -119,7 +119,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>740</Value>
+                <Value>7050</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -203,13 +203,13 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width xsi:nil="true" />
               <Height xsi:nil="true" />
               <RotationZ>0</RotationZ>
               <RotationY>0</RotationY>
               <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
               <Width>20</Width>
@@ -299,9 +299,9 @@
                     <LocationY>-0.95</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -698,7 +698,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                       <dsp:Frequency>8000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>0</dsp:Amplitude>
+                      <dsp:Amplitude>7050</dsp:Amplitude>
                       <dsp:Offset>0</dsp:Offset>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
@@ -1108,7 +1108,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT5.1S</rx:DueTime>
+                <rx:DueTime>PT5.3S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1268,7 +1268,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1.5S</rx:DueTime>
+                <rx:DueTime>PT1.7S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1305,7 +1305,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>470</Value>
+                <Value>7050</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
@@ -1313,7 +1313,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Multiply">
               <Operand xsi:type="FloatProperty">
-                <Value>6</Value>
+                <Value>30</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1359,7 +1359,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="GreaterThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>1010</Value>
+                <Value>9075</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
@@ -1383,7 +1383,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="LessThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>200</Value>
+                <Value>3000</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">

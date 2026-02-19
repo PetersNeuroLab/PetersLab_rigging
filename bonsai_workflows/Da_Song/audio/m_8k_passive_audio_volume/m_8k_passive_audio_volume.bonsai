@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.1"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -59,9 +59,9 @@
               <Name>StimDuration</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>11</Count>
               <RangeMin>1</RangeMin>
               <RangeMax>2</RangeMax>
+              <Count>11</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -163,13 +163,13 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width xsi:nil="true" />
               <Height xsi:nil="true" />
               <RotationZ>0</RotationZ>
               <RotationY>0</RotationY>
               <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
               <Width>20</Width>
@@ -259,9 +259,9 @@
                     <LocationY>-0.95</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>1</ColorR>
-                    <ColorG>1</ColorG>
-                    <ColorB>1</ColorB>
+                    <ColorR>0</ColorR>
+                    <ColorG>0</ColorG>
+                    <ColorB>0</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -648,7 +648,7 @@
                   </Expression>
                   <Expression xsi:type="Multiply">
                     <Operand xsi:type="FloatProperty">
-                      <Value>1</Value>
+                      <Value>2</Value>
                     </Operand>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
@@ -662,7 +662,7 @@
                       <dsp:Frequency>8000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>94</dsp:Amplitude>
+                      <dsp:Amplitude>188</dsp:Amplitude>
                       <dsp:Offset>0</dsp:Offset>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
@@ -1212,6 +1212,9 @@ def process(value):
             <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>StimVolume</Name>
       </Expression>
     </Nodes>
     <Edges>
