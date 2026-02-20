@@ -2093,7 +2093,7 @@ def process(value):
                     <Combinator xsi:type="rx:SubscribeWhen" />
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Last" />
+                    <Combinator xsi:type="rx:LastOrDefault" />
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="FloatProperty">
