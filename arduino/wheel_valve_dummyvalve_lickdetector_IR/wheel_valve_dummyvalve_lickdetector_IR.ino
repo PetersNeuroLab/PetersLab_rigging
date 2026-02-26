@@ -19,7 +19,7 @@
 #define lickPin 2             // lick detector
 #define RewardValvePin 5      // digital pin for reward valve
 #define DummyValvePin 12      // digital pin for dummy valve
-#define ledPin 12             // digital pin for LED of lick detector
+#define ledPin 9             // digital pin for LED of lick detector
 
 
 
