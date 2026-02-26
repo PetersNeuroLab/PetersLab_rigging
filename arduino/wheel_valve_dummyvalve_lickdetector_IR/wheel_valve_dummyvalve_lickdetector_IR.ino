@@ -50,7 +50,7 @@ void setup() {
   // INPUTS
   pinMode(encoder0PinA, INPUT);   // rotary encoder sensor A
   pinMode(encoder0PinB, INPUT);   // rotary encoder sensor B
-  pinMode(lickPin, INPUT);        // lick sensor
+  pinMode(lickPin, INPUT_PULLUP);        // lick sensor
 
   // OUTPUTS
   pinMode(RewardValvePin, OUTPUT);     // reward valve
