@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.1"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -52,16 +52,16 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>1</Value>
+                <Value>0.5</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>StimDuration</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>11</Count>
               <RangeMin>1</RangeMin>
               <RangeMax>2</RangeMax>
+              <Count>11</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -83,7 +83,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>470</Value>
+                <Value>20</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
@@ -163,13 +163,13 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width xsi:nil="true" />
               <Height xsi:nil="true" />
               <RotationZ>0</RotationZ>
               <RotationY>0</RotationY>
               <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
               <Width>20</Width>
@@ -259,9 +259,9 @@
                     <LocationY>-0.95</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>1</ColorR>
-                    <ColorG>1</ColorG>
-                    <ColorB>1</ColorB>
+                    <ColorR>0</ColorR>
+                    <ColorG>0</ColorG>
+                    <ColorB>0</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -347,6 +347,9 @@
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
               <Name>RewardAmount</Name>
+            </Expression>
+            <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+              <rx:Name>Parameters</rx:Name>
             </Expression>
           </Nodes>
           <Edges>
@@ -445,9 +448,6 @@
               <Name>TrialNumber</Name>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -465,12 +465,12 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:CreateDiscreteUniform">
                 <p1:Lower>1</p1:Lower>
-                <p1:Upper>3</p1:Upper>
+                <p1:Upper>9</p1:Upper>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="p1:SampleDistinct">
-                <p1:Count>3</p1:Count>
+                <p1:Count>9</p1:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowInput">
@@ -531,7 +531,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:Timer">
-                      <gl:DueTime>PT1S</gl:DueTime>
+                      <gl:DueTime>PT0.5S</gl:DueTime>
                       <gl:Period>PT0S</gl:Period>
                     </Combinator>
                   </Expression>
@@ -576,7 +576,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:Timer">
-                      <gl:DueTime>PT1.3S</gl:DueTime>
+                      <gl:DueTime>PT1.9S</gl:DueTime>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -662,34 +662,69 @@
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="dsp:FunctionGenerator">
                       <dsp:BufferLength>44100</dsp:BufferLength>
-                      <dsp:Frequency>12000</dsp:Frequency>
+                      <dsp:Frequency>36000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>270</dsp:Amplitude>
+                      <dsp:Amplitude>20</dsp:Amplitude>
                       <dsp:Offset>0</dsp:Offset>
                       <dsp:Phase>0</dsp:Phase>
                     </Combinator>
                   </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Parameters</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>left</scr:Name>
+                    <scr:Expression>(it- 1) % 3 *45</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="Scale" />
+                    </PropertyMappings>
+                  </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="dsp:FunctionGenerator">
-                      <dsp:BufferLength>44100</dsp:BufferLength>
-                      <dsp:Frequency>4</dsp:Frequency>
-                      <dsp:Waveform>Sine</dsp:Waveform>
-                      <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>1</dsp:Amplitude>
-                      <dsp:Offset>0</dsp:Offset>
-                      <dsp:Phase>0</dsp:Phase>
+                    <Combinator xsi:type="dsp:ConvertScale">
+                      <dsp:Depth xsi:nil="true" />
+                      <dsp:Scale>90</dsp:Scale>
+                      <dsp:Shift>0</dsp:Shift>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Parameters</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>right</scr:Name>
+                    <scr:Expression>(2-(it- 1) % 3 )*45</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="Scale" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:ConvertScale">
+                      <dsp:Depth xsi:nil="true" />
+                      <dsp:Scale>0</dsp:Scale>
+                      <dsp:Shift>0</dsp:Shift>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
-                  <Expression xsi:type="Multiply" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:Concat">
+                      <dsp:Axis>0</dsp:Axis>
+                    </Combinator>
+                  </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>Sound</Name>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Parameters</Name>
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Name>fff</scr:Name>
+                    <scr:Expression>(it+2)/3</scr:Expression>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>LowFrequence</Name>
@@ -731,14 +766,23 @@
                   <Edge From="21" To="24" Label="Source1" />
                   <Edge From="22" To="23" Label="Source1" />
                   <Edge From="23" To="24" Label="Source2" />
-                  <Edge From="24" To="26" Label="Source1" />
-                  <Edge From="25" To="26" Label="Source2" />
+                  <Edge From="24" To="28" Label="Source1" />
+                  <Edge From="24" To="32" Label="Source1" />
+                  <Edge From="25" To="26" Label="Source1" />
                   <Edge From="26" To="27" Label="Source1" />
-                  <Edge From="27" To="28" Label="Source1" />
-                  <Edge From="29" To="32" Label="Source1" />
+                  <Edge From="27" To="28" Label="Source2" />
+                  <Edge From="28" To="33" Label="Source1" />
+                  <Edge From="29" To="30" Label="Source1" />
                   <Edge From="30" To="31" Label="Source1" />
                   <Edge From="31" To="32" Label="Source2" />
-                  <Edge From="32" To="33" Label="Source1" />
+                  <Edge From="32" To="33" Label="Source2" />
+                  <Edge From="33" To="34" Label="Source1" />
+                  <Edge From="34" To="35" Label="Source1" />
+                  <Edge From="36" To="37" Label="Source1" />
+                  <Edge From="37" To="40" Label="Source1" />
+                  <Edge From="38" To="39" Label="Source1" />
+                  <Edge From="39" To="40" Label="Source2" />
+                  <Edge From="40" To="41" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1066,7 +1110,7 @@ it.Item4 as Timestamp
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>StimFrequence</Name>
+                    <Name>Parameters</Name>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>MakeString</scr:Name>
