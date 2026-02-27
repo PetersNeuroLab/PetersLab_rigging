@@ -373,15 +373,6 @@
               <Height>279</Height>
             </Size>
             <WindowState>Normal</WindowState>
-            <VisualizerTypeName>Bonsai.Design.Visualizers.TimeSeriesVisualizer</VisualizerTypeName>
-            <VisualizerSettings>
-              <TimeSeriesVisualizer>
-                <Capacity>640</Capacity>
-                <Min>40</Min>
-                <Max>100</Max>
-                <AutoScale>true</AutoScale>
-              </TimeSeriesVisualizer>
-            </VisualizerSettings>
           </DialogSettings>
           <DialogSettings>
             <Visible>false</Visible>
@@ -466,15 +457,6 @@
               <Height>279</Height>
             </Size>
             <WindowState>Normal</WindowState>
-            <VisualizerTypeName>Bonsai.Design.Visualizers.TimeSeriesVisualizer</VisualizerTypeName>
-            <VisualizerSettings>
-              <TimeSeriesVisualizer>
-                <Capacity>640</Capacity>
-                <Min>0</Min>
-                <Max>50</Max>
-                <AutoScale>true</AutoScale>
-              </TimeSeriesVisualizer>
-            </VisualizerSettings>
           </DialogSettings>
           <DialogSettings>
             <Visible>false</Visible>
@@ -501,16 +483,33 @@
             <WindowState>Normal</WindowState>
           </DialogSettings>
           <DialogSettings>
-            <Visible>false</Visible>
+            <Visible>true</Visible>
             <Location>
-              <X>1019</X>
-              <Y>300</Y>
+              <X>114</X>
+              <Y>491</Y>
             </Location>
             <Size>
-              <Width>827</Width>
-              <Height>512</Height>
+              <Width>315</Width>
+              <Height>308</Height>
             </Size>
             <WindowState>Normal</WindowState>
+            <VisualizerTypeName>Bonsai.Dsp.Design.MatVisualizer</VisualizerTypeName>
+            <VisualizerSettings>
+              <MatVisualizer>
+                <XMin>0</XMin>
+                <XMax>44</XMax>
+                <YMin>-2000</YMin>
+                <YMax>2000</YMax>
+                <AutoScaleX>true</AutoScaleX>
+                <AutoScaleY>true</AutoScaleY>
+                <SelectedPage>0</SelectedPage>
+                <ChannelsPerPage>16</ChannelsPerPage>
+                <OverlayChannels>true</OverlayChannels>
+                <ChannelOffset>0</ChannelOffset>
+                <HistoryLength>1</HistoryLength>
+                <WaveformBufferLength>1</WaveformBufferLength>
+              </MatVisualizer>
+            </VisualizerSettings>
           </DialogSettings>
           <DialogSettings>
             <Visible>false</Visible>
