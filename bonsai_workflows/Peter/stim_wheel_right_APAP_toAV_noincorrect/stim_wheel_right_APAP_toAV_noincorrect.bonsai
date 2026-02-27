@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.9.0"
+<WorkflowBuilder Version="2.7.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
-                 xmlns:p1="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
+                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
-                 xmlns:p2="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
+                 xmlns:p1="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
-                 xmlns:p3="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
-                 xmlns:p4="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
+                 xmlns:ipy="clr-namespace:Bonsai.Scripting.IronPython;assembly=Bonsai.Scripting.IronPython"
+                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -38,9 +38,9 @@
               <Property Name="Count" DisplayName="#ITIVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>31</Count>
               <RangeMin>4</RangeMin>
               <RangeMax>7</RangeMax>
+              <Count>31</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>ITITimes</Name>
@@ -52,9 +52,9 @@
               <Property Name="Count" DisplayName="#QuiescenceVals" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>6</Count>
               <RangeMin>0.5</RangeMin>
               <RangeMax>1</RangeMax>
+              <Count>6</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>QuiescenceTimes</Name>
@@ -104,9 +104,9 @@
               <Property Name="RangeMax" DisplayName="TaskType1" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.ParameterRange.bonsai">
-              <Count>2</Count>
               <RangeMin>0</RangeMin>
               <RangeMax>1</RangeMax>
+              <Count>2</Count>
             </Expression>
             <Expression xsi:type="rx:ReplaySubject">
               <Name>TaskType</Name>
@@ -241,13 +241,13 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width xsi:nil="true" />
               <Height xsi:nil="true" />
               <RotationZ>0</RotationZ>
               <RotationY>0</RotationY>
               <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
               <Width>20</Width>
@@ -385,9 +385,9 @@
           <Workflow>
             <Nodes>
               <Expression xsi:type="Combinator">
-                <Combinator xsi:type="p1:KeyDown">
-                  <p1:Filter>Right</p1:Filter>
-                  <p1:SuppressRepetitions>false</p1:SuppressRepetitions>
+                <Combinator xsi:type="wie:KeyDown">
+                  <wie:Filter>Right</wie:Filter>
+                  <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
                 </Combinator>
               </Expression>
               <Expression xsi:type="Combinator">
@@ -396,9 +396,9 @@
                 </Combinator>
               </Expression>
               <Expression xsi:type="Combinator">
-                <Combinator xsi:type="p1:KeyDown">
-                  <p1:Filter>Left</p1:Filter>
-                  <p1:SuppressRepetitions>false</p1:SuppressRepetitions>
+                <Combinator xsi:type="wie:KeyDown">
+                  <wie:Filter>Left</wie:Filter>
+                  <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
                 </Combinator>
               </Expression>
               <Expression xsi:type="Combinator">
@@ -628,18 +628,18 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <LocationX>0</LocationX>
                     <LocationY>0</LocationY>
                     <Layer>0</Layer>
-                    <ExtentX>60</ExtentX>
-                    <ExtentY>60</ExtentY>
+                    <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
                     <Phase>630.2536</Phase>
-                    <Angle>0</Angle>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
                     <Opacity>1</Opacity>
+                    <ExtentX>60</ExtentX>
+                    <ExtentY>60</ExtentY>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
@@ -694,14 +694,14 @@ ticks: ticks/revolution for model rotary encoder</Description>
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:CreateNormal">
-                      <p2:Mean>0</p2:Mean>
-                      <p2:StdDev>1</p2:StdDev>
+                    <Combinator xsi:type="p1:CreateNormal">
+                      <p1:Mean>0</p1:Mean>
+                      <p1:StdDev>1</p1:StdDev>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:SampleMany">
-                      <p2:Count>44100</p2:Count>
+                    <Combinator xsi:type="p1:SampleMany">
+                      <p1:Count>44100</p1:Count>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Multiply">
@@ -795,9 +795,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Property Name="Filter" />
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p1:KeyDown">
-                      <p1:Filter>LButton RButton Cancel MButton XButton1 XButton2 ShiftKey ControlKey Menu Pause Capital CapsLock KanaMode HanguelMode HangulMode JunjaMode A B C D E F G P Q R S T U V W Shift Control</p1:Filter>
-                      <p1:SuppressRepetitions>false</p1:SuppressRepetitions>
+                    <Combinator xsi:type="wie:KeyDown">
+                      <wie:Filter>LButton RButton Cancel MButton XButton1 XButton2 ShiftKey ControlKey Menu Pause Capital CapsLock KanaMode HanguelMode HangulMode JunjaMode A B C D E F G P Q R S T U V W Shift Control</wie:Filter>
+                      <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
@@ -977,13 +977,13 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:CreateDiscreteUniform">
-                      <p2:Lower>0</p2:Lower>
-                      <p2:Upper>360</p2:Upper>
+                    <Combinator xsi:type="p1:CreateDiscreteUniform">
+                      <p1:Lower>0</p1:Lower>
+                      <p1:Upper>360</p1:Upper>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:Sample" />
+                    <Combinator xsi:type="p1:Sample" />
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>TrialStimPhase</Name>
@@ -1213,6 +1213,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
                 <rx:DueTime>PT5.9S</rx:DueTime>
+                <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowInput">
@@ -1666,11 +1667,11 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>OpenValve</Name>
                   </Expression>
-                  <Expression xsi:type="p3:PythonTransform">
-                    <p3:Name>MakeString</p3:Name>
-                    <p3:Script>@returns(str)
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Name>MakeString</ipy:Name>
+                    <ipy:Script>@returns(str)
 def process(value):
-  return str.format("{0}", value)</p3:Script>
+  return str.format("{0}", value)</ipy:Script>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="io:SerialStringWrite">
@@ -1934,6 +1935,7 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
                 <rx:DueTime>PT4S</rx:DueTime>
+                <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -2154,11 +2156,11 @@ def process(value):
                     </Workflow>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p4:AudioPlayback">
-                      <p4:DeviceName>Generic Software on Headphones (2- WF-C510)</p4:DeviceName>
-                      <p4:SourceName />
-                      <p4:SampleRate>44100</p4:SampleRate>
-                      <p4:State>Playing</p4:State>
+                    <Combinator xsi:type="al:AudioPlayback">
+                      <al:DeviceName>Generic Software on Headphones (2- WF-C510)</al:DeviceName>
+                      <al:SourceName />
+                      <al:SampleRate>44100</al:SampleRate>
+                      <al:State>Playing</al:State>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="rx:Sink">
@@ -2747,13 +2749,13 @@ it.Item4 as Timestamp
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
-                  <Expression xsi:type="p3:PythonTransform">
-                    <p3:Script>import os
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Script>import os
 
 @returns(str)
 def process(value):
   return os.path.join(value.Item1,value.Item2)
-</p3:Script>
+</ipy:Script>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>CsvFile</Name>
@@ -2772,13 +2774,13 @@ def process(value):
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Zip" />
                   </Expression>
-                  <Expression xsi:type="p3:PythonTransform">
-                    <p3:Script>import os
+                  <Expression xsi:type="ipy:PythonTransform">
+                    <ipy:Script>import os
 
 @returns(str)
 def process(value):
   return os.path.join(value.Item1,value.Item2)
-</p3:Script>
+</ipy:Script>
                   </Expression>
                   <Expression xsi:type="rx:BehaviorSubject">
                     <Name>BinFile</Name>

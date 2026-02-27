@@ -1906,7 +1906,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="GreaterThanOrEqual">
               <Operand xsi:type="FloatProperty">
-                <Value>135</Value>
+                <Value>90</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="rx:Condition">
