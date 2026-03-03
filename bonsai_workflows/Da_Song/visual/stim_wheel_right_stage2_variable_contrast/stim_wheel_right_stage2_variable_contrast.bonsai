@@ -566,9 +566,9 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Angle>0</Angle>
                     <SpatialFrequency>0.1</SpatialFrequency>
                     <TemporalFrequency>0</TemporalFrequency>
-                    <Phase>17131.4375</Phase>
+                    <Phase>19767.043</Phase>
                     <SquareWave>false</SquareWave>
-                    <Contrast>0.125</Contrast>
+                    <Contrast>0.75</Contrast>
                     <DutyCycle xsi:nil="true" />
                     <Radius>1</Radius>
                     <Aperture>0</Aperture>
@@ -1440,7 +1440,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT4.2S</rx:DueTime>
+                <rx:DueTime>PT4.3S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1600,7 +1600,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT1.3S</rx:DueTime>
+                <rx:DueTime>PT1S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -2328,7 +2328,7 @@ it.Item4 as Timestamp
                     <Name>TrialNumber</Name>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>StimContrast</Name>
+                    <Name>TrialType</Name>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>MakeString</scr:Name>
