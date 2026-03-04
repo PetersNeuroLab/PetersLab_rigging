@@ -7,7 +7,7 @@
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:p1="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
-                 xmlns:p2="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
+                 xmlns:al="clr-namespace:Bonsai.Audio;assembly=Bonsai.Audio"
                  xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
@@ -514,10 +514,10 @@
                     <Name>Sound</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="p2:AudioPlayback">
-                      <p2:SourceName />
-                      <p2:SampleRate>44100</p2:SampleRate>
-                      <p2:State>Playing</p2:State>
+                    <Combinator xsi:type="al:AudioPlayback">
+                      <al:SourceName />
+                      <al:SampleRate>44100</al:SampleRate>
+                      <al:State>Playing</al:State>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
@@ -579,7 +579,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:Timer">
-                      <gl:DueTime>PT1.9S</gl:DueTime>
+                      <gl:DueTime>PT1.6S</gl:DueTime>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -634,44 +634,12 @@
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>Parameters</Name>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>LowFrequence</Name>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Value" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Multiply">
-                    <Operand xsi:type="FloatProperty">
-                      <Value>4000</Value>
-                    </Operand>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Frequency" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
                     <Name>Amplitude</Name>
                   </Expression>
                   <Expression xsi:type="PropertyMapping">
                     <PropertyMappings>
                       <Property Name="Amplitude" />
                     </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="dsp:FunctionGenerator">
-                      <dsp:BufferLength>44100</dsp:BufferLength>
-                      <dsp:Frequency>36000</dsp:Frequency>
-                      <dsp:Waveform>Sine</dsp:Waveform>
-                      <dsp:SampleRate>44100</dsp:SampleRate>
-                      <dsp:Amplitude>20</dsp:Amplitude>
-                      <dsp:Offset>0</dsp:Offset>
-                      <dsp:Phase>0</dsp:Phase>
-                    </Combinator>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Parameters</Name>
@@ -685,13 +653,6 @@
                       <Property Name="Scale" />
                     </PropertyMappings>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="dsp:ConvertScale">
-                      <dsp:Depth xsi:nil="true" />
-                      <dsp:Scale>90</dsp:Scale>
-                      <dsp:Shift>0</dsp:Shift>
-                    </Combinator>
-                  </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Parameters</Name>
                   </Expression>
@@ -703,24 +664,6 @@
                     <PropertyMappings>
                       <Property Name="Scale" />
                     </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="dsp:ConvertScale">
-                      <dsp:Depth xsi:nil="true" />
-                      <dsp:Scale>0</dsp:Scale>
-                      <dsp:Shift>0</dsp:Shift>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Zip" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="dsp:Concat">
-                      <dsp:Axis>0</dsp:Axis>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="rx:BehaviorSubject">
-                    <Name>Sound</Name>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Parameters</Name>
@@ -745,6 +688,47 @@
                   <Expression xsi:type="MulticastSubject">
                     <Name>StimFrequence</Name>
                   </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="Frequency" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:FunctionGenerator">
+                      <dsp:BufferLength>44100</dsp:BufferLength>
+                      <dsp:Frequency>8000</dsp:Frequency>
+                      <dsp:Waveform>Sine</dsp:Waveform>
+                      <dsp:SampleRate>44100</dsp:SampleRate>
+                      <dsp:Amplitude>20</dsp:Amplitude>
+                      <dsp:Offset>0</dsp:Offset>
+                      <dsp:Phase>0</dsp:Phase>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:ConvertScale">
+                      <dsp:Depth xsi:nil="true" />
+                      <dsp:Scale>0</dsp:Scale>
+                      <dsp:Shift>0</dsp:Shift>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:ConvertScale">
+                      <dsp:Depth xsi:nil="true" />
+                      <dsp:Scale>90</dsp:Scale>
+                      <dsp:Shift>0</dsp:Shift>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Zip" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="dsp:Concat">
+                      <dsp:Axis>0</dsp:Axis>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="rx:BehaviorSubject">
+                    <Name>Sound</Name>
+                  </Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
@@ -763,30 +747,27 @@
                   <Edge From="14" To="15" Label="Source2" />
                   <Edge From="15" To="16" Label="Source1" />
                   <Edge From="16" To="17" Label="Source1" />
-                  <Edge From="18" To="21" Label="Source1" />
-                  <Edge From="19" To="20" Label="Source1" />
-                  <Edge From="20" To="21" Label="Source2" />
+                  <Edge From="18" To="19" Label="Source1" />
+                  <Edge From="19" To="33" Label="Source2" />
+                  <Edge From="20" To="21" Label="Source1" />
                   <Edge From="21" To="22" Label="Source1" />
-                  <Edge From="22" To="25" Label="Source1" />
+                  <Edge From="22" To="34" Label="Source2" />
                   <Edge From="23" To="24" Label="Source1" />
-                  <Edge From="24" To="25" Label="Source2" />
-                  <Edge From="25" To="29" Label="Source1" />
-                  <Edge From="25" To="33" Label="Source1" />
+                  <Edge From="24" To="25" Label="Source1" />
+                  <Edge From="25" To="35" Label="Source2" />
                   <Edge From="26" To="27" Label="Source1" />
-                  <Edge From="27" To="28" Label="Source1" />
-                  <Edge From="28" To="29" Label="Source2" />
-                  <Edge From="29" To="34" Label="Source1" />
+                  <Edge From="27" To="30" Label="Source1" />
+                  <Edge From="28" To="29" Label="Source1" />
+                  <Edge From="29" To="30" Label="Source2" />
                   <Edge From="30" To="31" Label="Source1" />
                   <Edge From="31" To="32" Label="Source1" />
-                  <Edge From="32" To="33" Label="Source2" />
-                  <Edge From="33" To="34" Label="Source2" />
-                  <Edge From="34" To="35" Label="Source1" />
-                  <Edge From="35" To="36" Label="Source1" />
+                  <Edge From="32" To="33" Label="Source1" />
+                  <Edge From="33" To="34" Label="Source1" />
+                  <Edge From="33" To="35" Label="Source1" />
+                  <Edge From="34" To="36" Label="Source1" />
+                  <Edge From="35" To="36" Label="Source2" />
+                  <Edge From="36" To="37" Label="Source1" />
                   <Edge From="37" To="38" Label="Source1" />
-                  <Edge From="38" To="41" Label="Source1" />
-                  <Edge From="39" To="40" Label="Source1" />
-                  <Edge From="40" To="41" Label="Source2" />
-                  <Edge From="41" To="42" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1309,6 +1290,12 @@ def process(value):
             <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>StimFrequence</Name>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>trialID</Name>
       </Expression>
     </Nodes>
     <Edges>

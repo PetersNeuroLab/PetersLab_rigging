@@ -259,9 +259,9 @@
                     <LocationY>-0.95</LocationY>
                     <Layer>0</Layer>
                     <Angle>0</Angle>
-                    <ColorR>0</ColorR>
-                    <ColorG>0</ColorG>
-                    <ColorB>0</ColorB>
+                    <ColorR>1</ColorR>
+                    <ColorG>1</ColorG>
+                    <ColorB>1</ColorB>
                     <ColorA>1</ColorA>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -579,7 +579,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:Timer">
-                      <gl:DueTime>PT1.7S</gl:DueTime>
+                      <gl:DueTime>PT1.3S</gl:DueTime>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -665,7 +665,7 @@
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="dsp:FunctionGenerator">
                       <dsp:BufferLength>44100</dsp:BufferLength>
-                      <dsp:Frequency>8000</dsp:Frequency>
+                      <dsp:Frequency>4000</dsp:Frequency>
                       <dsp:Waveform>Sine</dsp:Waveform>
                       <dsp:SampleRate>44100</dsp:SampleRate>
                       <dsp:Amplitude>20</dsp:Amplitude>
