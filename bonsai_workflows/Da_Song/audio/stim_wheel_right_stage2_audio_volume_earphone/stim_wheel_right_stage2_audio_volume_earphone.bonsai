@@ -119,7 +119,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>7050</Value>
+                <Value>1800</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:BehaviorSubject">
