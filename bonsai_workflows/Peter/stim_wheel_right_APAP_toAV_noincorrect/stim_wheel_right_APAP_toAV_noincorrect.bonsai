@@ -706,7 +706,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
                   </Expression>
                   <Expression xsi:type="Multiply">
                     <Operand xsi:type="DoubleProperty">
-                      <Value>1000</Value>
+                      <Value>3000</Value>
                     </Operand>
                   </Expression>
                   <Expression xsi:type="Combinator">
