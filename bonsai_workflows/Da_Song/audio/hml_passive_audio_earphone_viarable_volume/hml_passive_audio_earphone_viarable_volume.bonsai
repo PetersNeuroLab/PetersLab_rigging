@@ -1041,7 +1041,7 @@ it.Item4 as Timestamp
                   </Expression>
                   <Expression xsi:type="PropertySource" TypeArguments="SubscribeSubject,sys:String">
                     <MemberName>Name</MemberName>
-                    <Value>StimFrequence</Value>
+                    <Value>StimVolume</Value>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:WithLatestFrom" />
