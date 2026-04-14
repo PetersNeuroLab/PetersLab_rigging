@@ -20,20 +20,14 @@ classdef config
             % Blackrig
             rig_idx = length(rig_definitions)+1;
             rig_definitions(rig_idx).name = 'blackrig';
-            rig_definitions(rig_idx).computers = {'WIN-AP003','WIN-AP004','WIN-AP004'};
+            rig_definitions(rig_idx).computers = {'WIN-AP003','WIN-AP004','WIN-AP006'};
             rig_definitions(rig_idx).client = 'WIN-AP003';
 
             % Bluerig
-            % rig_idx = length(rig_definitions)+1;
-            % rig_definitions(rig_idx).name = 'bluerig';
-            % rig_definitions(rig_idx).computers = {'WIN-AP009','WIN-AP010'};
-            % rig_definitions(rig_idx).client = 'WIN-AP010';
-            % TEMPORARY CHANGE WHILE EPHYS COMPUTER BROKEN - MOVED EPHYS
-            % COMPUTER OVER FROM BLACKRIG
             rig_idx = length(rig_definitions)+1;
             rig_definitions(rig_idx).name = 'bluerig';
-            rig_definitions(rig_idx).computers = {'WIN-AP006','WIN-AP009'};
-            rig_definitions(rig_idx).client = 'WIN-AP006';
+            rig_definitions(rig_idx).computers = {'WIN-AP009','WIN-AP010'};
+            rig_definitions(rig_idx).client = 'WIN-AP010';
 
         end
 
