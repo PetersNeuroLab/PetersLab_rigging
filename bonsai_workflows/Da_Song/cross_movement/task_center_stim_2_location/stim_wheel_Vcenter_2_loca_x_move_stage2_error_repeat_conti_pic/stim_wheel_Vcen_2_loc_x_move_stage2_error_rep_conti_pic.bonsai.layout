@@ -77,8 +77,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>191</X>
-      <Y>511</Y>
+      <X>53</X>
+      <Y>665</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -152,48 +152,12 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>104</X>
-        <Y>104</Y>
+        <X>273</X>
+        <Y>255</Y>
       </Location>
       <Size>
-        <Width>316</Width>
-        <Height>239</Height>
-      </Size>
-      <WindowState>Normal</WindowState>
-    </EditorDialogSettings>
-  </DialogSettings>
-  <DialogSettings>
-    <Visible>false</Visible>
-    <Location>
-      <X>0</X>
-      <Y>0</Y>
-    </Location>
-    <Size>
-      <Width>0</Width>
-      <Height>0</Height>
-    </Size>
-    <WindowState>Normal</WindowState>
-  </DialogSettings>
-  <DialogSettings xsi:type="WorkflowEditorSettings">
-    <Visible>false</Visible>
-    <Location>
-      <X>0</X>
-      <Y>0</Y>
-    </Location>
-    <Size>
-      <Width>0</Width>
-      <Height>0</Height>
-    </Size>
-    <WindowState>Normal</WindowState>
-    <EditorDialogSettings>
-      <Visible>false</Visible>
-      <Location>
-        <X>130</X>
-        <Y>130</Y>
-      </Location>
-      <Size>
-        <Width>316</Width>
-        <Height>239</Height>
+        <Width>762</Width>
+        <Height>379</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -331,10 +295,34 @@
     <WindowState>Normal</WindowState>
   </DialogSettings>
   <DialogSettings>
+    <Visible>false</Visible>
+    <Location>
+      <X>0</X>
+      <Y>0</Y>
+    </Location>
+    <Size>
+      <Width>0</Width>
+      <Height>0</Height>
+    </Size>
+    <WindowState>Normal</WindowState>
+  </DialogSettings>
+  <DialogSettings>
+    <Visible>false</Visible>
+    <Location>
+      <X>0</X>
+      <Y>0</Y>
+    </Location>
+    <Size>
+      <Width>0</Width>
+      <Height>0</Height>
+    </Size>
+    <WindowState>Normal</WindowState>
+  </DialogSettings>
+  <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>190</X>
-      <Y>577</Y>
+      <X>55</X>
+      <Y>843</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -349,8 +337,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>185</X>
-      <Y>646</Y>
+      <X>55</X>
+      <Y>785</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -365,8 +353,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>177</X>
-      <Y>769</Y>
+      <X>56</X>
+      <Y>725</Y>
     </Location>
     <Size>
       <Width>336</Width>
@@ -381,8 +369,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>170</X>
-      <Y>852</Y>
+      <X>54</X>
+      <Y>902</Y>
     </Location>
     <Size>
       <Width>336</Width>

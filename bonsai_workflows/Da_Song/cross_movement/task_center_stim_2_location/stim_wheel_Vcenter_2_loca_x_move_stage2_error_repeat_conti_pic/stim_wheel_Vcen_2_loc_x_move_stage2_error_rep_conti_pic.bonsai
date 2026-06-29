@@ -1815,7 +1815,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Timer">
-                <rx:DueTime>PT5.2S</rx:DueTime>
+                <rx:DueTime>PT5.7S</rx:DueTime>
                 <rx:Period>PT0S</rx:Period>
               </Combinator>
             </Expression>
@@ -1975,7 +1975,7 @@ ticks: ticks/revolution for model rotary encoder</Description>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Throttle">
-                <rx:DueTime>PT0.6S</rx:DueTime>
+                <rx:DueTime>PT1.2S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -2083,8 +2083,8 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Name>PhotodiodeSquare</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="IntProperty">
-                      <Value>0</Value>
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>-22.5</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
@@ -2270,8 +2270,8 @@ ticks: ticks/revolution for model rotary encoder</Description>
                     <Name>PhotodiodeSquare</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="IntProperty">
-                      <Value>0</Value>
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>22.5</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
