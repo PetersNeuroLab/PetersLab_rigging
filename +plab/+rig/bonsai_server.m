@@ -129,8 +129,7 @@ function run_bonsai(bonsai_server_fig)
     % Start timer function to listen for "stopped" message
     bonsai_timer_fcn = timer('TimerFcn', ...
     {@get_bonsai_message,bonsai_server_fig}, ...
-    'Period', 1/10, 'ExecutionMode','fixedDelay', ...
-    'TasksToExecute', inf);
+    'Period', 1, 'ExecutionMode','fixedSpacing');
     start(bonsai_timer_fcn)
 
 
