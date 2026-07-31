@@ -78,8 +78,8 @@ function give_water(bonsai_server_fig,event)
 end
 
 function readData(client, ~, bonsai_server_fig)
-    disp('Data received')
     client.UserData = readline(client);
+    fprintf('Message recieved: %s\n',client.UserData);
     if strcmp(client.UserData, 'stop')
         % send stop to bonsai
         communication_handles = guidata(bonsai_server_fig);
@@ -94,36 +94,29 @@ function run_bonsai(bonsai_server_fig)
 
     communication_handles = guidata(bonsai_server_fig);
 
-    % clear arduino device
-%     communication_handles = rmfield(communication_handles,'arduino_device');
-
-    % decode json
-    data_struct = jsondecode(communication_handles.client_mc.UserData);
+    % Get recording information
+    recording_info = jsondecode(communication_handles.client_mc.UserData);
     
-    % Set local filename for bonsai workflow
-    [~, bonsai_folder] = fileparts(data_struct.protocol_path);
-
-    local_worfkflow_path = ...
+    % Copy Bonsai workflow folder into local recording path
+     local_recording_path = ...
         plab.locations.filename('local', ...
-        data_struct.mouse,data_struct.date,data_struct.time, ...
-        'bonsai',bonsai_folder);
-    [save_path,~,~] = fileparts(local_worfkflow_path);
+        recording_info.mouse,recording_info.date,recording_info.time);
 
-    % Make local save directory
-    mkdir(fileparts(save_path));
+     mkdir(local_recording_path);
 
-    % get paths for files
-    workflowpath = fullfile(plab.locations.local_workflow_path, data_struct.protocol_path);
-    local_worfkflow_file = fullfile(local_worfkflow_path, data_struct.protocol_name);
+     [~,bonsai_name,bonsai_ext] = fileparts(recording_info.bonsai_filename);
+     [~,bonsai_folder] = fileparts(fileparts(recording_info.bonsai_filename));
 
-    % copy bonsai workflow in new folder
-    copyfile(workflowpath, local_worfkflow_path);
+     local_bonsai_folder = fullfile(local_recording_path,'bonsai',bonsai_folder);
+     copyfile(fileparts(recording_info.bonsai_filename),local_bonsai_folder);
 
-    % start bonsai
-    plab.rig.bonsai_server_helpers.runBonsaiWorkflow(local_worfkflow_file, {'SavePath', save_path}, [], 1);
+     local_bonsai_filename = fullfile(local_bonsai_folder,[bonsai_name,bonsai_ext]);
+
+    % Run Bonsai workflow (locally)
+    plab.rig.bonsai_server_helpers.runBonsaiWorkflow(local_bonsai_filename, {'SavePath', local_recording_path},[],1);
 
     % Update save path into GUI data
-    communication_handles.save_path = save_path;
+    communication_handles.save_path = local_bonsai_folder;
     guidata(bonsai_server_fig,communication_handles);
 
     % Start timer function to listen for "stopped" message
@@ -131,7 +124,6 @@ function run_bonsai(bonsai_server_fig)
     {@get_bonsai_message,bonsai_server_fig}, ...
     'Period', 1, 'ExecutionMode','fixedSpacing');
     start(bonsai_timer_fcn)
-
 
 end
 
