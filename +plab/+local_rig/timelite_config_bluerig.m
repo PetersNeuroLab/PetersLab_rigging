@@ -52,7 +52,7 @@ ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'reward_valve';
 
 ch = addinput(daq_device.analog,daqs_available.DeviceID(use_daq_idx),'ai1','Voltage');
-ch.TerminalConfig = 'Differential';
+ch.TerminalConfig = 'SingleEnded';
 ch.Name = 'lick_spout';
 
 
