@@ -98,25 +98,25 @@ function run_bonsai(bonsai_server_fig)
     recording_info = jsondecode(communication_handles.client_mc.UserData);
     
     % Copy Bonsai workflow folder into local recording path
-     local_recording_path = ...
+     local_save_path = ...
         plab.locations.filename('local', ...
-        recording_info.mouse,recording_info.date,recording_info.time);
+        recording_info.mouse,recording_info.date,recording_info.time,'bonsai');
 
-     mkdir(local_recording_path);
+     mkdir(local_save_path);
 
      [~,bonsai_name,bonsai_ext] = fileparts(recording_info.bonsai_filename);
      [~,bonsai_folder] = fileparts(fileparts(recording_info.bonsai_filename));
 
-     local_bonsai_folder = fullfile(local_recording_path,'bonsai',bonsai_folder);
+     local_bonsai_folder = fullfile(local_save_path,bonsai_folder);
      copyfile(fileparts(recording_info.bonsai_filename),local_bonsai_folder);
 
      local_bonsai_filename = fullfile(local_bonsai_folder,[bonsai_name,bonsai_ext]);
 
     % Run Bonsai workflow (locally)
-    plab.rig.bonsai_server_helpers.runBonsaiWorkflow(local_bonsai_filename, {'SavePath', local_recording_path},[],1);
+    plab.rig.bonsai_server_helpers.runBonsaiWorkflow(local_bonsai_filename, {'SavePath', local_bonsai_folder},[],1);
 
     % Update save path into GUI data
-    communication_handles.save_path = local_bonsai_folder;
+    communication_handles.save_path = local_save_path;
     guidata(bonsai_server_fig,communication_handles);
 
     % Start timer function to listen for "stopped" message
