@@ -1,10 +1,12 @@
-% Exp Control overhaul
-
 function exp_control
+% exp_control
+%
+% Experiment controller: remote control for all rig recording components
 
 % Create figure
 gui_fig = uifigure('Name','Experiment controller', ...
-    'units','normalized','position',[0.01,0.1,0.2,0.8]);
+    'units','normalized','position',[0.01,0.1,0.2,0.8], ...
+    'CloseRequestFcn',@close_gui);
 gui_grid = uigridlayout(gui_fig,[4,1], ...
     'RowHeight',{'1x','1x','1x','1x','5x'},'BackgroundColor','w');
 handles = struct;
@@ -73,7 +75,7 @@ uilabel(notes_panel_grid,'Text','Day notes');
 handles.notes_day = uitextarea(notes_panel_grid);
 
 % Timer function to check connections
-connections_timer = timer('Period',1,'ExecutionMode','fixedSpacing', ...
+handles.connections_timer = timer('Period',1,'ExecutionMode','fixedSpacing', ...
     'TimerFcn',{@connections_check,gui_fig});
 
 % Store guidata
@@ -83,7 +85,7 @@ gui_data.connection_tcpservers = connection_tcpservers;
 gui_data.handles = handles;
 
 guidata(gui_fig,gui_data);
-start(connections_timer);
+start(handles.connections_timer);
 
 end
 
@@ -174,6 +176,7 @@ arrayfun(@(tcp) writeline(tcp,recording_info_json), ...
 
 end
 
+
 function recording_stop(source,event,gui_fig,user_confirm)
 
 gui_data = guidata(gui_fig);
@@ -208,4 +211,9 @@ if strcmp(incoming_message,'Bonsai finished')
 end
 end
 
-       
+
+function close_gui(gui_fig,event)
+gui_data = guidata(gui_fig);
+stop(gui_data.handles.connections_timer);
+delete(gui_fig);
+end
