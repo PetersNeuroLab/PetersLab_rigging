@@ -1,4 +1,4 @@
-classdef bonsai_server_test
+classdef bonsai_server
 
     properties (SetAccess = protected)
         communication_handles
@@ -7,7 +7,7 @@ classdef bonsai_server_test
     methods
 
         %% User functions
-        function obj = bonsai_server_test
+        function obj = bonsai_server
             % Initialize bonsai server
 
             % Set up experiment control/bonsai communicators
