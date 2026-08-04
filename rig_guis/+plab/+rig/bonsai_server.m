@@ -151,7 +151,7 @@ classdef bonsai_server
             end
 
             % Move local data directories to server
-            move_tries = 3;
+            move_tries = 5;
             for curr_try = 1:move_tries
                 curr_data_path_server = strrep(local_save_path, ...
                     plab.locations.local_data_path,plab.locations.server_data_path);
@@ -159,9 +159,10 @@ classdef bonsai_server
                 
                 if ~status
                     % (if failed moving, try pausing and trying again)
-                    warning('Failed copying to server (attempt %d): %s',message,curr_try);
+                    warning('Failed copying to server (attempt %d): %s',curr_try,message);
                     pause(2)
                 else
+                    fprintf('BONSAI SERVER: moved data to server: \n--> %s\n',local_save_path);
                     break
                 end
             end
