@@ -118,8 +118,8 @@ end
 function update_controls(source,event,gui_fig)
 gui_data = guidata(gui_fig);
 
-% (edit fields only update value on click out - get current value)
-if source == gui_data.handles.mouse
+% Edit fields only update value on click out - get current value
+if strcmp(event.EventName,'ValueChanging')
     mouse = event.Value;
 else
     mouse = gui_data.handles.mouse.Value;
@@ -128,6 +128,7 @@ end
 bonsai_filename = gui_data.handles.protocol.UserData;
 gui_data.handles.start.Enable = ~isempty(mouse) && exist(bonsai_filename,'file');
 
+fprintf('Value: %s\n',mouse)
 end
 
 
