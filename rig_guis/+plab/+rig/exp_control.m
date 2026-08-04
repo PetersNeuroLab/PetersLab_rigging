@@ -1,6 +1,6 @@
 % Exp Control overhaul
 
-function expcontrol_test
+function exp_control
 
 % Create figure
 gui_fig = uifigure('Name','Experiment controller', ...
