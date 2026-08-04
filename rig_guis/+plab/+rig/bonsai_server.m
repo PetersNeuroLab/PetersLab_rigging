@@ -1,209 +1,174 @@
-function bonsai_server
+classdef bonsai_server_test
 
-% AP NOTE 2024-01-18: made figure invisisble (to ensure no chance of
-% overlaying bonsai image).
-%
-% Streamline this in future by making bonsai_server an object rather than a
-% GUI
-
-%% Initialize bonsai server
-
-% Create figure on iPad screens
-monitors_pos = get(0, 'MonitorPosition');
-% (determine ipad screen by x-width)
-ipad_screens_idx = monitors_pos(:,3) == 3840;
-ipad_screens = monitors_pos(ipad_screens_idx,:);
-bonsai_server_fig = ...
-    uifigure('Position',ipad_screens,'color','#828282', ...
-    'toolbar','none','menubar','none','CloseRequestFcn',@close_bonsai_server, ...
-    'visible','off');
-
-% Set up structure for listeners and receivers
-communication_handles = struct;
-
-% Open TCP client for MC
-communication_handles.client_mc = tcpclient(plab.local_rig.config.local.client,plab.locations.bonsai_port);
-configureCallback(communication_handles.client_mc, "terminator", @(src, event, x) readData (src, event, bonsai_server_fig));
-
-% Open UDP connection for Bonsai
-communication_handles.u_bonsai = udpport("IPV4");
-
-% Setup listening to Bonsai workflow
-% (load the jar file)
-java_path = fullfile(fileparts(which('plab.rig.bonsai_server')),'+bonsai_server_helpers');
-javaaddpath(fullfile(java_path,'javaosctomatlab.jar'));
-
-% (import java packages)
-import com.illposed.osc.*;
-import java.lang.String;
-
-% (set up OSC listener and receiver)
-oscport= 20000;
-communication_handles.oscreceiver = OSCPortIn(oscport);
-communication_handles.osclistener = MatlabOSCListener();
-communication_handles.oscreceiver.addListener(String('/stop'),communication_handles.osclistener);
-communication_handles.oscreceiver.startListening();
-
-% Upload receiver/listener to figure
-guidata(bonsai_server_fig,communication_handles);
-
-% Setup arduino for water rewards
-% setup_arduino(bonsai_server_fig);
-
-end
-
-function setup_arduino(bonsai_server_fig)
-% connect to arduino and calculate amount of time valve open for reward amount
-    
-    communication_handles = guidata(bonsai_server_fig);
-    
-    cal_value = readmatrix("C:\Water_calibration\calibration.csv");
-    reward_amount = 6; 
-    time_valve_open = num2str(cal_value * reward_amount);
-
-    communication_handles.arduino_device = serialport("COM10", 250000);
-    configureTerminator(communication_handles.arduino_device,"CR");
-    set(bonsai_server_fig,'KeyPressFcn',@give_water);
-
-    communication_handles.time_valve_open = time_valve_open;
-
-    guidata(bonsai_server_fig,communication_handles);
-end
-
-function give_water(bonsai_server_fig,event)
-    if strcmp(event.Key, 'w')
-        communication_handles = guidata(bonsai_server_fig);
-        writeline(communication_handles.arduino_device, communication_handles.time_valve_open);
+    properties (SetAccess = protected)
+        communication_handles
     end
-end
 
-function readData(client, ~, bonsai_server_fig)
-    client.UserData = readline(client);
-    fprintf('Message recieved: %s\n',client.UserData);
-    if strcmp(client.UserData, 'stop')
-        % send stop to bonsai
-        communication_handles = guidata(bonsai_server_fig);
-        plab.rig.bonsai_server_helpers.bonsai_oscsend(communication_handles.u_bonsai,'/stop',"localhost",30000,'s','stop');
-    else
-        run_bonsai(bonsai_server_fig);
+    methods
+
+        %% User functions
+        function obj = bonsai_server_test
+            % Initialize bonsai server
+
+            % Set up experiment control/bonsai communicators
+            obj.communication_handles = struct;
+
+            obj.communication_handles.expcontrol_client = ...
+                tcpclient(plab.local_rig.config.local.client,plab.locations.bonsai_port);
+
+            obj.communication_handles.bonsai_udp = udpport("datagram",'LocalPort',20000);
+          
+            % Set up experiment control communicator callback
+            % (Bonsai set with save path when runnning workflow below)
+            configureCallback(obj.communication_handles.expcontrol_client, ...
+                "terminator",@obj.read_expcontrol_message);
+
+            disp('~~ BONSAI SERVER CREATED ~~')
+
+        end
+
+        function delete(obj)
+            % Delete bonsai server, close connections
+
+            % Clear communicators to close ports
+            delete(obj.communication_handles.expcontrol_client)
+            delete(obj.communication_handles.bonsai_udp)
+
+        end
+
     end
-end
+
+    methods (Access = protected)
+
+        function obj = read_expcontrol_message(obj,source,eventdata)
+
+            incoming_message = readline(source);
+            fprintf('BONSAI SERVER: Experiment controller message recieved: \n--> %s\n',incoming_message);
+
+            if strcmp(incoming_message, 'stop')
+                % If stop, send STOP to bonsai
 
 
-function run_bonsai(bonsai_server_fig)
+                plab.rig.bonsai_server_helpers.bonsai_oscsend( ...
+                    obj.communication_handles.bonsai_udp,'/stop', ...
+                    "localhost",30000,'s','stop');
 
-    communication_handles = guidata(bonsai_server_fig);
 
-    % Get recording information
-    recording_info = jsondecode(communication_handles.client_mc.UserData);
-    
-    % Copy Bonsai workflow folder into local recording path
-     local_save_path = ...
-        plab.locations.filename('local', ...
-        recording_info.mouse,recording_info.date,recording_info.time,'bonsai');
+                % %%%% UNDER CONSTRUCTION
+                % % getting rid of helper function - but somehow it works
+                % % differently than this, even though same command?
+                % 
+                % bonsai_reciever_port = 30000; % (defined in workflow)
+                % bonsai_osc_stop_command = '/stop   ,s  stop';
+                % % (OSC commands must be null-terminated, 0's padding
+                % % message to multiple of 4)
+                % bonsai_osc_stop_command_nullterm = [bonsai_osc_stop_command,zeros(1,4)];
+                % bonsai_osc_stop_command_nullterm = ...
+                %     bonsai_osc_stop_command_nullterm(1:end- ...
+                %     mod(length(bonsai_osc_stop_command),4));
+                % 
+                % write(obj.communication_handles.bonsai_udp, ...
+                %     bonsai_osc_stop_command,"localhost",bonsai_reciever_port)
+                % 
+                % %%%%%%%%%%%%%%
 
-     mkdir(local_save_path);
 
-     [~,bonsai_name,bonsai_ext] = fileparts(recording_info.bonsai_filename);
-     [~,bonsai_folder] = fileparts(fileparts(recording_info.bonsai_filename));
 
-     local_bonsai_folder = fullfile(local_save_path,bonsai_folder);
-     copyfile(fileparts(recording_info.bonsai_filename),local_bonsai_folder);
 
-     local_bonsai_filename = fullfile(local_bonsai_folder,[bonsai_name,bonsai_ext]);
+            else
+                % Otherwise, assume recording info and start bonsai
+                obj = obj.run_bonsai(incoming_message);
+            end
+        end
 
-    % Run Bonsai workflow (locally)
-    plab.rig.bonsai_server_helpers.runBonsaiWorkflow(local_bonsai_filename, {'SavePath', local_bonsai_folder},[],1);
+        function obj = run_bonsai(obj,recording_info_json)
 
-    % Update save path into GUI data
-    communication_handles.save_path = local_save_path;
-    guidata(bonsai_server_fig,communication_handles);
+            % Get recording information
+            recording_info = jsondecode(recording_info_json);
 
-    % Start timer function to listen for "stopped" message
-    bonsai_timer_fcn = timer('TimerFcn', ...
-    {@get_bonsai_message,bonsai_server_fig}, ...
-    'Period', 1, 'ExecutionMode','fixedSpacing');
-    start(bonsai_timer_fcn)
+            % Copy Bonsai workflow folder into local recording path
+            local_save_path = ...
+                plab.locations.filename('local', ...
+                recording_info.mouse,recording_info.date,recording_info.time,'bonsai');
 
-end
+            mkdir(local_save_path);
 
-function get_bonsai_message(obj, ~, bonsai_server_fig)
+            [~,bonsai_name,bonsai_ext] = fileparts(recording_info.bonsai_filename);
+            [~,bonsai_folder] = fileparts(fileparts(recording_info.bonsai_filename));
 
-    communication_handles = guidata(bonsai_server_fig);
+            local_bonsai_folder = fullfile(local_save_path,bonsai_folder);
+            local_bonsai_filename = fullfile(local_bonsai_folder,[bonsai_name,bonsai_ext]);
 
-    getlastmessage = communication_handles.osclistener.getMessageArgumentsAsString();    
-    if ~isempty(getlastmessage)
-        disp('Read something')
-        disp(getlastmessage)
-        % close Bonsai
-        pause(4); % Pause to allow Bonsai to cleanly finish
-        system('taskkill /F /IM Bonsai.EXE');
-        system('taskkill /F /IM OpenConsole.EXE');
-        % send done to exp control
-        writeline(communication_handles.client_mc, 'done');
-        % delete timer
-        stop(obj)
-        delete(obj)
+            copyfile(fileparts(recording_info.bonsai_filename),local_bonsai_folder);
 
-        % Move data to server
-        move_data_to_server(communication_handles.save_path);
+            % Set up Bonsai read callback (include save path)
+            configureCallback(obj.communication_handles.bonsai_udp, ...
+                'datagram',1,@(src,evt) obj.read_bonsai_message(src,evt,local_save_path))
 
-        % Setup arduino for water rewards
-%         setup_arduino(bonsai_server_fig);
-    end
-end
+            % Run Bonsai workflow (locally)
+            command = ...
+                sprintf("cd %s & ",fileparts(local_bonsai_filename)) +  ... % cd to Bonsai folder (to see extensions)
+                sprintf("%s %s ","%LOCALAPPDATA%\Bonsai\Bonsai.exe", ... % Bonsai executable
+                local_bonsai_filename) +  ... % Open local workflow
+                " --start" + ... % Run workflow
+                " --no-editor" + ... % No editor/command window
+                sprintf(" -p %s=%s","SavePath",local_save_path) + ... % Set save path variable
+                " &"; % & suffix runs command in background 
 
-function move_data_to_server(curr_data_path)
-% Move data from local to server
+            system(command);
 
-% Check if the server is available
-if ~exist(plab.locations.server_data_path,'dir')
-    warning('Server not accessible at %s',plab.locations.server_data_path)
-    return
-end
+            fprintf('BONSAI SERVER: Running Bonsai workflow: \n--> %s %s %s: %s\n', ...
+                recording_info.mouse,recording_info.date,recording_info.time,bonsai_name);
+           
+        end
 
-% Move local data directories to server
-curr_data_path_server = strrep(curr_data_path, ...
-    plab.locations.local_data_path,plab.locations.server_data_path);
-[status,message] = movefile(curr_data_path,curr_data_path_server);
-if ~status
-    warning('Failed copying to server: %s',message);
-else
-end
+        function read_bonsai_message(obj,source,eventdata,local_save_path)
 
-% Delete empty local folders
-% (3 hierarchy levels: protocol > day > animal)
-try
-    curr_hierarchy_path = fileparts(curr_data_path);
-    for hierarchy_levels = 1:3
-        hierarchy_dir = dir(curr_hierarchy_path);
-        if all(contains({hierarchy_dir.name},'.'))
-            rmdir(curr_hierarchy_path)
-            % Move up one step in hierarchy
-            curr_hierarchy_path = fileparts(curr_hierarchy_path);
+            incoming_message = read(source,source.NumDatagramsAvailable,'string').Data;
+            fprintf('BONSAI SERVER: Bonsai message recieved: \n--> %s\n',incoming_message);
+            
+            % Recieved stop from Bonsai
+            if contains(incoming_message,'stop')
+                % Send stop message to experiment controller
+                writeline(obj.communication_handles.expcontrol_client, 'Bonsai finished');
+
+                % Close the terminal window used to launch Bonsai
+                [status,cmdout] = system('taskkill /F /IM OpenConsole.EXE');
+
+                % Move data to server
+                obj.move_data_to_server(local_save_path);
+            end
+
+        end
+
+        function move_data_to_server(obj,local_save_path)
+            % Move data from local to server
+
+            % Check if the server is available
+            if ~exist(plab.locations.server_data_path,'dir')
+                warning('Server not accessible at %s',plab.locations.server_data_path)
+                return
+            end
+
+            % Move local data directories to server
+            move_tries = 3;
+            for curr_try = 1:move_tries
+                curr_data_path_server = strrep(local_save_path, ...
+                    plab.locations.local_data_path,plab.locations.server_data_path);
+                [status,message] = movefile(local_save_path,curr_data_path_server);
+                
+                if ~status
+                    % (if failed moving, try pausing and trying again)
+                    warning('Failed copying to server (attempt %d): %s',message,curr_try);
+                    pause(2)
+                else
+                    break
+                end
+            end
+
+            % Clean local data folder (don't print results)
+            plab.rig.clean_local_data_folder(false)
+
         end
     end
 end
-
-end
-
-function close_bonsai_server(obj, ~)
-
-% Get OSC handler and stop listeners
-communication_handles = guidata(obj);
-communication_handles.oscreceiver.stopListening();
-communication_handles.oscreceiver.close();
-
-% Delete the figure
-delete(obj);
-
-% Clear TCP client
-delete(communication_handles.client_mc)
-
-% Exit matlab (stops the waitfor and resets ports)
-exit
-
-end
-
-
-
