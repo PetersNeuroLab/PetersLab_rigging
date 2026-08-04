@@ -119,11 +119,11 @@ classdef bonsai_server
                 % Send stop message to experiment controller
                 writeline(obj.communication_handles.expcontrol_client, 'Bonsai finished');
 
-                % Close the terminal window used to launch Bonsai
-                [status,cmdout] = system('taskkill /F /IM OpenConsole.EXE');
-
                 % Move data to server
                 obj.move_data_to_server(local_save_path);
+
+                % Close the terminal window used to launch Bonsai
+                [status,cmdout] = system('taskkill /F /IM OpenConsole.EXE');
             end
 
         end
