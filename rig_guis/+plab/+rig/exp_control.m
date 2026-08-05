@@ -86,6 +86,7 @@ gui_data = struct;
 
 gui_data.connection_tcpservers = connection_tcpservers;
 gui_data.handles = handles;
+gui_data.recording = false;
 
 guidata(gui_fig,gui_data);
 start(handles.connections_timer);
@@ -178,9 +179,10 @@ else
     end
 end
 
-% Disable start, enable stop
-gui_data.handles.start.Enable = false;
-gui_data.handles.stop.Enable = true;
+% Set recording state, toggle start/stop buttons
+gui_data.recording = true;
+gui_data.handles.start.Enable = ~gui_data.recording;
+gui_data.handles.stop.Enable = gui_data.recording;
 
 % Broadcast start messages
 recording_info = struct( ...
@@ -220,9 +222,10 @@ connected_tcp = [gui_data.connection_tcpservers.Connected];
 arrayfun(@(tcp) writeline(tcp,'stop'), ...
     gui_data.connection_tcpservers(connected_tcp));
 
-% Enable start, disable stop
-gui_data.handles.start.Enable = true;
-gui_data.handles.stop.Enable = false;
+% Set recording state, toggle start/stop buttons
+gui_data.recording = false;
+gui_data.handles.start.Enable = ~gui_data.recording;
+gui_data.handles.stop.Enable = gui_data.recording;
 
 end
 
@@ -232,7 +235,8 @@ gui_data = guidata(gui_fig);
 
 incoming_message = readline(source);
 
-if strcmp(incoming_message,'Bonsai finished')
+% If actively recording and Bonsai stops, stop recording
+if strcmp(incoming_message,'Bonsai finished') & gui_data.recording
     recording_stop(source,event,gui_fig,false)
 end
 end
