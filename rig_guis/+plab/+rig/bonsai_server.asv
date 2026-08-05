@@ -116,28 +116,13 @@ classdef bonsai_server
             
             % Recieved stop from Bonsai
             if contains(incoming_message,'stop')
-
-                % Check/wait for Bonsai process to finish
-                bonsai_running = true;
-                while bonsai_running
-                    [status,cmdout] = system( ...
-                        'tasklist /FI "IMAGENAME eq Bonsai.exe" | find /c "Bonsai"');
-                    bonsai_process_find = str2num(cmdout);
-                    if bonsai_process_find == 0
-                        bonsai_running = false;
-                    else
-                        pause(1);
-                    end
-                end
-
-                % Close the terminal window used to launch Bonsai
-                [status,cmdout] = system('taskkill /F /IM OpenConsole.EXE');
-
                 % Send stop message to experiment controller
-                writeline(obj.communication_handles.expcontrol_client, 'Bonsai finished');                
+                writeline(obj.communication_handles.expcontrol_client, 'Bonsai finished');
 
                 % Move data to server
-                obj.move_data_to_server(local_save_path);                
+                obj.move_data_to_server(local_save_path);
+
+                
             end
 
         end
@@ -152,14 +137,20 @@ classdef bonsai_server
             end
 
             % Move local data directories to server
-            curr_data_path_server = strrep(local_save_path, ...
-                plab.locations.local_data_path,plab.locations.server_data_path);
-            [status,message] = movefile(local_save_path,curr_data_path_server);
-
-            if status
-                fprintf('BONSAI SERVER: moved data to server: \n--> %s\n',local_save_path);
-            else
-                fprintf('BONSAI SERVER: error moving data to server: \n--> %s\n',message);
+            move_tries = 5;
+            for curr_try = 1:move_tries
+                curr_data_path_server = strrep(local_save_path, ...
+                    plab.locations.local_data_path,plab.locations.server_data_path);
+                [status,message] = movefile(local_save_path,curr_data_path_server);
+                
+                if ~status
+                    % (if failed moving, try pausing and trying again)
+                    warning('Failed copying to server (attempt %d): %s',curr_try,message);
+                    pause(2)
+                else
+                    fprintf('BONSAI SERVER: moved data to server: \n--> %s\n',local_save_path);
+                    break
+                end
             end
 
             % Clean local data folder (don't print results)
