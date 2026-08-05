@@ -248,9 +248,9 @@ rec_path = plab.locations.filename('server',mouse,rec_day);
 
 % Update day notes
 if source == gui_data.handles.notes_day
-    % (create recording path if it doesn't exist)
+    % (only write day notes if a recording path exists)
     if ~exist(rec_path,'dir')
-        mkdir(rec_path)
+        return
     end
     notes_day_fn = fullfile(rec_path,join(["notes",mouse,rec_day],"_")) + ".txt";
     writelines(string(source.Value),notes_day_fn);
@@ -258,15 +258,18 @@ end
 
 % Update recording notes
 if source == gui_data.handles.notes_recording
-    rec_time = source.UserData;
-    notes_recording_fn = fullfile( ...
-        plab.locations.filename('server',mouse,rec_day,rec_time), ...
-        join(["notes",mouse,rec_day,rec_time],"_") + ".txt");
-    writelines(string(source.Value),notes_recording_fn);
+
+    % keyboard
+    % 
+    % notes_recording_fn = fullfile(source.UserData,
+    % 
+    % join(["notes",mouse,rec_day],"_")) + ".txt"
+
 end
 
 
 end
+
 
 
 function close_gui(gui_fig,event)
