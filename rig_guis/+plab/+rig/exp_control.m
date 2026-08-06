@@ -202,6 +202,9 @@ gui_data.handles.notes_recording.UserData = rec_time;
 gui_data.handles.notes_recording_label.Text = ...
     sprintf('Recording notes: %s %s %s',mouse,rec_day,rec_time);
 
+% Update guidata
+guidata(gui_fig,gui_data);
+
 end
 
 
@@ -226,6 +229,9 @@ arrayfun(@(tcp) writeline(tcp,'stop'), ...
 gui_data.recording = false;
 gui_data.handles.start.Enable = ~gui_data.recording;
 gui_data.handles.stop.Enable = gui_data.recording;
+
+% Update guidata
+guidata(gui_fig,gui_data);
 
 end
 
