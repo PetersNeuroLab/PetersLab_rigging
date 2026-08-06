@@ -70,6 +70,9 @@ classdef bonsai_server
 
         function obj = run_bonsai(obj,recording_info_json)
 
+            % If any Bonsai instances open, close them (e.g. valve)
+            [status,cmdout] = system('taskkill /F /IM Bonsai.EXE');
+
             % Get recording information
             recording_info = jsondecode(recording_info_json);
 
