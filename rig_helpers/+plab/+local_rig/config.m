@@ -12,20 +12,20 @@ classdef config
             % Set info for rigs: 
             % - rig name (character)
             % - computers (cell array) 
-            % - client (character: computer that runs experiment controller)
-            rig_definitions = struct('name',{},'computers',{},'client',{});
+            % - server (character: computer that runs experiment controller)
+            rig_definitions = struct('name',{},'computers',{},'server',{});
 
             % Blackrig
             rig_idx = length(rig_definitions)+1;
             rig_definitions(rig_idx).name = 'blackrig';
             rig_definitions(rig_idx).computers = {'WIN-AP003','WIN-AP004','WIN-AP006'};
-            rig_definitions(rig_idx).client = 'WIN-AP003';
+            rig_definitions(rig_idx).server = 'WIN-AP003';
 
             % Bluerig
             rig_idx = length(rig_definitions)+1;
             rig_definitions(rig_idx).name = 'bluerig';
             rig_definitions(rig_idx).computers = {'WIN-AP009','WIN-AP010'};
-            rig_definitions(rig_idx).client = 'WIN-AP010';
+            rig_definitions(rig_idx).server = 'WIN-AP010';
 
         end
 
@@ -47,13 +47,13 @@ classdef config
                 % (if no rig config found, just use local computer)
                 rig_info = struct( ...
                     'name','local', ...
-                    'computers',local_name, ...
-                    'client',local_name);
+                    'computers',{{local_name}}, ...
+                    'server',local_name);
             end
 
             % If local rig is also client, tcpclient needs IP address
-            if strcmp(local_name,rig_info.client)
-                rig_info.client = local_address;
+            if strcmp(local_name,rig_info.server)
+                rig_info.server = local_address;
             end
             
         end       

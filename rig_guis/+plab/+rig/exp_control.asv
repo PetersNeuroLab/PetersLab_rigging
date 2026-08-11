@@ -256,14 +256,10 @@ gui_data = guidata(gui_fig);
 oe_weboptions = weboptions('RequestMethod','put','MediaType','application/json');
 
 % Find computer running Open Ephys
-open_ephys_computer_idx = find( ...
-    cellfun(@(address) ~isempty(webread(sprintf('http://%s:%d/api/recording', ...
-    address,plab.locations.ephys_port),weboptions('Timeout',0.5))), ...
-    plab.local_rig.config.local.computers, ...
-    'ErrorHandler',@(varargin) false));
 
-open_ephys_address = plab.local_rig.config.local.computers{open_ephys_computer_idx};
 
+x = cellfun(@(address) ~iswebread(sprintf('http://%s:%d/api/recording',address,plab.locations.ephys_port),weboptions('Timeout',1)), ...
+    {plab.local_rig.config.local.computers,'WIN-APPPP'},'ErrorHandler',@(varargin) false,'uni',false);
 
 
 
@@ -278,13 +274,13 @@ recording_info = struct( ...
     'record_engine', "BINARY", ...
     'start_new_directory', true);
 
-openephys_url = sprintf('http://%s:%d/api/recording',open_ephys_address,plab.locations.ephys_port);
+openephys_url = sprintf('http://%s:%d/api/recording',oe.Address,oe.Port);
 openephys_send_status = webwrite(openephys_url, recording_info,oe_weboptions);
 
 % Synchronize recording streams
 
 % (turn on acquisition)
-openephys_url = sprintf('http://%s:%d/api/status',open_ephys_address,plab.locations.ephys_port);
+openephys_url = sprintf('http://%s:%d/api/status',oe.Address,oe.Port);
 openephys_send_status = webwrite(openephys_url, struct('mode','ACQUIRE'),oe_weboptions);
 
 % (send ephys sync command to timelite, pause to allow sync)
@@ -294,14 +290,14 @@ writeline(gui_data.connection_tcpservers( ...
 pause(1);
 
 % (check that streams are synchronized)
-oe_recording = webread(sprintf('http://%s:%d/api/recording',open_ephys_address,plab.locations.ephys_port));
+oe_recording = webread(sprintf('http://%s:%d/api/recording',oe.Address,oe.Port));
 if ~oe_recording.record_nodes.is_synchronized
     error('Open Ephys: streams not synchronized')
     return
 end
 
 % Start recording
-openephys_url = sprintf('http://%s:%d/api/status',open_ephys_address,plab.locations.ephys_port);
+openephys_url = sprintf('http://%s:%d/api/status',oe.Address,oe.Port);
 openephys_send_status = webwrite(openephys_url, struct('mode','RECORD'),oe_weboptions);
 
 

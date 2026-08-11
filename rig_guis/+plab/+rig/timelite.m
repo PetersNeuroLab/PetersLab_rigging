@@ -51,7 +51,7 @@ end
 % Start listener for experiment controller
 update_status_text(status_text_h,'Connecting to experiment server');
 try
-client_expcontroller = tcpclient(plab.local_rig.config.local.client,plab.locations.timelite_port,'ConnectTimeout',2);
+client_expcontroller = tcpclient(plab.local_rig.config.local.server,plab.locations.timelite_port,'ConnectTimeout',2);
 configureCallback(client_expcontroller, "terminator", ...
     @(src,event,x) read_expcontroller_data(src,event,gui_fig));
 catch me
@@ -328,8 +328,17 @@ gui_data = guidata(gui_fig);
 expcontroller_message = readline(client);
 
 if strcmp(expcontroller_message, 'stop')
-    % If experiment controller sends stop, stop DAQ acquisition
+    % If experiment controller sends STOP, stop DAQ acquisition
     daq_stop(gui_fig);
+    
+elseif strcmp(expcontroller_message, 'ephys_sync')
+    % If experiment controller sends EPHYS_SYNC, pulse flipper
+    update_status_text(gui_data.status_text_h,sprintf('Syncing ephys...: %s',save_path));
+    write(gui_data.daq_device.digital,true);
+    pause(1);
+    write(gui_data.daq_device.digital,false);
+    update_status_text(gui_data.status_text_h,'Listening for start');
+    
 else
     % Otherwise, assume message is information to start protocol    
     rec_info = jsondecode(expcontroller_message);

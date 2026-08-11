@@ -14,7 +14,7 @@ classdef bonsai_server
             obj.communication_handles = struct;
 
             obj.communication_handles.expcontrol_client = ...
-                tcpclient(plab.local_rig.config.local.client,plab.locations.bonsai_port);
+                tcpclient(plab.local_rig.config.local.server,plab.locations.bonsai_port);
 
             obj.communication_handles.bonsai_udp = udpport("datagram",'LocalPort',20000);
           
