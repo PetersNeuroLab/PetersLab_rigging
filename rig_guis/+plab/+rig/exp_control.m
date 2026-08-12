@@ -115,9 +115,9 @@ gui_data = guidata(gui_fig);
 
 % Ephys
 % (look for server using fast java socket connections)
-socket = java.net.Socket();
 for rig_computer = string(plab.local_rig.config.local.computers)
     try
+        socket = java.net.Socket();
         socket.connect(java.net.InetSocketAddress(rig_computer,plab.locations.ephys_port),200);
         socket.close;
         gui_data.ephys = rig_computer;
@@ -132,6 +132,7 @@ for rig_computer = string(plab.local_rig.config.local.computers)
         
         break
     catch me
+        socket.close;
         gui_data.ephys = [];
         gui_data.handles.connection_lamps(end).Color = 'r';
         gui_data.handles.ephys_panel.Enable = false;
