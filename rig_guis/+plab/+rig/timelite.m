@@ -115,6 +115,11 @@ function daq_start(gui_fig,save_filename)
 % Get gui data
 gui_data = guidata(gui_fig);
 
+% If DAQ already running (e.g. preview), end it
+if gui_data.daq_device.analog.Running
+    daq_stop(gui_fig,true);
+end
+
 if ~isempty(save_filename)
     % If save filename: 
 
@@ -175,15 +180,19 @@ guidata(gui_fig,gui_data);
 
 end
 
-function daq_stop(gui_fig)
+function daq_stop(gui_fig,quickstop)
 
 % Get gui data
 gui_data = guidata(gui_fig);
 
 % Stop DAQ input acquisition, set outputs to LOW
-update_status_text(gui_data.status_text_h,'Stopping (final 4s)');
-write(gui_data.daq_device.digital,false); 
-pause(4); % ensure outputs low and other GUIs finished before stopping
+% (normal stop: give 4 seconds to catch remaining signals)
+% (quick stop: stop now, e.g. if preview mode is ongoing)
+if ~exist('quickstop','var') || isempty(quickstop)
+    update_status_text(gui_data.status_text_h,'Stopping (final 4s)');
+    write(gui_data.daq_device.digital,false);
+    pause(4); % ensure outputs low and other GUIs finished before stopping
+end
 stop(gui_data.daq_device.analog)
 
 % Upload remaining data (and get updated gui data)
