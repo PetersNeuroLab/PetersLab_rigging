@@ -18,15 +18,16 @@ classdef config
             % Blackrig
             rig_idx = length(rig_definitions)+1;
             rig_definitions(rig_idx).name = 'blackrig';
-            rig_definitions(rig_idx).computers = {'WIN-AP003','WIN-AP004','WIN-AP006'};
             rig_definitions(rig_idx).server = 'WIN-AP003';
+            rig_definitions(rig_idx).computers = {'WIN-AP003','WIN-AP004','WIN-AP006'};
+            
 
             % Bluerig
             rig_idx = length(rig_definitions)+1;
             rig_definitions(rig_idx).name = 'bluerig';
-            rig_definitions(rig_idx).computers = {'WIN-AP009','WIN-AP010'};
             rig_definitions(rig_idx).server = 'WIN-AP010';
-
+            rig_definitions(rig_idx).computers = {'WIN-AP009','WIN-AP010'};
+            
         end
 
         function rig_info = local
@@ -44,11 +45,11 @@ classdef config
             if any(local_rig_index)
                 rig_info = rig_definitions(local_rig_index);
             else
-                % (if no rig config found, just use local computer)
+                % (if no rig config found, use local computer for everything)
                 rig_info = struct( ...
                     'name','local', ...
-                    'computers',{{local_name}}, ...
-                    'server',local_name);
+                    'server',local_name, ...
+                    'computers',{{local_name}});
             end
 
             % If local rig is also client, tcpclient needs IP address

@@ -65,17 +65,15 @@ handles.stop = uibutton(exp_control_panel_grid,'Text','Stop', ...
     'ButtonPushedFcn',{@recording_stop,gui_fig,true}, ...
     'BackgroundColor',[1,0.6,0.6],'Enable',false);
 
-%%%%%%%%%%%% UNDER CONSTRUCTION
 
 % ------ Ephys section
-ephys_panel = uipanel(gui_grid,'Title','Ephys');
-exp_ephys_panel_grid = uigridlayout(ephys_panel,[1,2]);
+handles.ephys_panel = uipanel(gui_grid,'Title','Ephys','enable',false);
+exp_ephys_panel_grid = uigridlayout(handles.ephys_panel,[1,2]);
 
-handles.ephys_button = uibutton(exp_ephys_panel_grid,'Text','START', ...
+handles.ephys_start = uibutton(exp_ephys_panel_grid,'Text','Start', ...
     'ButtonPushedFcn',{@ephys_recording_start,gui_fig}, ...
-    'BackgroundColor',[0.6,0.6,1],'Enable',true);
+    'BackgroundColor',[0.6,0.6,1],'Enable',false);
 
-%%%%%%%%%%%%%%%%%%%%%%%%
 
 % ------ Notes section
 notes_panel = uipanel(gui_grid,'Title','Notes');
@@ -104,9 +102,32 @@ end
 
 
 function connections_check(source,eventdata,gui_fig)
+
 gui_data = guidata(gui_fig);
+
+% (clients)
 [gui_data.handles.connection_lamps([gui_data.connection_tcpservers.Connected]).Color] = deal('g');
 [gui_data.handles.connection_lamps(~[gui_data.connection_tcpservers.Connected]).Color] = deal('r');
+
+% (ephys: look for server with fast java socket connections)
+socket = java.net.Socket();
+for rig_computer = string(plab.local_rig.config.local.computers)
+    try
+        socket.connect(java.net.InetSocketAddress(rig_computer,plab.locations.ephys_port),200);
+        socket.close;
+        gui_data.ephys = rig_computer;
+        gui_data.handles.connection_lamps(end).Color = 'g';
+        gui_data.handles.ephys_panel.Enable = true;
+        break
+    catch
+        gui_data.ephys = [];
+        gui_data.handles.connection_lamps(end).Color = 'r';
+        gui_data.handles.ephys_panel.Enable = false;
+    end
+end
+
+guidata(gui_fig,gui_data);
+
 end
 
 
@@ -141,7 +162,12 @@ else
 end
 
 bonsai_filename = gui_data.handles.protocol.UserData;
+
+% Update recording start
 gui_data.handles.start.Enable = ~isempty(mouse) && exist(bonsai_filename,'file');
+
+% Update ephys start
+gui_data.handles.ephys_start = ~isempty(mouse);
 
 % Update notes section
 % (check for day notes)
@@ -247,65 +273,52 @@ end
 
 function ephys_recording_start(source,event,gui_fig)
 
-%%%%%%%%%%%%%% UNDER CONSTRUCTION
-
-disp('EPHYS START');
-
 gui_data = guidata(gui_fig);
 
+% User confirm (if selected)
+user_confirm_choice = uiconfirm(gui_fig,'Start ephys?','Confirm ephys');
+if ~strcmpi(user_confirm_choice,'ok')
+    return
+end
+
 oe_weboptions = weboptions('RequestMethod','put','MediaType','application/json');
-
-% Find computer running Open Ephys
-open_ephys_computer_idx = find( ...
-    cellfun(@(address) ~isempty(webread(sprintf('http://%s:%d/api/recording', ...
-    address,plab.locations.ephys_port),weboptions('Timeout',0.5))), ...
-    plab.local_rig.config.local.computers, ...
-    'ErrorHandler',@(varargin) false));
-
-open_ephys_address = plab.local_rig.config.local.computers{open_ephys_computer_idx};
-
-
-
-
 
 % Grab mouse, set save path (ensure on D:)
 mouse = string(gui_data.handles.mouse.Value);
 
 recording_info = struct( ...
-    'prepend_text',mouse, ...
-    'base_text','YYYY-MM-DD_HH-MM-SS', ...
+    'prepend_text',mouse+"_", ...
+    'base_text',string(datetime('now','Format','yyyy-MM-dd')), ...
+    'append_text','_ephys', ...
     'parent_directory',strrep(plab.locations.local_data_path,'C:','D:'), ...
     'record_engine', "BINARY", ...
     'start_new_directory', true);
 
-openephys_url = sprintf('http://%s:%d/api/recording',open_ephys_address,plab.locations.ephys_port);
+openephys_url = sprintf('http://%s:%d/api/recording',gui_data.ephys,plab.locations.ephys_port);
 openephys_send_status = webwrite(openephys_url, recording_info,oe_weboptions);
 
 % Synchronize recording streams
 
 % (turn on acquisition)
-openephys_url = sprintf('http://%s:%d/api/status',open_ephys_address,plab.locations.ephys_port);
+openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
 openephys_send_status = webwrite(openephys_url, struct('mode','ACQUIRE'),oe_weboptions);
 
-% (send ephys sync command to timelite, pause to allow sync)
-writeline(gui_data.connection_tcpservers( ...
-    [connection_tcpservers.ServerPort] == plab.locations.timelite_port), ...
-    'ephys_sync');
-pause(1);
-
-% (check that streams are synchronized)
-oe_recording = webread(sprintf('http://%s:%d/api/recording',open_ephys_address,plab.locations.ephys_port));
-if ~oe_recording.record_nodes.is_synchronized
-    error('Open Ephys: streams not synchronized')
-    return
-end
+% % (send ephys sync command to timelite, pause to allow sync)
+% writeline(gui_data.connection_tcpservers( ...
+%     [connection_tcpservers.ServerPort] == plab.locations.timelite_port), ...
+%     'ephys_sync');
+% pause(1);
+% 
+% % (check that streams are synchronized)
+% oe_recording = webread(sprintf('http://%s:%d/api/recording',open_ephys_address,plab.locations.ephys_port));
+% if ~oe_recording.record_nodes.is_synchronized
+%     error('Open Ephys: streams not synchronized')
+%     return
+% end
 
 % Start recording
-openephys_url = sprintf('http://%s:%d/api/status',open_ephys_address,plab.locations.ephys_port);
+openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
 openephys_send_status = webwrite(openephys_url, struct('mode','RECORD'),oe_weboptions);
-
-
-%%%%%%%%%%%%%%%%%%%%
 
 end
 
