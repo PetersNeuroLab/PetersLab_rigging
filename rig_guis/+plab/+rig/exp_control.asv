@@ -123,6 +123,13 @@ for rig_computer = string(plab.local_rig.config.local.computers)
         gui_data.ephys = rig_computer;
         gui_data.handles.connection_lamps(end).Color = 'g';
         gui_data.handles.ephys_panel.Enable = true;
+
+        % (if local computer, switch name to IP, necessary for TCP)
+        % (if local, use IP instead of name)
+        if rig_computer == char(java.net.InetAddress.getLocalHost.getHostName)
+            gui_data.ephys = char(java.net.InetAddress.getLocalHost.getHostAddress);
+        end
+        
         break
     catch me
         gui_data.ephys = [];
@@ -173,6 +180,12 @@ bonsai_filename = gui_data.handles.protocol.UserData;
 gui_data.handles.start.Enable = ~isempty(mouse) && exist(bonsai_filename,'file');
 
 % Update ephys controls
+%%%%%%%%%% UNDER CONSTRUCTION
+% (ensure timelite connected)
+% if ~isempty(gui_data.ephys) && ...
+%         gui_data.connection_tcpservers([connection_tcpservers.ServerPort] == ...
+%         plab.locations.timelite_port).connected
+%%%%%%%%%%%%%
 if ~isempty(gui_data.ephys)
     try
         open_ephys_status = webread(sprintf('http://%s:%d/api/status', ...
@@ -295,25 +308,70 @@ function ephys_recording_start(source,event,gui_fig)
 
 gui_data = guidata(gui_fig);
 
+% Get recording info
+mouse = string(gui_data.handles.mouse.Value);
+rec_day = string(datetime('now','Format','yyyy-MM-dd'));
+% (set recording path - assume D: on ephys computer)
+ephys_savepath = fullfile( ...
+    strrep(plab.locations.local_data_path,'C:','D:'), ...
+    mouse + "_" + rec_day + "_ephys");
+
 % User confirm (if selected)
 user_confirm_choice = uiconfirm(gui_fig,'Start ephys?','Confirm ephys');
 if ~strcmpi(user_confirm_choice,'ok')
     return
 end
 
-oe_weboptions = weboptions('RequestMethod','put','MediaType','application/json');
+% Set probe dye
+% (prompt user for dye, enforce options)
+oe_processors = webread(sprintf('http://%s:%d/api/processors',gui_data.ephys,plab.locations.ephys_port));
+oe_probes = reshape(unique(extract({oe_processors.processors(1).streams.name}, ...
+    'Probe'+lettersPattern(1))),[],1);
+
+probe_dye_options = {'red','yellow','blue','none'};
+
+redo_dye = true;
+while redo_dye
+    probe_dye_userchoice = inputdlg(cellfun(@(probe) sprintf('%s (%s)',probe, ...
+        join(string(probe_dye_options),', ')), ...
+        oe_probes,'uni',false),'Select probe dye',[1,50]);
+
+    if isempty(probe_dye_userchoice)
+        return
+    elseif ~all(ismember(probe_dye_userchoice,probe_dye_options))
+        user_confirm = uiconfirm(gui_fig,[{'Invalid probe dye, valid options:'}, ...
+            join(probe_dye_options,', ')],'Re-enter dye', ...
+            'Icon','Error','Options','OK');
+    else
+        redo_dye = false;
+    end
+end
+
+% (save dye choices to server)
+probe_dye = struct('probe',oe_probes,'dye',probe_dye_userchoice);
+probe_dye_filename = plab.locations.filename('server',mouse,rec_day,[],'ephys','probe_dye.mat');
+if ~exist(fileparts(probe_dye_filename),'dir')
+    mkdir(fileparts(probe_dye_filename));
+end
+save(probe_dye_filename,'probe_dye');
+
+% Save Neuropixels Trajectory Explorer postions (if open)
+try
+    nte_client = tcpclient(gui_data.ephys,plab.locations.nte_port,'ConnectTimeout',1);
+    nte_save_filename = fullfile(ephys_savepath,join([mouse,rec_day,"probe_positions.mat"],'_'));
+    writeline(nte_client,jsonencode(struct('message','save','save_filename',nte_save_filename)));
+catch
+end
 
 % Grab mouse, set save path (ensure on D:)
-mouse = string(gui_data.handles.mouse.Value);
-
+[ephys_savepath_parent,ephys_savepath_folder] = fileparts(ephys_savepath);
 recording_info = struct( ...
-    'prepend_text',mouse+"_", ...
-    'base_text',string(datetime('now','Format','yyyy-MM-dd')), ...
-    'append_text','_ephys', ...
-    'parent_directory',strrep(plab.locations.local_data_path,'C:','D:'), ...
+    'base_text',ephys_savepath_folder, ...
+    'parent_directory',ephys_savepath_parent, ...
     'record_engine', "BINARY", ...
     'start_new_directory', true);
 
+oe_weboptions = weboptions('RequestMethod','put','MediaType','application/json');
 openephys_url = sprintf('http://%s:%d/api/recording',gui_data.ephys,plab.locations.ephys_port);
 openephys_send_status = webwrite(openephys_url, recording_info,oe_weboptions);
 
@@ -336,11 +394,6 @@ disp('TIMELITE TURNED OFF AT THE MOMENT')
 %     error('Open Ephys: streams not synchronized')
 %     return
 % end
-
-% Prompt for dye
-% (get available probes)
-connected_probes = unique(extract({oe_processors.processors(1).streams.name}, ...
-    'Probe'+lettersPattern(1)));
 
 % Start recording
 openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
