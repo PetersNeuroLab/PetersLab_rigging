@@ -337,6 +337,17 @@ disp('TIMELITE TURNED OFF AT THE MOMENT')
 %     return
 % end
 
+%%%%%%%%%%%%%%%% UNDER CONSTRUCTION
+
+% Prompt for dye
+% (get available probes)
+oe_processors = webread(sprintf('http://%s:%d/api/processors',gui_data.ephys,plab.locations.ephys_port));
+oe_probes = unique(extract({oe_processors.processors(1).streams.name}, ...
+    'Probe'+lettersPattern(1)));
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+
 % Start recording
 openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
 openephys_send_status = webwrite(openephys_url, struct('mode','RECORD'),oe_weboptions);
