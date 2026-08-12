@@ -309,10 +309,12 @@ gui_data = guidata(gui_fig);
 % Get recording info
 mouse = string(gui_data.handles.mouse.Value);
 rec_day = string(datetime('now','Format','yyyy-MM-dd'));
-% (set recording path - assume D: on ephys computer)
-ephys_savepath = fullfile( ...
+% (set local recording path - assume D: on ephys computer)
+ephys_savepath_local = fullfile( ...
     strrep(plab.locations.local_data_path,'C:','D:'), ...
     mouse + "_" + rec_day + "_ephys");
+% (set server savepath - for additional files direct to server)
+ephys_savepath_server = plab.locations.filename('server',mouse,rec_day,[],'ephys');
 
 % User confirm (if selected)
 user_confirm_choice = uiconfirm(gui_fig,'Start ephys?','Confirm ephys');
@@ -347,7 +349,7 @@ end
 
 % (save dye choices to server)
 probe_dye = struct('probe',oe_probes,'dye',probe_dye_userchoice);
-probe_dye_filename = plab.locations.filename('server',mouse,rec_day,[],'ephys','probe_dye.mat');
+probe_dye_filename = fullfile(ephys_savepath_server,join([mouse,rec_day,"probe_dye.mat"],'_'));
 if ~exist(fileparts(probe_dye_filename),'dir')
     mkdir(fileparts(probe_dye_filename));
 end
@@ -356,7 +358,7 @@ save(probe_dye_filename,'probe_dye');
 % Save Neuropixels Trajectory Explorer postions (if open)
 try
     nte_client = tcpclient(gui_data.ephys,plab.locations.nte_port,'ConnectTimeout',1);
-    nte_save_filename = fullfile(ephys_savepath,join([mouse,rec_day,"probe_positions.mat"],'_'));
+    nte_save_filename = fullfile(ephys_savepath_server,join([mouse,rec_day,"probe_positions.mat"],'_'));
     writeline(nte_client,jsonencode(struct('message','save','save_filename',nte_save_filename)));
 catch
     user_confirm = uiconfirm(gui_fig,{'Neuropixels Trajectory Explorer not found, save manually'}, ...
@@ -364,7 +366,7 @@ catch
 end
 
 % Grab mouse, set save path (ensure on D:)
-[ephys_savepath_parent,ephys_savepath_folder] = fileparts(ephys_savepath);
+[ephys_savepath_parent,ephys_savepath_folder] = fileparts(ephys_savepath_local);
 recording_info = struct( ...
     'base_text',ephys_savepath_folder, ...
     'append_text','','prepend_text','', ...
@@ -384,12 +386,12 @@ openephys_send_status = webwrite(openephys_url, struct('mode','ACQUIRE'),oe_webo
 
 % (send ephys sync command to timelite, pause to allow sync)
 writeline(gui_data.connection_tcpservers( ...
-    [connection_tcpservers.ServerPort] == plab.locations.timelite_port), ...
+    [gui_data.connection_tcpservers.ServerPort] == plab.locations.timelite_port), ...
     'ephys_sync');
 pause(1);
 
 % (check that streams are synchronized)
-oe_recording = webread(sprintf('http://%s:%d/api/recording',open_ephys_address,plab.locations.ephys_port));
+oe_recording = webread(sprintf('http://%s:%d/api/recording',gui_data.ephys,plab.locations.ephys_port));
 if ~oe_recording.record_nodes.is_synchronized
     user_confirm = uiconfirm(gui_fig,{'Timelite: unable to synchronize ephys streams'}, ...
         'Stream sync error','Icon','Error','Options','OK');

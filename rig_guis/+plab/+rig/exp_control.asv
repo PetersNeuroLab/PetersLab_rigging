@@ -180,6 +180,7 @@ bonsai_filename = gui_data.handles.protocol.UserData;
 gui_data.handles.start.Enable = ~isempty(mouse) && exist(bonsai_filename,'file');
 
 % Update ephys controls
+% (requires ephys and timelite connection)
 if ~isempty(gui_data.ephys) && ...
         gui_data.connection_tcpservers( ...
         [gui_data.connection_tcpservers.ServerPort] == ...
@@ -308,10 +309,12 @@ gui_data = guidata(gui_fig);
 % Get recording info
 mouse = string(gui_data.handles.mouse.Value);
 rec_day = string(datetime('now','Format','yyyy-MM-dd'));
-% (set recording path - assume D: on ephys computer)
-ephys_savepath = fullfile( ...
+% (set local recording path - assume D: on ephys computer)
+ephys_savepath_local = fullfile( ...
     strrep(plab.locations.local_data_path,'C:','D:'), ...
     mouse + "_" + rec_day + "_ephys");
+% (set server savepath - f
+ephys_savepath_server = plab.locations.filename('server',mouse,rec_day,[],'ephys');
 
 % User confirm (if selected)
 user_confirm_choice = uiconfirm(gui_fig,'Start ephys?','Confirm ephys');
