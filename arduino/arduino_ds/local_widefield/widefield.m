@@ -9,7 +9,7 @@ imaqreset
 % NOTE: bit depth, binning, and speed mode, set by format
 % To see list of formats:
 
-% info = imaqhwinfo('gentl');
+ info = imaqhwinfo('gentl');
 
 cam_DeviceName = imaqhwinfo('gentl').DeviceInfo.DeviceName;
 video_object = videoinput('gentl', cam_DeviceName, 'Mono8');
