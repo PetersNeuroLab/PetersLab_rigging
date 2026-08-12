@@ -3,7 +3,7 @@ function exp_control
 %
 % Experiment controller: remote control for all rig recording components
 
-% Create figure
+% ------ Create figure
 gui_fig = uifigure('Name','Experiment controller', ...
     'units','normalized','position',[0.01,0.1,0.2,0.8], ...
     'CloseRequestFcn',@close_gui);
@@ -11,30 +11,36 @@ gui_grid = uigridlayout(gui_fig,[4,1], ...
     'RowHeight',{'1x','1x','1x','1x','5x'},'BackgroundColor','w');
 handles = struct;
 
-
-% Connections lamps
-connection_panel = uipanel(gui_grid,'Title','Connection status');
+% ------ Set up connections
 connection_modalities = {'Timelite','Bonsai','Mousecam','Widefield','Ephys'};
-connection_ports = [ ...
+
+% Connection lamps
+connection_panel = uipanel(gui_grid,'Title','Connection status');
+connection_panel_grid = uigridlayout(connection_panel,[2,length(connection_modalities)]);
+arrayfun(@(x) uilabel(connection_panel_grid,'Text',x,'HorizontalAlignment','Center'),connection_modalities);
+handles.connection_lamps = arrayfun(@(x) uilamp(connection_panel_grid,'Color','y'),1:length(connection_modalities));
+
+% Set up TCP servers
+connection_server_ports = [ ...
     plab.locations.timelite_port, ...
     plab.locations.bonsai_port, ...
     plab.locations.mousecam_port, ...
     plab.locations.widefield_port, ...
-    37497, ... % Open Ephys: constant in software
     ];
 
-connection_tcpservers = arrayfun(@(x) tcpserver("0.0.0.0",x),connection_ports);
+connection_tcpservers = arrayfun(@(x) tcpserver("0.0.0.0",x),connection_server_ports);
 
 % (Bonsai server connection: set up callback for remote stopping)
 configureCallback( ...
     connection_tcpservers([connection_tcpservers.ServerPort] == plab.locations.bonsai_port), ...
     "terminator", @(src,event,x) read_incoming(src,event,gui_fig));
 
-connection_panel_grid = uigridlayout(connection_panel,[2,length(connection_modalities)]);
-arrayfun(@(x) uilabel(connection_panel_grid,'Text',x,'HorizontalAlignment','Center'),connection_modalities);
-handles.connection_lamps = arrayfun(@(x) uilamp(connection_panel_grid,'Color','y'),1:length(connection_modalities));
+% (timer function to check server connections)
+handles.connections_timer = timer('Period',1,'ExecutionMode','fixedSpacing', ...
+    'TimerFcn',{@connections_check,gui_fig});
 
-% Recording settings
+
+% ------ Recording settings
 rec_settings_panel = uipanel(gui_grid,'Title','Recording settings');
 rec_settings_panel_grid = uigridlayout(rec_settings_panel,[2,2], ...
     'ColumnWidth',{'1x','4x'});
@@ -47,24 +53,33 @@ handles.protocol = ...
     uilabel(rec_settings_panel_grid,'Text','<No protocol>','HorizontalAlignment','Center','BackgroundColor','w');
 
 
-% Control buttons
+% ------ Control section
 exp_control_panel = uipanel(gui_grid,'Title','Control recording');
 exp_control_panel_grid = uigridlayout(exp_control_panel,[1,2]);
 
-handles.start = uibutton(exp_control_panel_grid,'Text','Start', ...
+handles.start = uibutton(exp_control_panel_grid,'Text','Recording Start', ...
     'ButtonPushedFcn',{@recording_start,gui_fig}, ...
     'BackgroundColor',[0.6,1,0.6],'Enable',false);
 
-handles.stop = uibutton(exp_control_panel_grid,'Text','Stop', ...
+handles.stop = uibutton(exp_control_panel_grid,'Text','Recording Stop', ...
     'ButtonPushedFcn',{@recording_stop,gui_fig,true}, ...
     'BackgroundColor',[1,0.6,0.6],'Enable',false);
 
 
-% Ephys section?
-ephys_panel = uipanel(gui_grid,'Title','Ephys');
+% ------ Ephys section
+handles.ephys_panel = uipanel(gui_grid,'Title','Ephys','enable',false);
+exp_ephys_panel_grid = uigridlayout(handles.ephys_panel,[1,2]);
+
+handles.ephys_start = uibutton(exp_ephys_panel_grid,'Text','Ephys start', ...
+    'ButtonPushedFcn',{@ephys_recording_start,gui_fig}, ...
+    'BackgroundColor',[0.6,1,0.6],'Enable',false);
+
+handles.ephys_stop = uibutton(exp_ephys_panel_grid,'Text','Ephys stop', ...
+    'ButtonPushedFcn',{@ephys_recording_stop,gui_fig}, ...
+    'BackgroundColor',[1,0.6,0.6],'Enable',false);
 
 
-% Notes section
+% ------ Notes section
 notes_panel = uipanel(gui_grid,'Title','Notes');
 notes_panel_grid = uigridlayout(notes_panel,[4,1], ...
     'RowHeight',{'1x','10x','1x','10x'});
@@ -77,11 +92,7 @@ handles.notes_recording_label = uilabel(notes_panel_grid,'Text','Recording notes
 handles.notes_recording = uitextarea(notes_panel_grid, ...
     'ValueChangedFcn',{@update_notes,gui_fig},'Enable',false);
 
-% Timer function to check connections
-handles.connections_timer = timer('Period',1,'ExecutionMode','fixedSpacing', ...
-    'TimerFcn',{@connections_check,gui_fig});
-
-% Store guidata
+% ------ Store guidata
 gui_data = struct;
 
 gui_data.connection_tcpservers = connection_tcpservers;
@@ -95,9 +106,42 @@ end
 
 
 function connections_check(source,eventdata,gui_fig)
+
 gui_data = guidata(gui_fig);
+
+% Clients
 [gui_data.handles.connection_lamps([gui_data.connection_tcpservers.Connected]).Color] = deal('g');
 [gui_data.handles.connection_lamps(~[gui_data.connection_tcpservers.Connected]).Color] = deal('r');
+
+% Ephys
+% (look for server using fast java socket connections)
+for rig_computer = string(plab.local_rig.config.local.computers)
+    try
+        socket = java.net.Socket();
+        socket.connect(java.net.InetSocketAddress(rig_computer,plab.locations.ephys_port),200);
+        socket.close;
+        gui_data.ephys = rig_computer;
+        gui_data.handles.connection_lamps(end).Color = 'g';
+        gui_data.handles.ephys_panel.Enable = true;
+
+        % (if local computer, switch name to IP, necessary for TCP)
+        % (if local, use IP instead of name)
+        if rig_computer == char(java.net.InetAddress.getLocalHost.getHostName)
+            gui_data.ephys = char(java.net.InetAddress.getLocalHost.getHostAddress);
+        end
+        
+        break
+    catch me
+        socket.close;
+        gui_data.ephys = [];
+        gui_data.handles.connection_lamps(end).Color = 'r';
+        gui_data.handles.ephys_panel.Enable = false;
+    end
+end
+
+guidata(gui_fig,gui_data);
+update_controls([],[],gui_fig);
+
 end
 
 
@@ -132,7 +176,30 @@ else
 end
 
 bonsai_filename = gui_data.handles.protocol.UserData;
+
+% Update recording controls
 gui_data.handles.start.Enable = ~isempty(mouse) && exist(bonsai_filename,'file');
+
+% Update ephys controls
+% (requires ephys and timelite connection)
+if ~isempty(gui_data.ephys) && ...
+        gui_data.connection_tcpservers( ...
+        [gui_data.connection_tcpservers.ServerPort] == ...
+        plab.locations.timelite_port).Connected
+    try
+        open_ephys_status = webread(sprintf('http://%s:%d/api/status', ...
+            gui_data.ephys,plab.locations.ephys_port));
+        switch open_ephys_status.mode
+            case "RECORD"
+                gui_data.handles.ephys_start.Enable = false;
+                gui_data.handles.ephys_stop.Enable = true;
+            case {"IDLE","ACQUIRE"}
+                gui_data.handles.ephys_start.Enable = ~isempty(mouse);
+                gui_data.handles.ephys_stop.Enable = false;
+        end
+    catch me
+    end
+end
 
 % Update notes section
 % (check for day notes)
@@ -236,6 +303,135 @@ guidata(gui_fig,gui_data);
 end
 
 
+function ephys_recording_start(source,event,gui_fig)
+
+gui_data = guidata(gui_fig);
+
+% Get recording info
+mouse = string(gui_data.handles.mouse.Value);
+rec_day = string(datetime('now','Format','yyyy-MM-dd'));
+% (set local recording path - assume D: on ephys computer)
+ephys_savepath_local = fullfile( ...
+    strrep(plab.locations.local_data_path,'C:','D:'), ...
+    mouse + "_" + rec_day + "_ephys");
+% (set server savepath - for additional files direct to server)
+ephys_savepath_server = plab.locations.filename('server',mouse,rec_day,[],'ephys');
+
+% User confirm (if selected)
+user_confirm_choice = uiconfirm(gui_fig,'Start ephys?','Confirm ephys');
+if ~strcmpi(user_confirm_choice,'ok')
+    return
+end
+
+% Set probe dye
+% (prompt user for dye, enforce options)
+oe_processors = webread(sprintf('http://%s:%d/api/processors',gui_data.ephys,plab.locations.ephys_port));
+oe_probes = reshape(unique(extract({oe_processors.processors(1).streams.name}, ...
+    'Probe'+lettersPattern(1))),[],1);
+
+probe_dye_options = {'red','yellow','blue','none'};
+
+redo_dye = true;
+while redo_dye
+    probe_dye_userchoice = inputdlg(cellfun(@(probe) sprintf('%s (%s)',probe, ...
+        join(string(probe_dye_options),', ')), ...
+        oe_probes,'uni',false),'Select probe dye',[1,50]);
+
+    if isempty(probe_dye_userchoice)
+        return
+    elseif ~all(ismember(probe_dye_userchoice,probe_dye_options))
+        user_confirm = uiconfirm(gui_fig,[{'Invalid probe dye, valid options:'}, ...
+            join(probe_dye_options,', ')],'Re-enter dye', ...
+            'Icon','Error','Options','OK');
+    else
+        redo_dye = false;
+    end
+end
+
+% (save dye choices to server)
+probe_dye = struct('probe',oe_probes,'dye',probe_dye_userchoice);
+probe_dye_filename = fullfile(ephys_savepath_server,join([mouse,rec_day,"probe_dye.mat"],'_'));
+if ~exist(fileparts(probe_dye_filename),'dir')
+    mkdir(fileparts(probe_dye_filename));
+end
+save(probe_dye_filename,'probe_dye');
+
+% Save Neuropixels Trajectory Explorer postions (if open)
+try
+    nte_client = tcpclient(gui_data.ephys,plab.locations.nte_port,'ConnectTimeout',1);
+    nte_save_filename = fullfile(ephys_savepath_server,join([mouse,rec_day,"probe_positions.mat"],'_'));
+    writeline(nte_client,jsonencode(struct('message','save','save_filename',nte_save_filename)));
+catch
+    user_confirm = uiconfirm(gui_fig,{'Neuropixels Trajectory Explorer not found, save manually'}, ...
+        'Save NTE manually','Icon','Error','Options','OK');
+end
+
+% Grab mouse, set save path (ensure on D:)
+[ephys_savepath_parent,ephys_savepath_folder] = fileparts(ephys_savepath_local);
+recording_info = struct( ...
+    'base_text',ephys_savepath_folder, ...
+    'append_text','','prepend_text','', ...
+    'parent_directory',ephys_savepath_parent, ...
+    'record_engine', "BINARY", ...
+    'start_new_directory', true);
+
+oe_weboptions = weboptions('RequestMethod','put','MediaType','application/json');
+openephys_url = sprintf('http://%s:%d/api/recording',gui_data.ephys,plab.locations.ephys_port);
+openephys_send_status = webwrite(openephys_url,recording_info,oe_weboptions);
+
+% Synchronize recording streams
+
+% (turn on acquisition)
+openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
+openephys_send_status = webwrite(openephys_url, struct('mode','ACQUIRE'),oe_weboptions);
+
+% (send ephys sync command to Timelite, pause to allow sync)
+writeline(gui_data.connection_tcpservers( ...
+    [gui_data.connection_tcpservers.ServerPort] == plab.locations.timelite_port), ...
+    'ephys_sync');
+pause(1);
+
+% (check that streams are synchronized)
+oe_recording = webread(sprintf('http://%s:%d/api/recording',gui_data.ephys,plab.locations.ephys_port));
+if ~oe_recording.record_nodes.is_synchronized
+    user_confirm = uiconfirm(gui_fig,{'Timelite: unable to synchronize ephys streams'}, ...
+        'Stream sync error','Icon','Error','Options','OK');
+    return
+end
+
+% Start recording
+openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
+openephys_send_status = webwrite(openephys_url, struct('mode','RECORD'),oe_weboptions);
+
+% Toggle button enable
+update_controls([],[],gui_fig);
+
+end
+
+
+function ephys_recording_stop(source,event,gui_fig)
+
+
+gui_data = guidata(gui_fig);
+
+% User confirm (if selected)
+user_confirm_choice = uiconfirm(gui_fig,'Stop ephys?','Confirm ephys');
+if ~strcmpi(user_confirm_choice,'ok')
+    return
+end
+
+% Stop recording (put into acquire mode)
+oe_weboptions = weboptions('RequestMethod','put','MediaType','application/json');
+openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
+openephys_send_status = webwrite(openephys_url, struct('mode','ACQUIRE'),oe_weboptions);
+
+% Toggle button enable
+update_controls([],[],gui_fig);
+
+end
+
+
+
 function read_incoming(source,event,gui_fig)
 gui_data = guidata(gui_fig);
 
@@ -281,7 +477,7 @@ end
 
 function close_gui(gui_fig,event)
 gui_data = guidata(gui_fig);
-stop(gui_data.handles.connections_timer);
+try;stop(gui_data.handles.connections_timer);end
 delete(gui_fig);
 end
 
