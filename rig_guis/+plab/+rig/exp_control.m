@@ -385,7 +385,7 @@ openephys_send_status = webwrite(openephys_url,recording_info,oe_weboptions);
 openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
 openephys_send_status = webwrite(openephys_url, struct('mode','ACQUIRE'),oe_weboptions);
 
-% (send ephys sync command to timelite, pause to allow sync)
+% (send ephys sync command to Timelite, pause to allow sync)
 writeline(gui_data.connection_tcpservers( ...
     [gui_data.connection_tcpservers.ServerPort] == plab.locations.timelite_port), ...
     'ephys_sync');
@@ -420,10 +420,10 @@ if ~strcmpi(user_confirm_choice,'ok')
     return
 end
 
-% Start recording
+% Stop recording (put into acquire mode)
 oe_weboptions = weboptions('RequestMethod','put','MediaType','application/json');
 openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
-openephys_send_status = webwrite(openephys_url, struct('mode','IDLE'),oe_weboptions);
+openephys_send_status = webwrite(openephys_url, struct('mode','ACQUIRE'),oe_weboptions);
 
 % Toggle button enable
 update_controls([],[],gui_fig);
