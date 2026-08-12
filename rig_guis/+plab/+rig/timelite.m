@@ -97,11 +97,11 @@ function user_buttonpress(h,eventdata,gui_fig)
 gui_data = guidata(gui_fig);
 
 if gui_data.daq_device.analog.Running
-    % If DAQ is running: stop recording (with confirmation dialog)
+    % If DAQ is running: quick-stop recording (with confirmation dialog)
     confirm = questdlg('\fontsize{14}Stop timelite?','Confirm timelite stop', ...
         'Yes','No',struct('Default','No','Interpreter','tex'));
     if strcmp(confirm,'Yes')
-        daq_stop(gui_fig)
+        daq_stop(gui_fig,true)
     end
 else
     % If DAQ isn't running: start DAQ with no saving (preview mode)
