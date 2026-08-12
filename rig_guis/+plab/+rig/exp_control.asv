@@ -180,13 +180,10 @@ bonsai_filename = gui_data.handles.protocol.UserData;
 gui_data.handles.start.Enable = ~isempty(mouse) && exist(bonsai_filename,'file');
 
 % Update ephys controls
-%%%%%%%%%% UNDER CONSTRUCTION
-% (ensure timelite connected)
-% if ~isempty(gui_data.ephys) && ...
-%         gui_data.connection_tcpservers([connection_tcpservers.ServerPort] == ...
-%         plab.locations.timelite_port).connected
-%%%%%%%%%%%%%
-if ~isempty(gui_data.ephys)
+if ~isempty(gui_data.ephys) && ...
+        gui_data.connection_tcpservers( ...
+        [gui_data.connection_tcpservers.ServerPort] == ...
+        plab.locations.timelite_port).Connected
     try
         open_ephys_status = webread(sprintf('http://%s:%d/api/status', ...
             gui_data.ephys,plab.locations.ephys_port));
@@ -361,19 +358,22 @@ try
     nte_save_filename = fullfile(ephys_savepath,join([mouse,rec_day,"probe_positions.mat"],'_'));
     writeline(nte_client,jsonencode(struct('message','save','save_filename',nte_save_filename)));
 catch
+    user_confirm = uiconfirm(gui_fig,{'Neuropixels Trajectory Explorer not found, save manually'}, ...
+        'Save NTE manually','Icon','Error','Options','OK');
 end
 
 % Grab mouse, set save path (ensure on D:)
 [ephys_savepath_parent,ephys_savepath_folder] = fileparts(ephys_savepath);
 recording_info = struct( ...
     'base_text',ephys_savepath_folder, ...
+    'append_text','','prepend_text','', ...
     'parent_directory',ephys_savepath_parent, ...
     'record_engine', "BINARY", ...
     'start_new_directory', true);
 
 oe_weboptions = weboptions('RequestMethod','put','MediaType','application/json');
 openephys_url = sprintf('http://%s:%d/api/recording',gui_data.ephys,plab.locations.ephys_port);
-openephys_send_status = webwrite(openephys_url, recording_info,oe_weboptions);
+openephys_send_status = webwrite(openephys_url,recording_info,oe_weboptions);
 
 % Synchronize recording streams
 
@@ -381,19 +381,19 @@ openephys_send_status = webwrite(openephys_url, recording_info,oe_weboptions);
 openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
 openephys_send_status = webwrite(openephys_url, struct('mode','ACQUIRE'),oe_weboptions);
 
-disp('TIMELITE TURNED OFF AT THE MOMENT')
-% % (send ephys sync command to timelite, pause to allow sync)
-% writeline(gui_data.connection_tcpservers( ...
-%     [connection_tcpservers.ServerPort] == plab.locations.timelite_port), ...
-%     'ephys_sync');
-% pause(1);
-% 
-% % (check that streams are synchronized)
-% oe_recording = webread(sprintf('http://%s:%d/api/recording',open_ephys_address,plab.locations.ephys_port));
-% if ~oe_recording.record_nodes.is_synchronized
-%     error('Open Ephys: streams not synchronized')
-%     return
-% end
+% (send ephys sync command to timelite, pause to allow sync)
+writeline(gui_data.connection_tcpservers( ...
+    [connection_tcpservers.ServerPort] == plab.locations.timelite_port), ...
+    'ephys_sync');
+pause(1);
+
+% (check that streams are synchronized)
+oe_recording = webread(sprintf('http://%s:%d/api/recording',open_ephys_address,plab.locations.ephys_port));
+if ~oe_recording.record_nodes.is_synchronized
+    user_confirm = uiconfirm(gui_fig,{'Timelite: unable to synchronize ephys streams'}, ...
+        'Stream sync error','Icon','Error','Options','OK');
+    return
+end
 
 % Start recording
 openephys_url = sprintf('http://%s:%d/api/status',gui_data.ephys,plab.locations.ephys_port);
