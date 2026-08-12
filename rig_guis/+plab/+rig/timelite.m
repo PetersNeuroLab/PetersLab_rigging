@@ -333,7 +333,7 @@ if strcmp(expcontroller_message, 'stop')
     
 elseif strcmp(expcontroller_message, 'ephys_sync')
     % If experiment controller sends EPHYS_SYNC, pulse flipper
-    update_status_text(gui_data.status_text_h,sprintf('Syncing ephys...: %s',save_path));
+    update_status_text(gui_data.status_text_h,'Syncing ephys...');
     write(gui_data.daq_device.digital,true);
     pause(1);
     write(gui_data.daq_device.digital,false);
