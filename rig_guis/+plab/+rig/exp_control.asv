@@ -203,24 +203,22 @@ if ~isempty(gui_data.ephys) && ...
     end
 end
 
-% Update notes section (if mouse changed)
-if reset_notes
-    % (check for day notes)
-    rec_day = string(datetime('now','Format','yyyy-MM-dd'));
-    rec_path = plab.locations.filename('server',mouse,rec_day);
-    notes_day_fn = fullfile(rec_path,join(["notes",mouse,rec_day],"_")) + ".txt";
-    if exist(notes_day_fn,'file')
-        gui_data.handles.notes_day_label.Text = sprintf('Day notes: %s %s',mouse,rec_day);
-        gui_data.handles.notes_day.Value = fileread(notes_day_fn);
-    else
-        gui_data.handles.notes_day_label.Text = "Day notes";
-        gui_data.handles.notes_day.Value = "";
-    end
-    % (clear recording notes)
-    gui_data.handles.notes_recording_label.Text = "Recording notes";
-    gui_data.handles.notes_recording.Value = "";
-    gui_data.handles.notes_recording.Enable = false;
+% Update notes section
+% (check for day notes)
+rec_day = string(datetime('now','Format','yyyy-MM-dd'));
+rec_path = plab.locations.filename('server',mouse,rec_day);
+notes_day_fn = fullfile(rec_path,join(["notes",mouse,rec_day],"_")) + ".txt";
+if exist(notes_day_fn,'file')
+    gui_data.handles.notes_day_label.Text = sprintf('Day notes: %s %s',mouse,rec_day);
+    gui_data.handles.notes_day.Value = fileread(notes_day_fn);
+else
+    gui_data.handles.notes_day_label.Text = "Day notes";
+    gui_data.handles.notes_day.Value = "";
 end
+% (clear recording notes)
+gui_data.handles.notes_recording_label.Text = "Recording notes";
+gui_data.handles.notes_recording.Value = "";
+gui_data.handles.notes_recording.Enable = false;
 
 end
 
