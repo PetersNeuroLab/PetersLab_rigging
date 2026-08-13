@@ -46,11 +46,11 @@ rec_settings_panel_grid = uigridlayout(rec_settings_panel,[2,2], ...
     'ColumnWidth',{'1x','4x'});
 
 uilabel(rec_settings_panel_grid,'Text','Mouse','HorizontalAlignment','Center');
-uibutton(rec_settings_panel_grid,'Text','Protocol','ButtonPushedFcn',{@choose_protocol,gui_fig});
+uibutton(rec_settings_panel_grid,'Text','Bonsai Workflow','ButtonPushedFcn',{@choose_workflow,gui_fig});
 
 handles.mouse = uieditfield(rec_settings_panel_grid,'ValueChangingFcn',{@update_controls,gui_fig});
-handles.protocol = ...
-    uilabel(rec_settings_panel_grid,'Text','<No protocol>','HorizontalAlignment','Center','BackgroundColor','w');
+handles.workflow = ...
+    uilabel(rec_settings_panel_grid,'Text','<No workflow>','HorizontalAlignment','Center','BackgroundColor','w');
 
 
 % ------ Control section
@@ -145,19 +145,19 @@ update_controls([],[],gui_fig);
 end
 
 
-function choose_protocol(source,event,gui_fig)
+function choose_workflow(source,event,gui_fig)
 gui_data = guidata(gui_fig);
 
 bonsai_workflow_path = fullfile(extractBetween(string(which('plab.rig.bonsai_server')), ...
     '','PetersLab_rigging','Boundaries','inclusive'),'bonsai_workflows','*.bonsai');
-[protocol_name, protocol_path] = uigetfile(bonsai_workflow_path);
+[workflow_name, workflow_path] = uigetfile(bonsai_workflow_path);
 
-if ischar(protocol_name)
-    gui_data.handles.protocol.Text = erase(protocol_name,'.bonsai');
-    gui_data.handles.protocol.UserData = fullfile(protocol_path,protocol_name);
+if ischar(workflow_name)
+    gui_data.handles.workflow.Text = erase(workflow_name,'.bonsai');
+    gui_data.handles.workflow.UserData = fullfile(workflow_path,workflow_name);
 else
-    gui_data.handles.protocol.Text = '<No protocol>';
-    gui_data.handles.protocol.UserData = [];
+    gui_data.handles.workflow.Text = '<No workflow>';
+    gui_data.handles.workflow.UserData = [];
 end
 
 update_controls([],[],gui_fig);
@@ -168,8 +168,8 @@ end
 function update_controls(source,event,gui_fig)
 gui_data = guidata(gui_fig);
 
-% (edit fields only update value on click out - get current value)
 if source == gui_data.handles.mouse
+    % (edit fields only update value on click out)
     mouse = event.Value;
     reset_notes = true;
 else
@@ -177,10 +177,15 @@ else
     reset_notes = false;
 end
 
-bonsai_filename = gui_data.handles.protocol.UserData;
+bonsai_filename = gui_data.handles.workflow.UserData;
 
-% Update recording controls
-gui_data.handles.start.Enable = ~isempty(mouse) && exist(bonsai_filename,'file');
+% Enable start button
+gui_data.handles.start.Enable = ...
+    ~isempty(mouse) && ... % Mouse entered
+    exist(bonsai_filename,'file') && ... % Bonsai workflow chosen
+    gui_data.connection_tcpservers([gui_data.connection_tcpservers.ServerPort] == plab.locations.timelite_port).Connected && ... % Timelite connected
+    gui_data.connection_tcpservers([gui_data.connection_tcpservers.ServerPort] == plab.locations.bonsai_port).Connected && ... % Bonsai server connected
+    (~gui_data.handles.ephys_panel.Enable || ~gui_data.handles.ephys_start.Enable); % Ephys started (if connected)
 
 % Update ephys controls
 % (requires ephys and timelite connection)
@@ -231,7 +236,7 @@ gui_data = guidata(gui_fig);
 
 % Grab recording information
 mouse = string(gui_data.handles.mouse.Value);
-bonsai_filename = string(gui_data.handles.protocol.UserData);
+bonsai_filename = string(gui_data.handles.workflow.UserData);
 rec_day = string(datetime('now','Format','yyyy-MM-dd'));
 rec_time = string(datetime('now','Format','HHmm'));
 
@@ -418,7 +423,6 @@ end
 
 
 function ephys_recording_stop(source,event,gui_fig)
-
 
 gui_data = guidata(gui_fig);
 

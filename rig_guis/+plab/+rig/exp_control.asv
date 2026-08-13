@@ -168,8 +168,8 @@ end
 function update_controls(source,event,gui_fig)
 gui_data = guidata(gui_fig);
 
-% (edit fields only update value on click out - get current value)
 if source == gui_data.handles.mouse
+    % (edit fields only update value on click out)
     mouse = event.Value;
     reset_notes = true;
 else
@@ -179,8 +179,10 @@ end
 
 bonsai_filename = gui_data.handles.protocol.UserData;
 
-% Update recording controls
-gui_data.handles.start.Enable = ~isempty(mouse) && exist(bonsai_filename,'file');
+% Enable start button
+gui_data.handles.start.Enable = ...
+    ~isempty(mouse) && ... % mo 
+    exist(bonsai_filename,'file');
 
 % Update ephys controls
 % (requires ephys and timelite connection)
@@ -203,22 +205,24 @@ if ~isempty(gui_data.ephys) && ...
     end
 end
 
-% Update notes section
-% (check for day notes)
-rec_day = string(datetime('now','Format','yyyy-MM-dd'));
-rec_path = plab.locations.filename('server',mouse,rec_day);
-notes_day_fn = fullfile(rec_path,join(["notes",mouse,rec_day],"_")) + ".txt";
-if exist(notes_day_fn,'file')
-    gui_data.handles.notes_day_label.Text = sprintf('Day notes: %s %s',mouse,rec_day);
-    gui_data.handles.notes_day.Value = fileread(notes_day_fn);
-else
-    gui_data.handles.notes_day_label.Text = "Day notes";
-    gui_data.handles.notes_day.Value = "";
+% Update notes section (if mouse changed)
+if reset_notes
+    % (check for day notes)
+    rec_day = string(datetime('now','Format','yyyy-MM-dd'));
+    rec_path = plab.locations.filename('server',mouse,rec_day);
+    notes_day_fn = fullfile(rec_path,join(["notes",mouse,rec_day],"_")) + ".txt";
+    if exist(notes_day_fn,'file')
+        gui_data.handles.notes_day_label.Text = sprintf('Day notes: %s %s',mouse,rec_day);
+        gui_data.handles.notes_day.Value = fileread(notes_day_fn);
+    else
+        gui_data.handles.notes_day_label.Text = "Day notes";
+        gui_data.handles.notes_day.Value = "";
+    end
+    % (clear recording notes)
+    gui_data.handles.notes_recording_label.Text = "Recording notes";
+    gui_data.handles.notes_recording.Value = "";
+    gui_data.handles.notes_recording.Enable = false;
 end
-% (clear recording notes)
-gui_data.handles.notes_recording_label.Text = "Recording notes";
-gui_data.handles.notes_recording.Value = "";
-gui_data.handles.notes_recording.Enable = false;
 
 end
 
