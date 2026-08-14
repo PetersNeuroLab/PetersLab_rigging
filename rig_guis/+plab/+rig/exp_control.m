@@ -222,7 +222,7 @@ if reset_notes
         gui_data.handles.notes_day_label.Text = "Day notes";
         gui_data.handles.notes_day.Value = "";
     end
-    % (clear recording notes)
+    % (clear and disable recording notes)
     gui_data.handles.notes_recording_label.Text = "Recording notes";
     gui_data.handles.notes_recording.Value = "";
     gui_data.handles.notes_recording.Enable = false;
@@ -278,6 +278,7 @@ gui_data.handles.notes_recording.Enable = true;
 gui_data.handles.notes_recording.UserData = rec_time;
 gui_data.handles.notes_recording_label.Text = ...
     sprintf('Recording notes: %s %s %s',mouse,rec_day,rec_time);
+gui_data.handles.notes_recording.Value = "";
 
 % Update guidata
 guidata(gui_fig,gui_data);
