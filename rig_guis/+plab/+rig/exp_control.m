@@ -181,6 +181,7 @@ bonsai_filename = gui_data.handles.workflow.UserData;
 
 % Enable start button
 gui_data.handles.start.Enable = ...
+    ~gui_data.recording & ... % Not currently recording
     ~isempty(mouse) && ... % Mouse entered
     exist(bonsai_filename,'file') && ... % Bonsai workflow chosen
     gui_data.connection_tcpservers([gui_data.connection_tcpservers.ServerPort] == plab.locations.timelite_port).Connected && ... % Timelite connected
