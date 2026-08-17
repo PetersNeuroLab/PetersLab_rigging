@@ -86,7 +86,7 @@ notes_panel_grid = uigridlayout(notes_panel,[4,1], ...
 
 handles.notes_day_label = uilabel(notes_panel_grid,'Text','Day notes');
 handles.notes_day = uitextarea(notes_panel_grid, ...
-    'ValueChangedFcn',{@update_notes,gui_fig});
+    'ValueChangedFcn',{@update_notes,gui_fig},'Enable',false);
 
 handles.notes_recording_label = uilabel(notes_panel_grid,'Text','Recording notes');
 handles.notes_recording = uitextarea(notes_panel_grid, ...
@@ -171,10 +171,10 @@ gui_data = guidata(gui_fig);
 if source == gui_data.handles.mouse
     % (edit fields only update value on click out)
     mouse = event.Value;
-    reset_notes = true;
+    update_notes = true;
 else
     mouse = gui_data.handles.mouse.Value;
-    reset_notes = false;
+    update_notes = false;
 end
 
 bonsai_filename = gui_data.handles.workflow.UserData;
@@ -210,17 +210,22 @@ if ~isempty(gui_data.ephys) && ...
 end
 
 % Update notes section (if mouse changed)
-if reset_notes
+if update_notes
     % (check for day notes)
-    rec_day = string(datetime('now','Format','yyyy-MM-dd'));
-    rec_path = plab.locations.filename('server',mouse,rec_day);
-    notes_day_fn = fullfile(rec_path,join(["notes",mouse,rec_day],"_")) + ".txt";
-    if exist(notes_day_fn,'file')
-        gui_data.handles.notes_day_label.Text = sprintf('Day notes: %s %s',mouse,rec_day);
-        gui_data.handles.notes_day.Value = fileread(notes_day_fn);
+    if isempty(mouse)
+        gui_data.handles.notes_day.Enable = false;
     else
-        gui_data.handles.notes_day_label.Text = "Day notes";
-        gui_data.handles.notes_day.Value = "";
+        gui_data.handles.notes_day.Enable = true;
+        rec_day = string(datetime('now','Format','yyyy-MM-dd'));
+        rec_path = plab.locations.filename('server',mouse,rec_day);
+        notes_day_fn = fullfile(rec_path,join(["notes",mouse,rec_day],"_")) + ".txt";
+        if exist(notes_day_fn,'file')
+            gui_data.handles.notes_day_label.Text = sprintf('Day notes: %s %s',mouse,rec_day);
+            gui_data.handles.notes_day.Value = fileread(notes_day_fn);
+        else
+            gui_data.handles.notes_day_label.Text = "Day notes";
+            gui_data.handles.notes_day.Value = "";
+        end
     end
     % (clear and disable recording notes)
     gui_data.handles.notes_recording_label.Text = "Recording notes";
