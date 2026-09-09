@@ -186,11 +186,11 @@ function daq_stop(gui_fig,quickstop)
 gui_data = guidata(gui_fig);
 
 % Stop DAQ input acquisition, set outputs to LOW
+write(gui_data.daq_device.digital,false);
 % (normal stop: give 4 seconds to catch remaining signals)
 % (quick stop: stop now, e.g. if preview mode is ongoing)
 if ~exist('quickstop','var') || isempty(quickstop)
     update_status_text(gui_data.status_text_h,'Stopping (final 4s)');
-    write(gui_data.daq_device.digital,false);
     pause(4); % ensure outputs low and other GUIs finished before stopping
 end
 stop(gui_data.daq_device.analog)
