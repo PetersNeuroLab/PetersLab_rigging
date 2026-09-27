@@ -374,7 +374,7 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1273</Width>
+        <Width>1506</Width>
         <Height>895</Height>
       </Size>
       <WindowState>Normal</WindowState>
@@ -530,7 +530,7 @@
             <Y>3</Y>
           </Location>
           <Size>
-            <Width>1273</Width>
+            <Width>1506</Width>
             <Height>895</Height>
           </Size>
           <WindowState>Normal</WindowState>
@@ -1306,7 +1306,7 @@
             <Y>3</Y>
           </Location>
           <Size>
-            <Width>1273</Width>
+            <Width>1506</Width>
             <Height>895</Height>
           </Size>
           <WindowState>Normal</WindowState>
@@ -2022,8 +2022,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>904</Width>
-        <Height>529</Height>
+        <Width>1506</Width>
+        <Height>895</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
